@@ -20,12 +20,24 @@ class GlobalMethods: NSObject {
     func callWebService(parameter: AnyObject!,  completionHandler:@escaping (AnyObject, NSError?)->()) ->()
     {
        request = Alamofire.request(GlobalMethods.WEB_SERVICE_URL, method: .post, parameters: parameter as? Parameters, encoding: JSONEncoding.default, headers: nil).responseJSON { (response:DataResponse<Any>) in
-            
-            let JSON = response.result.value! as! NSDictionary
-            let JSONError = response.result.error
-            
-            completionHandler(JSON as AnyObject, JSONError as NSError?)
+        
+            if response.result.value == nil
+            {
+                let JSONError = response.result.error
+                let JSON = response.result.value
+                
+                completionHandler(JSON as AnyObject, JSONError as NSError?)
+            }
+            else
+            {
+                let JSON = response.result.value! as! NSDictionary
+                let JSONError = response.result.error
+                
+                completionHandler(JSON as AnyObject, JSONError as NSError?)
+
         }
+        
+                    }
     }
     
     //MARK: Stop All Services

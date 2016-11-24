@@ -8,12 +8,10 @@
 
 import UIKit
 
-class DashHomeVC: UIViewController,UIGestureRecognizerDelegate {
+class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayChecmistry {
 
     @IBOutlet var btnNo: UIButton!
     @IBOutlet var btnYes: UIButton!
-    
-    
     
     @IBOutlet var lblLike: UILabel!
     @IBOutlet var lblDislike: UILabel!
@@ -85,6 +83,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate {
         lbl.alpha = 0.0
     }
     
+    
     override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated)
@@ -106,18 +105,43 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate {
     //MARK: Like Dislike Click General Method
     func LikeData()
     {
+        
+        self.StoreProfileLikeDisplineInDb(likeDislike:1)
+        self.callLikeDisLikeService()
+        self.userintractionTrueFalse(sender: true)
+        
+        let storyBoardObj = UIStoryboard(name: "Main", bundle: nil)
+        let PersonalityVCObj = storyBoardObj.instantiateViewController(withIdentifier: "PersonalityTestViewController") as! PersonalityTestViewController
+        
+        PersonalityVCObj.delegate = self
+        
+        let navigationController = UINavigationController(rootViewController: PersonalityVCObj)
+        navigationController.isNavigationBarHidden = true
+        
+        
+        let dictProfile = self.arrProfiles.object(at: self.indexOfProfile) as! NSDictionary
+        PersonalityVCObj.dictionaryProfile = dictProfile
+        
+        self.present(navigationController, animated: true, completion: nil)
+        
+        UIView.animate(withDuration: 0.4, animations: {
+            self.viewDisplayProfileObj.alpha = 0.0
+            }, completion: { (true) in
+                self.displayProfile()
+                self.viewDisplayProfileObj.alpha = 1.0
+        })
+        
+        
         if indexOfProfile != arrProfiles.count - 1
         {
-            self.StoreProfileLikeDisplineInDb(likeDislike:1)
-
-            UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: {
-                self.displayProfile()
-                self.callLikeDisLikeService()
-                
-                }, completion:  { finished in
-                    self.userintractionTrueFalse(sender: true)
-
-            })
+            
+            //            UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: {
+            
+            
+            //                }, completion:  { finished in
+            
+            //            })
+            
         }
         else
         {
@@ -128,7 +152,6 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate {
                 
                 self.lblDistance.text = ""
                 self.lblUserName.text = ""
-                self.imgUserProfileObj = nil
                 
                 }, completion:  { finished in
                     self.userintractionTrueFalse(sender: true)
@@ -141,12 +164,11 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate {
         if indexOfProfile != arrProfiles.count - 1
         {
             self.StoreProfileLikeDisplineInDb(likeDislike:0)
-            
+            self.callLikeDisLikeService()
 
             UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {
 
                 self.displayProfile()
-                self.callLikeDisLikeService()
                 
                 }, completion:  { finished in
                     self.userintractionTrueFalse(sender: true)
@@ -162,7 +184,6 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate {
                 
                 self.lblDistance.text = ""
                 self.lblUserName.text = ""
-                self.imgUserProfileObj = nil
                 
                 }, completion:  { finished in
                     self.userintractionTrueFalse(sender: true)
@@ -412,12 +433,13 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate {
         }
     }
     
+    //MARK:  Profile Screen Action
     
     @IBAction func btnProfileClicked(_ sender: AnyObject)
     {
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         
-        let vc = storyboard.instantiateViewController(withIdentifier: "OtherUserQuestionViewController") as! OtherUserQuestionViewController
+        let vc = storyboard.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
         
         let navigationController = UINavigationController(rootViewController: vc)
         navigationController.isNavigationBarHidden = false
@@ -428,11 +450,43 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate {
         
         self.present(navigationController, animated: true, completion: nil)
     }
-
+    
+    //MARK: User Intration True/False
+    
     func userintractionTrueFalse(sender:Bool)
     {
         btnYes.isUserInteractionEnabled = sender
         btnNo.isUserInteractionEnabled = sender
+    }
+    
+    //MARK: Display Personality method
+    
+    func DisplayChemistry() // this function the first controllers
+    {
+        if globalMethodObj.checkUserDefaultKey(kUsernameKey: "displayChemistry")
+        {
+            let status = globalMethodObj.getUserDefault(KeyToReturnValye: "displayChemistry") as! String
+            
+//            if status == "1"
+//            {
+                let ChemistryViewControllerObj = self.storyboard?.instantiateViewController(withIdentifier: "ChemistrySuccessViewController") as! ChemistrySuccessViewController
+                
+                ChemistryViewControllerObj.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+                ChemistryViewControllerObj.view.alpha = 0.0
+                
+               UIApplication.shared.delegate?.window??.addSubview(ChemistryViewControllerObj.view)
+            
+                UIView.animate(withDuration: 0.3, animations:
+                    {
+                        ChemistryViewControllerObj.view.alpha = 1.0
+                })
+//            }
+//            else
+//            {
+//                
+//            }
+        }
+
     }
 
     

@@ -42,8 +42,10 @@
 		2E5972921DDC794700642CE2 /* MeeTwo.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 2E5972911DDC783D00642CE2 /* MeeTwo.sqlite */; };
 		2E7553CB1DE30E4E00181D1B /* smallgif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 2E7553CA1DE30E4E00181D1B /* smallgif.gif */; };
 		2E7553D11DE3170500181D1B /* UIImage+Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7553CF1DE3170500181D1B /* UIImage+Gif.swift */; };
-		2E8E6A831DE5743E00F0022E /* OtherUserQuestionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E8E6A821DE5743E00F0022E /* OtherUserQuestionViewController.swift */; };
 		2ECA979B1DD337A300B75ED0 /* introCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECA979A1DD337A300B75ED0 /* introCell.swift */; };
+		2ECDA84A1DE6BE2C00E70C22 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECDA8491DE6BE2C00E70C22 /* UserProfileViewController.swift */; };
+		2ECDA84C1DE6BE3C00E70C22 /* PersonalityTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECDA84B1DE6BE3C00E70C22 /* PersonalityTestViewController.swift */; };
+		2ECDA84E1DE71FB700E70C22 /* ChemistrySuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECDA84D1DE71FB700E70C22 /* ChemistrySuccessViewController.swift */; };
 		2EE2C5A41DD5991500CC43E6 /* GlobalMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE2C5A31DD5991500CC43E6 /* GlobalMethods.swift */; };
 		2EF852661DE40F8D001B119F /* intro-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 2EF852601DE40F8D001B119F /* intro-0.png */; };
 		2EF852671DE40F8D001B119F /* intro-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2EF852611DE40F8D001B119F /* intro-1.png */; };
@@ -133,8 +135,10 @@
 		2E7553CA1DE30E4E00181D1B /* smallgif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = smallgif.gif; sourceTree = "<group>"; };
 		2E7553CE1DE3170500181D1B /* SwiftGif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftGif.h; sourceTree = "<group>"; };
 		2E7553CF1DE3170500181D1B /* UIImage+Gif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Gif.swift"; sourceTree = "<group>"; };
-		2E8E6A821DE5743E00F0022E /* OtherUserQuestionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherUserQuestionViewController.swift; sourceTree = "<group>"; };
 		2ECA979A1DD337A300B75ED0 /* introCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = introCell.swift; sourceTree = "<group>"; };
+		2ECDA8491DE6BE2C00E70C22 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		2ECDA84B1DE6BE3C00E70C22 /* PersonalityTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalityTestViewController.swift; sourceTree = "<group>"; };
+		2ECDA84D1DE71FB700E70C22 /* ChemistrySuccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChemistrySuccessViewController.swift; sourceTree = "<group>"; };
 		2EE2C5A31DD5991500CC43E6 /* GlobalMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalMethods.swift; sourceTree = "<group>"; };
 		2EF852601DE40F8D001B119F /* intro-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "intro-0.png"; sourceTree = "<group>"; };
 		2EF852611DE40F8D001B119F /* intro-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "intro-1.png"; sourceTree = "<group>"; };
@@ -369,7 +373,9 @@
 				2E2436611DD5F73700190B70 /* QuestionVC.swift */,
 				2E3E022A1DDB17AC00099A50 /* DashHomeVC.swift */,
 				2E3E022B1DDB17AC00099A50 /* TabController.swift */,
-				2E8E6A821DE5743E00F0022E /* OtherUserQuestionViewController.swift */,
+				2ECDA8491DE6BE2C00E70C22 /* UserProfileViewController.swift */,
+				2ECDA84B1DE6BE3C00E70C22 /* PersonalityTestViewController.swift */,
+				2ECDA84D1DE71FB700E70C22 /* ChemistrySuccessViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -570,6 +576,7 @@
 				2E525A381DD991EF004565F8 /* LetsStartVC.swift in Sources */,
 				2E3E02741DDB41E000099A50 /* NSData+ImageContentType.m in Sources */,
 				2E3E027C1DDB41E000099A50 /* SDWebImageManager.m in Sources */,
+				2ECDA84E1DE71FB700E70C22 /* ChemistrySuccessViewController.swift in Sources */,
 				2E3E02791DDB41E000099A50 /* SDWebImageDecoder.m in Sources */,
 				2E3E02351DDB18BC00099A50 /* CardView.m in Sources */,
 				521680CD1DD1D4AE00E76882 /* HomeVC.swift in Sources */,
@@ -584,13 +591,14 @@
 				2E3E02851DDB41E000099A50 /* UIView+WebCacheOperation.m in Sources */,
 				2E3E02811DDB41E000099A50 /* UIImage+WebP.m in Sources */,
 				2E3E02771DDB41E000099A50 /* SDImageCacheConfig.m in Sources */,
+				2ECDA84A1DE6BE2C00E70C22 /* UserProfileViewController.swift in Sources */,
 				2E3E02781DDB41E000099A50 /* SDWebImageCompat.m in Sources */,
 				2E2436621DD5F73700190B70 /* QuestionVC.swift in Sources */,
 				2E3E02751DDB41E000099A50 /* NSImage+WebCache.m in Sources */,
+				2ECDA84C1DE6BE3C00E70C22 /* PersonalityTestViewController.swift in Sources */,
 				2E3E027A1DDB41E000099A50 /* SDWebImageDownloader.m in Sources */,
 				2EE2C5A41DD5991500CC43E6 /* GlobalMethods.swift in Sources */,
 				2E3E022C1DDB17AC00099A50 /* DashHomeVC.swift in Sources */,
-				2E8E6A831DE5743E00F0022E /* OtherUserQuestionViewController.swift in Sources */,
 				2E3E02801DDB41E000099A50 /* UIImage+MultiFormat.m in Sources */,
 				2E3E027E1DDB41E000099A50 /* UIButton+WebCache.m in Sources */,
 				2ECA979B1DD337A300B75ED0 /* introCell.swift in Sources */,

@@ -1,23 +1,25 @@
 //
-//  OtherUserQuestionViewController.swift
+//  UserProfileViewController.swift
 //  MeeTwo
 //
-//  Created by Apple 1 on 23/11/16.
+//  Created by Apple 1 on 24/11/16.
 //  Copyright © 2016 TheAppGuruz. All rights reserved.
 //
 
 import UIKit
 
-class OtherUserQuestionViewController: UIViewController {
+class UserProfileViewController: UIViewController {
 
     var StringNavigationTitle : String!
+
     
-    override func viewDidLoad() {
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
     }
-
+    
     override func viewWillAppear(_ animated: Bool)
     {
         self.navigationController?.navigationBar.topItem?.title = StringNavigationTitle
@@ -28,7 +30,7 @@ class OtherUserQuestionViewController: UIViewController {
         btn1.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
         btn1.contentMode = UIViewContentMode.scaleAspectFit
         btn1.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 30)
-        btn1.addTarget(self, action: #selector(OtherUserQuestionViewController.back), for: .touchUpInside)
+        btn1.addTarget(self, action: #selector(UserProfileViewController.back), for: .touchUpInside)
         let item1 = UIBarButtonItem()
         item1.customView = btn1
         self.navigationItem.leftBarButtonItem = item1;
@@ -39,6 +41,7 @@ class OtherUserQuestionViewController: UIViewController {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

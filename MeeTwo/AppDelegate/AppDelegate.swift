@@ -18,7 +18,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     {
         DBOperation.checkCreateDB()
         
-        // For Push Notification
+        // For Push Notification check
         let settings = UIUserNotificationSettings.init(types: [.alert, .badge, .sound], categories: nil)
         application.registerUserNotificationSettings(settings)
         application.registerForRemoteNotifications()
