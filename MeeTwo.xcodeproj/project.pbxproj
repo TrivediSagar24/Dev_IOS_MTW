@@ -42,6 +42,7 @@
 		2E5972921DDC794700642CE2 /* MeeTwo.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 2E5972911DDC783D00642CE2 /* MeeTwo.sqlite */; };
 		2E7553CB1DE30E4E00181D1B /* smallgif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 2E7553CA1DE30E4E00181D1B /* smallgif.gif */; };
 		2E7553D11DE3170500181D1B /* UIImage+Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7553CF1DE3170500181D1B /* UIImage+Gif.swift */; };
+		2EBF99361DE809D200107813 /* ToBadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EBF99351DE809D200107813 /* ToBadViewController.swift */; };
 		2ECA979B1DD337A300B75ED0 /* introCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECA979A1DD337A300B75ED0 /* introCell.swift */; };
 		2ECDA84A1DE6BE2C00E70C22 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECDA8491DE6BE2C00E70C22 /* UserProfileViewController.swift */; };
 		2ECDA84C1DE6BE3C00E70C22 /* PersonalityTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECDA84B1DE6BE3C00E70C22 /* PersonalityTestViewController.swift */; };
@@ -135,6 +136,7 @@
 		2E7553CA1DE30E4E00181D1B /* smallgif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = smallgif.gif; sourceTree = "<group>"; };
 		2E7553CE1DE3170500181D1B /* SwiftGif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftGif.h; sourceTree = "<group>"; };
 		2E7553CF1DE3170500181D1B /* UIImage+Gif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Gif.swift"; sourceTree = "<group>"; };
+		2EBF99351DE809D200107813 /* ToBadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToBadViewController.swift; sourceTree = "<group>"; };
 		2ECA979A1DD337A300B75ED0 /* introCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = introCell.swift; sourceTree = "<group>"; };
 		2ECDA8491DE6BE2C00E70C22 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		2ECDA84B1DE6BE3C00E70C22 /* PersonalityTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalityTestViewController.swift; sourceTree = "<group>"; };
@@ -376,6 +378,7 @@
 				2ECDA8491DE6BE2C00E70C22 /* UserProfileViewController.swift */,
 				2ECDA84B1DE6BE3C00E70C22 /* PersonalityTestViewController.swift */,
 				2ECDA84D1DE71FB700E70C22 /* ChemistrySuccessViewController.swift */,
+				2EBF99351DE809D200107813 /* ToBadViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -606,6 +609,7 @@
 				2E3E02731DDB41E000099A50 /* MKAnnotationView+WebCache.m in Sources */,
 				2E3E027B1DDB41E000099A50 /* SDWebImageDownloaderOperation.m in Sources */,
 				2E3E022D1DDB17AC00099A50 /* TabController.swift in Sources */,
+				2EBF99361DE809D200107813 /* ToBadViewController.swift in Sources */,
 				529824241DB6445B00DA1777 /* AppDelegate.swift in Sources */,
 				2E3E02761DDB41E000099A50 /* SDImageCache.m in Sources */,
 			);
@@ -676,7 +680,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "c5227a96-f484-4a5c-9dda-d0cd118a1414";
+				PROVISIONING_PROFILE = "4e88e8e4-63de-4e61-931d-6efd4ddab272";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -718,7 +722,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "c5227a96-f484-4a5c-9dda-d0cd118a1414";
+				PROVISIONING_PROFILE = "4e88e8e4-63de-4e61-931d-6efd4ddab272";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;

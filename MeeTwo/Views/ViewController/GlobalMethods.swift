@@ -8,6 +8,8 @@
 
 import UIKit
 import Alamofire
+import SystemConfiguration
+
 
 class GlobalMethods: NSObject {
 
@@ -19,25 +21,39 @@ class GlobalMethods: NSObject {
     
     func callWebService(parameter: AnyObject!,  completionHandler:@escaping (AnyObject, NSError?)->()) ->()
     {
-       request = Alamofire.request(GlobalMethods.WEB_SERVICE_URL, method: .post, parameters: parameter as? Parameters, encoding: JSONEncoding.default, headers: nil).responseJSON { (response:DataResponse<Any>) in
-        
-            if response.result.value == nil
-            {
-                let JSONError = response.result.error
-                let JSON = response.result.value
+        if self.isConnectedToNetwork()
+        {
+            request = Alamofire.request(GlobalMethods.WEB_SERVICE_URL, method: .post, parameters: parameter as? Parameters, encoding: JSONEncoding.default, headers: nil).responseJSON { (response:DataResponse<Any>) in
                 
-                completionHandler(JSON as AnyObject, JSONError as NSError?)
-            }
-            else
-            {
-                let JSON = response.result.value! as! NSDictionary
-                let JSONError = response.result.error
-                
-                completionHandler(JSON as AnyObject, JSONError as NSError?)
-
-        }
-        
+                if self.isConnectedToNetwork()
+                {
+                    if response.result.value == nil
+                    {
+                        let JSONError = response.result.error
+                        let JSON = response.result.value
+                        
+                        completionHandler(JSON as AnyObject, JSONError as NSError?)
                     }
+                    else
+                    {
+                        let JSON = response.result.value! as! NSDictionary
+                        let JSONError = response.result.error
+                        
+                        completionHandler(JSON as AnyObject, JSONError as NSError?)
+                        
+                    }
+                }
+                else
+                {
+                    MBProgressHUD.hide(for: (UIApplication.topViewController()?.view)!, animated: true)
+                    self.alertNoInternetConnection()
+                }
+            }
+        }
+        else
+        {
+           self.alertNoInternetConnection()
+        }
     }
     
     //MARK: Stop All Services
@@ -98,6 +114,13 @@ class GlobalMethods: NSObject {
             return name as AnyObject?
         }
         return nil
+    }
+    
+    func removeuserDefaultKey(string:String)
+    {
+        let defaults = UserDefaults.standard
+        
+        defaults.removeObject(forKey: string)
     }
     
     //MARK: Get Attribute String
@@ -164,6 +187,52 @@ class GlobalMethods: NSObject {
             boldString.addAttributes(boldFontAttribute, range: fullString.range(of: boldPartsOfString[i] as String))
         }
         return boldString
+    }
+    
+    func isConnectedToNetwork() -> Bool {
+        
+        var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
+        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
+        zeroAddress.sin_family = sa_family_t(AF_INET)
+        let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
+            $0.withMemoryRebound(to: sockaddr.self, capacity: 1) {zeroSockAddress in
+                SCNetworkReachabilityCreateWithAddress(nil, zeroSockAddress)
+            }
+        }
+        
+        var flags: SCNetworkReachabilityFlags = SCNetworkReachabilityFlags(rawValue: 0)
+        if SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) == false {
+            return false
+        }
+        
+        let isReachable = flags == .reachable
+        let needsConnection = flags == .connectionRequired
+       
+        
+        return isReachable && !needsConnection
+    }
+    
+    func alertNoInternetConnection()
+    {
+        let topController = UIApplication.topViewController()
+        self.ShowAlertDisplay(titleObj: "Internet Connection", messageObj: "No Internet Connection", viewcontrolelr: topController!)
+    }
+}
+
+extension UIApplication {
+    class func topViewController(base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+        if let nav = base as? UINavigationController {
+            return topViewController(base: nav.visibleViewController)
+        }
+        if let tab = base as? UITabBarController {
+            if let selected = tab.selectedViewController {
+                return topViewController(base: selected)
+            }
+        }
+        if let presented = base?.presentedViewController {
+            return topViewController(base: presented)
+        }
+        return base
     }
 }
 

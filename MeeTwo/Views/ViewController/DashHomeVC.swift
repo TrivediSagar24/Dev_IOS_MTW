@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayChecmistry {
+class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayChecmistry,delegateRemoveChecmistry,delegateRemoveToBad {
 
     @IBOutlet var btnNo: UIButton!
     @IBOutlet var btnYes: UIButton!
@@ -32,21 +32,60 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     @IBOutlet var lblUserName: UILabel!
     @IBOutlet var lblDistance: UILabel!
     
+    var ChemistryViewControllerObj = ChemistrySuccessViewController()
+    var ToBadViewControllerObj = ToBadViewController()
     
-    override func viewDidLoad() {
+    
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
+        
+        self.DisplayChemistry()
+        
         // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        if globalMethodObj.isConnectedToNetwork()
+        {
+            if arrProfiles.count == 0
+            {
+                if viewDisplayProfileObj.isHidden == true
+                {
+                    self.SetupScreen()
+                }
+                else
+                {
+                    self.GetMatchProfileServiceCall()
+                }
+            }
+        }
+        else
+        {
+            globalMethodObj.alertNoInternetConnection()
+            viewYesNoObj.isHidden = true
+            viewDisplayProfileObj.isHidden = true
+        }
+        
+    }
+
+    func SetupScreen()
+    {
+        viewYesNoObj.isHidden = false
+        viewDisplayProfileObj.isHidden = false
+        
         btnNo.layer.cornerRadius = 10.0
         btnYes.layer.cornerRadius = 10.0
-
-
+        
+        imgGifDisplayObj.isHidden = false
         imgGifDisplayObj.image = UIImage.gif(name: "smallgif")
         
         viewDisplayProfileObj.isHidden = true
         viewYesNoObj.isHidden = true
         imgGifDisplayObj.isHidden = false
         lblNoDataFound.isHidden = true
-
+        
         imgUserProfileObj.clipsToBounds = true
         viewDisplayProfileObj.layer.cornerRadius = 10
         viewDisplayProfileObj.layer.borderWidth = 1
@@ -73,7 +112,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         self.setLableFunctionality(lbl: lblLike)
         self.setLableFunctionality(lbl: lblDislike)
     }
-
+    
     func setLableFunctionality(lbl:UILabel)
     {
         lbl.layer.borderWidth = 3
@@ -90,10 +129,11 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     }
     
     //MARK: Right / Left Gesture
-    func rightSwipeGestureDirection(gesture: UIGestureRecognizer)
+    func rightSwipeGestureDirection(gesture: UISwipeGestureRecognizer)
     {
-        self.lblLike.alpha = 0.0
+         self.lblLike.alpha = 0.0
         self.LikeData()
+        
     }
     
     func LeftSwipeGestureDirection(gesture: UIGestureRecognizer)
@@ -105,91 +145,108 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     //MARK: Like Dislike Click General Method
     func LikeData()
     {
-        
-        self.StoreProfileLikeDisplineInDb(likeDislike:1)
-        self.callLikeDisLikeService()
-        self.userintractionTrueFalse(sender: true)
-        
-        let storyBoardObj = UIStoryboard(name: "Main", bundle: nil)
-        let PersonalityVCObj = storyBoardObj.instantiateViewController(withIdentifier: "PersonalityTestViewController") as! PersonalityTestViewController
-        
-        PersonalityVCObj.delegate = self
-        
-        let navigationController = UINavigationController(rootViewController: PersonalityVCObj)
-        navigationController.isNavigationBarHidden = true
-        
-        
-        let dictProfile = self.arrProfiles.object(at: self.indexOfProfile) as! NSDictionary
-        PersonalityVCObj.dictionaryProfile = dictProfile
-        
-        self.present(navigationController, animated: true, completion: nil)
-        
-        UIView.animate(withDuration: 0.4, animations: {
-            self.viewDisplayProfileObj.alpha = 0.0
-            }, completion: { (true) in
-                self.displayProfile()
-                self.viewDisplayProfileObj.alpha = 1.0
-        })
-        
-        
-        if indexOfProfile != arrProfiles.count - 1
+        if globalMethodObj.isConnectedToNetwork()
         {
+            self.StoreProfileLikeDisplineInDb(likeDislike:1)
+            self.callLikeDisLikeService()
+            self.userintractionTrueFalse(sender: true)
             
-            //            UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: {
+            let storyBoardObj = UIStoryboard(name: "Main", bundle: nil)
+            let PersonalityVCObj = storyBoardObj.instantiateViewController(withIdentifier: "PersonalityTestViewController") as! PersonalityTestViewController
             
+            PersonalityVCObj.delegate = self
             
-            //                }, completion:  { finished in
+            let navigationController = UINavigationController(rootViewController: PersonalityVCObj)
+            navigationController.isNavigationBarHidden = true
             
-            //            })
+
+            let dictProfile = self.arrProfiles.object(at: self.indexOfProfile) as! NSDictionary
+            PersonalityVCObj.dictionaryProfile = dictProfile
             
-        }
-        else
-        {
-            indexPageCount = indexPageCount + 1
-            self.GetMatchProfileServiceCall()
+            self.present(navigationController, animated: true, completion: nil)
             
-            UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: {
-                
-                self.lblDistance.text = ""
-                self.lblUserName.text = ""
-                
-                }, completion:  { finished in
-                    self.userintractionTrueFalse(sender: true)
+            UIView.animate(withDuration: 0.4, animations: {
+                self.viewDisplayProfileObj.alpha = 0.0
+                }, completion: { (true) in
+                    
+                    if self.indexOfProfile != self.arrProfiles.count - 1
+                    {
+                        self.displayProfile()
+                    }
+                    self.viewDisplayProfileObj.alpha = 1.0
             })
+            
+            
+            if indexOfProfile != arrProfiles.count - 1
+            {
+                
+                //            UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: {
+                
+                
+                //                }, completion:  { finished in
+                
+                //            })
+                
+            }
+            else
+            {
+                indexPageCount = indexPageCount + 1
+                self.GetMatchProfileServiceCall()
+                
+                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: {
+                    
+                    self.viewDisplayProfileObj.isHidden = true
+                    self.viewYesNoObj.isHidden = true
+                    self.lblDistance.text = ""
+                    self.lblUserName.text = ""
+                    
+                    }, completion:  { finished in
+                        self.userintractionTrueFalse(sender: true)
+                })
+            }
+
         }
+        
     }
     
     func DislikeData()
     {
-        if indexOfProfile != arrProfiles.count - 1
+        if globalMethodObj.isConnectedToNetwork()
         {
-            self.StoreProfileLikeDisplineInDb(likeDislike:0)
-            self.callLikeDisLikeService()
-
-            UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {
-
-                self.displayProfile()
+            if indexOfProfile != arrProfiles.count - 1
+            {
+                self.StoreProfileLikeDisplineInDb(likeDislike:0)
+                self.callLikeDisLikeService()
                 
-                }, completion:  { finished in
-                    self.userintractionTrueFalse(sender: true)
-            })
+                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {
+                    
+                    if self.indexOfProfile != self.arrProfiles.count - 1
+                    {
+                        self.displayProfile()
+                    }
+                    
+                    }, completion:  { finished in
+                        self.userintractionTrueFalse(sender: true)
+                })
+            }
+            else
+            {
+                
+                indexPageCount = indexPageCount + 1
+                self.GetMatchProfileServiceCall()
+                
+                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {
+                    
+                    self.viewDisplayProfileObj.isHidden = true
+                    self.viewYesNoObj.isHidden = true
+                    self.lblDistance.text = ""
+                    self.lblUserName.text = ""
+                    
+                    }, completion:  { finished in
+                        self.userintractionTrueFalse(sender: true)
+                })
+            }
         }
-        else
-        {
-
-            indexPageCount = indexPageCount + 1
-            self.GetMatchProfileServiceCall()
-
-            UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {
-                
-                self.lblDistance.text = ""
-                self.lblUserName.text = ""
-                
-                }, completion:  { finished in
-                    self.userintractionTrueFalse(sender: true)
-            })
-        }
-
     }
     
     //MARK: Store Data In DB in Call Service
@@ -260,7 +317,6 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     
     func callLikeDisLikeService()
     {
-        
         let getUserId = globalMethodObj.getUserId()
         
         let profileArray = DBOperation.selectData("select * from LikeDislikeProfile where user_id = '\(globalMethodObj.getUserId())'") as NSMutableArray
@@ -338,7 +394,6 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     
     func GetMatchProfileServiceCall()
     {
-        
         self.userintractionTrueFalse(sender: false)
 
         let getUserId = globalMethodObj.getUserId()
@@ -467,28 +522,61 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         {
             let status = globalMethodObj.getUserDefault(KeyToReturnValye: "displayChemistry") as! String
             
-//            if status == "1"
-//            {
-                let ChemistryViewControllerObj = self.storyboard?.instantiateViewController(withIdentifier: "ChemistrySuccessViewController") as! ChemistrySuccessViewController
+            if status == "1"
+            {
+                ChemistryViewControllerObj = self.storyboard?.instantiateViewController(withIdentifier: "ChemistrySuccessViewController") as! ChemistrySuccessViewController
                 
                 ChemistryViewControllerObj.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
                 ChemistryViewControllerObj.view.alpha = 0.0
+                ChemistryViewControllerObj.delegate = self
                 
                UIApplication.shared.delegate?.window??.addSubview(ChemistryViewControllerObj.view)
             
                 UIView.animate(withDuration: 0.3, animations:
                     {
-                        ChemistryViewControllerObj.view.alpha = 1.0
+                        self.ChemistryViewControllerObj.view.alpha = 1.0
                 })
-//            }
-//            else
-//            {
-//                
-//            }
+            }
+            else
+            {
+                ToBadViewControllerObj = self.storyboard?.instantiateViewController(withIdentifier: "ToBadViewController") as! ToBadViewController
+                
+                ToBadViewControllerObj.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
+                ToBadViewControllerObj.view.alpha = 0.0
+                ToBadViewControllerObj.delegate = self
+                
+                UIApplication.shared.delegate?.window??.addSubview(ToBadViewControllerObj.view)
+                
+                UIView.animate(withDuration: 0.3, animations:
+                    {
+                        self.ToBadViewControllerObj.view.alpha = 1.0
+                })
+            }
+        }
+    }
+
+    
+    func removeChemistry()
+    {
+        UIView.animate(withDuration: 0.3, animations: { 
+        self.ChemistryViewControllerObj.view.alpha = 0.0
+            }) { (true) in
+        self.ChemistryViewControllerObj.view.removeFromSuperview()
+        }
+        
+    }
+    
+    func removeToBad()
+    {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.ToBadViewControllerObj.view.alpha = 0.0
+
+        }) { (true) in
+            self.ToBadViewControllerObj.view.removeFromSuperview()
         }
 
     }
-
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

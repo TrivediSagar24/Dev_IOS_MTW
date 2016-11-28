@@ -8,9 +8,16 @@
 
 import UIKit
 
+protocol delegateRemoveChecmistry
+{
+    func removeChemistry() // this function the first controllers
+}
+
+
 class ChemistrySuccessViewController: UIViewController
 {
-    
+    var delegate: delegateRemoveChecmistry?
+
     var dictionaryProfile = NSDictionary()
     
     @IBOutlet var lblCompatibleObj: UILabel!
@@ -35,12 +42,35 @@ class ChemistrySuccessViewController: UIViewController
         imgUserProfile.layer.borderColor = UIColor.white.cgColor
         imgUserProfile.layer.borderWidth = 10
         
+        btnLetsWaitObj.layer.shadowColor = UIColor.black.cgColor
+        btnLetsWaitObj.layer.shadowOffset = CGSize.zero
+        btnLetsWaitObj.layer.shadowOpacity = 0.4
+        btnLetsWaitObj.layer.shadowRadius = 10
+        
+        /*
+ 
+         "{
+         ""methodName"": ""login"",
+         ""facebook_id"": ""string"",
+         ""profile_pic_url"":""string"",
+         ""first_name"":""string"",
+         ""last_name"" :""string"",
+         ""email"":""string"",
+         ""gender"":1 | 2 | 3,
+         ""description"":""string"",
+         ""school"":""string"",
+         ""work"":""string""
+         ""birth_date"""":""dd/mm/yyyy""
+         }"
+         
+ */
+ 
 
         let otherFirstName = globalMethodObj.getUserDefault(KeyToReturnValye: "otherFirstName") as! String
         let otherProfilePic = globalMethodObj.getUserDefault(KeyToReturnValye: "otherProfilePic") as! String
         
-        let normalFont = UIFont(name: "inglobal", size: 17)
-        let boldSearchFont = UIFont(name: "inglobal-Bold", size: 17)
+        let normalFont = UIFont(name: "inglobal", size: 20)
+        let boldSearchFont = UIFont(name: "inglobal-Bold", size: 20)
         lblCompatibleObj.attributedText = globalMethodObj.addBoldText(fullString: "You and '\(otherFirstName)' are complatible" as NSString, boldPartsOfString: ["complatible"], font: normalFont!, boldFont: boldSearchFont!)
         
         let urlStringOther : NSURL = NSURL.init(string: otherProfilePic)!
@@ -51,23 +81,15 @@ class ChemistrySuccessViewController: UIViewController
         let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "userdata")
         let profilePic = dict?.object(forKey: "profile_pic_url") as! String
         let name = dict?.object(forKey: "first_name") as! String
-
+        
         
         let urlStringUser : NSURL = NSURL.init(string: profilePic)!
         imgUserProfile.sd_setImage(with: urlStringUser as URL, placeholderImage: imgPlaceHolder)
         
         lblinvitationObj.text = "\(name) will now have to accept your invitation in order to chat with you"
         
-//        lblCompatibleObj.text =
+        globalMethodObj.removeuserDefaultKey(string: "displayChemistry")
         
-        
-        /*
-        let profilePicStr = dictionaryProfile.object(forKey: "profile_pic_url")  as! String
-        let urlString : NSURL = NSURL.init(string: profilePicStr)!
-        let imgPlaceHolder = UIImage.init(named: "imgUserLogo.jpeg")
-        
-        imgUserProfile.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
-         */
 
         // Do any additional setup after loading the view.
     }
@@ -83,16 +105,31 @@ class ChemistrySuccessViewController: UIViewController
     func setImageProperty(image:UIImageView)
     {
         image.layer.borderColor = UIColor.white.cgColor
-        image.layer.borderWidth = 10
+        image.layer.borderWidth = 7
         image.layer.cornerRadius = image.frame.size.width / 2
         image.clipsToBounds = true
+
+        image.layer.shadowColor = UIColor.black.cgColor
+        image.layer.shadowOffset = CGSize(width: 0, height: 0)
+        image.layer.shadowOpacity = 1.0
+        image.layer.shadowRadius = 5
+        image.layer.masksToBounds = true
+        
+//        image.clipsToBounds = true
+//        image.backgroundColor = UIColor.clear
+//        image.layer.shadowColor! = UIColor.black.cgColor
+//        image.layer.shadowOffset = CGSize(width: CGFloat(5), height: CGFloat(15))
+//        image.layer.shadowOpacity = 0.5
+//        image.layer.shadowRadius = 2.0
+//        image.layer.shadowPath = UIBezierPath(roundedRect: image.bounds, cornerRadius: 100.0).cgPath
+        
     }
     
     //MARK: LET'S WAIT button Aciton
     
     @IBAction func btnLetsWaitClicked(_ sender: AnyObject)
     {
-        
+        delegate?.removeChemistry()
     }
     
     

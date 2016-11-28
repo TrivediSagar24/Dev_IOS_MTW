@@ -166,32 +166,35 @@ class ViewController: UIViewController
     
     @IBAction func clickOnFB(_ sender: AnyObject)
     {
-         if(FBSDKAccessToken.current() == nil)
+        if globalMethodObj.isConnectedToNetwork()
         {
-            MBProgressHUD.showAdded(to: self.view, animated: true)
-
-            fbLoginManager .logIn(withReadPermissions: ["public_profile", "email", "user_friends","user_education_history","user_about_me","user_birthday","user_work_history"], handler: { (result, error) -> Void in
+            if(FBSDKAccessToken.current() == nil)
+            {
+                MBProgressHUD.showAdded(to: self.view, animated: true)
                 
-                if (result?.isCancelled)!
-                {
-                    return
-                }
-                
-                if (error == nil)
-                {
-                    let fbloginresult : FBSDKLoginManagerLoginResult = result!
-                    if(fbloginresult.grantedPermissions.contains("email"))
+                fbLoginManager .logIn(withReadPermissions: ["public_profile", "email", "user_friends","user_education_history","user_about_me","user_birthday","user_work_history"], handler: { (result, error) -> Void in
+                    
+                    if (result?.isCancelled)!
                     {
-                        self.getFBUserData()
-                        //fbLoginManager.logOut()
+                        return
                     }
-                }
-            })
-        }
-        else
-        {
-            btnFacebook.setTitle("Login With Facebook", for: UIControlState.normal)
-            fbLoginManager.logOut()
+                    
+                    if (error == nil)
+                    {
+                        let fbloginresult : FBSDKLoginManagerLoginResult = result!
+                        if(fbloginresult.grantedPermissions.contains("email"))
+                        {
+                            self.getFBUserData()
+                            //fbLoginManager.logOut()
+                        }
+                    }
+                })
+            }
+            else
+            {
+                btnFacebook.setTitle("Login With Facebook", for: UIControlState.normal)
+                fbLoginManager.logOut()
+            }
         }
     }
     
@@ -227,7 +230,7 @@ class ViewController: UIViewController
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
     
-    func MoveToQuestionVC()
+    func MoveToQuestionVC(sender:Bool)
     {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
 
@@ -660,7 +663,7 @@ class ViewController: UIViewController
                         }
                         else
                         {
-                            self.MoveToQuestionVC()
+                            self.MoveToQuestionVC(sender: true)
                         }
                     }
                     else
@@ -715,7 +718,7 @@ class ViewController: UIViewController
             }
             else
             {
-                self.MoveToQuestionVC()
+                self.MoveToQuestionVC(sender: sender)
                 //                    self.MoveToDashboardHomeVC()
             }
         }

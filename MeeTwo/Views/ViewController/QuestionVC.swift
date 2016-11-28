@@ -8,7 +8,7 @@
 
 import UIKit
 
-class QuestionVC: UIViewController {
+class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
 
     @IBOutlet var btnQuestionNo: UIButton!
     @IBOutlet var viewQuestion: UIView!
@@ -22,12 +22,16 @@ class QuestionVC: UIViewController {
     @IBOutlet var imgCheckYes: UIImageView!
     @IBOutlet var lblProgressObj: UILabel!
     
+    @IBOutlet var viewQuestionPopUp: UIView!
+    
     
     @IBOutlet var progressBarWidthConstraint: NSLayoutConstraint!
     
     var indexOfQuestionArray : Int = 0
+    var checkArraySortOrNot : Int = 0
     var ArrQuestionsObj = NSMutableArray()
     var globalMethodObj = GlobalMethods()
+    
 
     override func viewDidLoad()
     {
@@ -37,7 +41,19 @@ class QuestionVC: UIViewController {
         btnYes.layer.cornerRadius = 10
         
         globalMethodObj.setUserDefault(ObjectToSave: "0" as AnyObject?, KeyToSave: "CallQuestionService")
-
+        
+        /*
+        let RightGesture = UISwipeGestureRecognizer(target: self, action:#selector(self.rightSwipeGestureDirection))
+        RightGesture.direction = UISwipeGestureRecognizerDirection.right
+        RightGesture.delegate = self
+        viewQuestionPopUp.addGestureRecognizer(RightGesture)
+        
+        let LeftGesture = UISwipeGestureRecognizer(target: self, action: #selector(self.LeftSwipeGestureDirection))
+        LeftGesture.direction = UISwipeGestureRecognizerDirection.left
+        LeftGesture.delegate = self
+        viewQuestionPopUp.addGestureRecognizer(LeftGesture)
+        */
+        
     }
     
     override func viewDidAppear(_ animated: Bool)
@@ -47,7 +63,6 @@ class QuestionVC: UIViewController {
     
     func DoSetupScreen()
     {
-        
         
         let arrQuestionTempObj = DBOperation.selectData("select * from mee_two_question")
         
@@ -101,13 +116,29 @@ class QuestionVC: UIViewController {
     //MARK: YES NO Click
     
     
+    //MARK: Right / Left Gesture
+    func rightSwipeGestureDirection(gesture: UIGestureRecognizer)
+    {
+        self.userintractionTrueFalse(sender: false)
+
+        self.btnYesNoClick(btnYes)
+    }
+    
+    func LeftSwipeGestureDirection(gesture: UIGestureRecognizer)
+    {
+        self.userintractionTrueFalse(sender: false)
+
+        self.btnYesNoClick(btnNO)
+    }
+    
     @IBAction func btnYesNoClick(_ sender: UIButton)
     {
-        if btnSkip.titleLabel?.text != "SUBMIT>"
-        {
-            
         self.userintractionTrueFalse(sender: false)
-            
+        
+        if globalMethodObj.isConnectedToNetwork()
+        {
+            if btnSkip.titleLabel?.text != "SUBMIT>"
+            {
                 let dictQustion = self.ArrQuestionsObj[self.indexOfQuestionArray] as! NSDictionary
                 let questionId = dictQustion["question_id"] as! String
                 let dictOptionsAID = dictQustion.object(forKey: "option_a_id") as! String
@@ -116,6 +147,16 @@ class QuestionVC: UIViewController {
                 
                 if sender.tag == 1 // NO Click
                 {
+                    /*
+                    if indexOfQuestionArray < 9
+                    {
+                        UIView.transition(with: viewQuestionPopUp, duration: 0.8, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {
+                            
+                            }, completion:  { finished in
+                                self.userintractionTrueFalse(sender: true)
+                        })
+                    }*/
+                    
                     DBOperation.executeSQL("update mee_two_question set answer_id = '\(dictOptionsAID)',question_is_answered = '1',is_skipped = '0' where user_id = '\(self.globalMethodObj.getUserId())' AND question_id = '\(questionId)'")
                     
                     if answerId != ""
@@ -127,11 +168,20 @@ class QuestionVC: UIViewController {
                     {
                         self.getOriginalArray()
                     }
-                    
-                    
                 }
                 else // Yes click
                 {
+                    /*
+                    if indexOfQuestionArray < 9
+                    {
+                        UIView.transition(with: viewQuestionPopUp, duration: 0.8, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: {
+                            
+                            }, completion:  { finished in
+                                self.userintractionTrueFalse(sender: true)
+                        })
+                    }
+*/
+ 
                     DBOperation.executeSQL("update mee_two_question set answer_id = '\(dictOptionsBID)',question_is_answered = '1',is_skipped = '0' where user_id = '\(self.globalMethodObj.getUserId())' AND question_id = '\(questionId)'")
                     
                     if answerId != ""
@@ -150,15 +200,20 @@ class QuestionVC: UIViewController {
                 {
                     self.btnSkip.setTitle("SUBMIT>", for: UIControlState.normal)
                     self.setProgressBarCode()
+                    self.calllogin_save_answerService()
                 }
                 else
                 {
                     self.displayQuestion()
-//                    self.lblQuestionNumber.text = String(self.indexOfQuestionArray + 1)
+                    //                    self.lblQuestionNumber.text = String(self.indexOfQuestionArray + 1)
                 }
-            
-            self.userintractionTrueFalse(sender: true)
-            
+                
+                UIView.animate(withDuration: 0.3, animations: { 
+                    self.userintractionTrueFalse(sender: true)
+                })
+                
+            }
+
         }
     }
     
@@ -166,76 +221,79 @@ class QuestionVC: UIViewController {
     
     @IBAction func btnSkipPreviousClicked(_ sender: UIButton)
     {
-        self.userintractionTrueFalse(sender: false)
-        
-        let dictQustion = self.ArrQuestionsObj[self.indexOfQuestionArray] as! NSDictionary
-        let questionId = dictQustion["question_id"] as! String
-        let answerId = dictQustion["answer_id"] as! String
-        
-        if sender.tag == 3
+        if globalMethodObj.isConnectedToNetwork()
         {
+            self.userintractionTrueFalse(sender: false)
             
-            if answerId != ""
+            let dictQustion = self.ArrQuestionsObj[self.indexOfQuestionArray] as! NSDictionary
+            let questionId = dictQustion["question_id"] as! String
+            let answerId = dictQustion["answer_id"] as! String
+            
+            if sender.tag == 3
             {
-                self.sortArrayWithOutIndex()
-                self.indexOfQuestionArray = self.indexOfQuestionArray - 1
-            }
-            else
-            {
-                for (index, element) in (self.ArrQuestionsObj.enumerated())
-                {
-                    let elementObj = element as! NSDictionary
-                    
-                    if elementObj.object(forKey: "question_is_answered") as! String == "0" && elementObj.object(forKey: "is_skipped") as! String == "0"
-                    {
-                        self.indexOfQuestionArray = index
-                        break
-                    }
-                }
                 
-                self.getOriginalArray()
-                self.indexOfQuestionArray = self.indexOfQuestionArray - 1
-            }
-            self.displayQuestion()
-//            self.lblQuestionNumber.text = String(self.indexOfQuestionArray + 1)
-        }
-        else
-        {
-            if sender.titleLabel?.text != "SUBMIT>"
-            {
-               
                 if answerId != ""
                 {
                     self.sortArrayWithOutIndex()
-                    self.indexOfQuestionArray = self.indexOfQuestionArray + 1
+                    self.indexOfQuestionArray = self.indexOfQuestionArray - 1
                 }
                 else
                 {
-                    DBOperation.executeSQL("update mee_two_question set answer_id = '',question_is_answered = '0',is_skipped = '1' where user_id = '\(self.globalMethodObj.getUserId())' AND question_id = '\(questionId)'")
+                    for (index, element) in (self.ArrQuestionsObj.enumerated())
+                    {
+                        let elementObj = element as! NSDictionary
+                        
+                        if elementObj.object(forKey: "question_is_answered") as! String == "0" && elementObj.object(forKey: "is_skipped") as! String == "0"
+                        {
+                            self.indexOfQuestionArray = index
+                            break
+                        }
+                    }
                     
                     self.getOriginalArray()
+                    self.indexOfQuestionArray = self.indexOfQuestionArray - 1
                 }
-            }
-            else
-            {
-                self.calllogin_save_answerService()
-            }
-            
-            if self.AttemptedQuestion().count == 10 && (self.btnSkip.titleLabel?.text == "SKIP >" ||  self.indexOfQuestionArray == 10)
-            {
-                self.btnSkip.setTitle("SUBMIT>", for: UIControlState.normal)
-                self.setProgressBarCode()
-            }
-            else
-            {
                 self.displayQuestion()
-                self.lblQuestionNumber.text = String(self.indexOfQuestionArray + 1)
+                //            self.lblQuestionNumber.text = String(self.indexOfQuestionArray + 1)
+            }
+            else
+            {
+                if sender.titleLabel?.text != "SUBMIT>"
+                {
+                    
+                    if answerId != ""
+                    {
+                        self.sortArrayWithOutIndex()
+                        self.indexOfQuestionArray = self.indexOfQuestionArray + 1
+                    }
+                    else
+                    {
+                        DBOperation.executeSQL("update mee_two_question set answer_id = '',question_is_answered = '0',is_skipped = '1' where user_id = '\(self.globalMethodObj.getUserId())' AND question_id = '\(questionId)'")
+                        
+                        self.getOriginalArray()
+                    }
+                }
+                else
+                {
+                    self.calllogin_save_answerService()
+                }
+                
+                if self.AttemptedQuestion().count == 10 && (self.btnSkip.titleLabel?.text == "SKIP >" ||  self.indexOfQuestionArray == 10)
+                {
+                    self.btnSkip.setTitle("SUBMIT>", for: UIControlState.normal)
+                    self.setProgressBarCode()
+                }
+                else
+                {
+                    self.displayQuestion()
+                    self.lblQuestionNumber.text = String(self.indexOfQuestionArray + 1)
+                }
+                
+                
             }
             
-            
+            self.userintractionTrueFalse(sender: true)
         }
-        
-        self.userintractionTrueFalse(sender: true)
     }
     
     
@@ -315,7 +373,7 @@ class QuestionVC: UIViewController {
                             DBOperation.executeSQL("INSERT INTO mee_two_question (user_id,question_no,question_id,question_text,answer_id,question_is_answered,option_a_id,option_a_text,option_b_id,option_b_text,is_skipped) VALUES ('\(getUserId)','\(String(questionNumber))','\(questionId)','\(question)','','0','\(dictOptionsAID)','\(dictOptionsAtext)','\(dictOptionsBID)','\(dictOptionsBtext)','0')")
                         }
                         
-                        self.ArrQuestionsObj = DBOperation.selectData("select * from mee_two_question")
+                        
                         self.getOriginalArray()
                         self.displayQuestion()
                         
@@ -338,6 +396,7 @@ class QuestionVC: UIViewController {
                                 DBOperation.executeSQL("update mee_two_question set question_is_answered = '0',is_skipped = '0' where user_id = '\(self.globalMethodObj.getUserId())' AND question_id = '\(questionId)' AND is_skipped = '1'")
                             }
                             
+                            self.checkArraySortOrNot = 1
                             self.getOriginalArray()
                             self.displayQuestion()
                         }
@@ -421,12 +480,11 @@ class QuestionVC: UIViewController {
                     lblquestionText.text = questionText
                     lblquestionText.adjustsFontSizeToFitWidth = true
                     lblquestionText.numberOfLines = 0
-                    btnYes.setTitle(optionAtext, for: UIControlState.normal)
-                    btnNO.setTitle(optionBtext, for: UIControlState.normal)
+                    btnYes.setTitle(optionBtext, for: UIControlState.normal)
+                    btnNO.setTitle(optionAtext, for: UIControlState.normal)
                     
 //                    if lblQuestionNumber.text == ""
 //                    {
-                        print("IIIIIIIIII : \(self.indexOfQuestionArray)")
                         if self.indexOfQuestionArray == 10
                         {
                             self.lblQuestionNumber.text = String(self.indexOfQuestionArray)
@@ -502,8 +560,6 @@ class QuestionVC: UIViewController {
     {
         self.sortArrayWithOutIndex()
         
-        ArrQuestionsObj = DBOperation.sortArray(ArrQuestionsObj)
-        
         for (index, element) in (ArrQuestionsObj.enumerated())
         {
             let elementObj = element as! NSDictionary
@@ -536,7 +592,10 @@ class QuestionVC: UIViewController {
             ArrQuestionsObj.add(element)
         }
         
-        ArrQuestionsObj = DBOperation.sortArray(ArrQuestionsObj)
+        if checkArraySortOrNot != 1
+        {
+            ArrQuestionsObj = DBOperation.sortArray(ArrQuestionsObj)
+        }
     }
     
     //MARK: - Call login_save_answer Service
@@ -604,6 +663,7 @@ class QuestionVC: UIViewController {
                     let data: Data = NSKeyedArchiver.archivedData(withRootObject: dict as NSDictionary)
                     self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: "userdata")
 
+                    DBOperation.executeSQL("delete from mee_two_question")
                     
                     self.MoveToDashboardHomeVC()
                 }
