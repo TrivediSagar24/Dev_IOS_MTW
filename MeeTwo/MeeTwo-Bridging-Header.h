@@ -12,3 +12,4 @@
 #import "UIImageView+WebCache.h"
 #import "DBOperation.h"
 #import "SwiftGif.h"
+#import "IQKeyboardManagerSwift.h"

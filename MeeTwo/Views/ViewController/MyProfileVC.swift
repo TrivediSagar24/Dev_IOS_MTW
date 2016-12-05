@@ -9,9 +9,8 @@
 import UIKit
 import Alamofire
 
-class MyProfileVC: UIViewController {
-
-    
+class MyProfileVC: UIViewController,delegateCallUpdateData
+{
     var arrImages2 = NSArray()
     
     var pageControl: LCAnimatedPageControl!
@@ -21,7 +20,6 @@ class MyProfileVC: UIViewController {
     @IBOutlet var btnSetting: UIButton!
     @IBOutlet var btnPersonality: UIButton!
     @IBOutlet var lblCurrentwork: UILabel!
-    @IBOutlet var lblSchoolCity: UILabel!
     @IBOutlet var lblSchool: UILabel!
     @IBOutlet var lblDesc: UILabel!
     @IBOutlet var lblRightHere: UILabel!
@@ -30,11 +28,38 @@ class MyProfileVC: UIViewController {
     @IBOutlet var imgCollectionView: UICollectionView!
     
     
-    override func viewDidLoad() {
+    @IBOutlet var viewDescriptionObj: UIView!
+    
+    @IBOutlet var viewSchoolDescObj: UIView!
+    
+    @IBOutlet var viewCurrentWorkObj: UIView!
+    
+    var heightConstraintViewDescription = NSLayoutConstraint()
+    var heightConstraintViewSchool = NSLayoutConstraint()
+    var heightConstraintViewCurrentWork = NSLayoutConstraint()
+    
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
         
         self.setUpView()
 
+        
+    }
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
+        
+        self.pageControl.frame = CGRect(x: 0, y: 0, width: pageView.frame.size.width, height: pageView.frame.size.height)
+        
+        imgCollectionView.contentSize.width = imgCollectionView.bounds.size.width * 5
+        
+        //  imgCollectionView.backgroundColor = UIColor.red
+        
+    }
+    override func viewWillAppear(_ animated: Bool)
+    {
+        
         // Do any additional setup after loading the view.
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
@@ -62,31 +87,16 @@ class MyProfileVC: UIViewController {
         
         self.pageView.addSubview(pageControl)
         self.pageControl.addTarget(self, action: #selector(self.valueChanged2(_:)), for: .valueChanged)
-        
-        
-    }
-    override func viewDidAppear(_ animated: Bool)
-    {
-        super.viewDidAppear(animated)
+
         
         self.pageControl.frame = CGRect(x: 0, y: 0, width: pageView.frame.size.width, height: pageView.frame.size.height)
         
-        imgCollectionView.contentSize.width = imgCollectionView.bounds.size.width * 5
-        
-        //  imgCollectionView.backgroundColor = UIColor.red
-        
-        
-    }
-    override func viewWillAppear(_ animated: Bool)
-    {
-        
-        
-        self.pageControl.frame = CGRect(x: 0, y: 0, width: pageView.frame.size.width, height: pageView.frame.size.height)
+        self.setUpView()
     }
 
     func setUpView()
     {
-        
+       
         btnSetting.layer.cornerRadius = 10
         btnPersonality.layer.cornerRadius = 10
         
@@ -95,7 +105,6 @@ class MyProfileVC: UIViewController {
         btnEditProfile.layer.cornerRadius = 20
         
         let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "userdata")
-      
     
         let profilePicStr = dict?.object(forKey: "profile_pic_url")  as! String
         
@@ -118,21 +127,68 @@ class MyProfileVC: UIViewController {
         self.lblName.adjustsFontSizeToFitWidth = true
         self.lblRightHere.adjustsFontSizeToFitWidth = true
         
-        //  let descText = userDict.object(forKey: "") as! String
-        lblDesc.text = dict?.object(forKey: "description") as?String
+        let descText = dict?.object(forKey: "description") as?String
+        lblDesc.text = descText
         
-        lblSchoolCity.text = dict?.object(forKey: "") as?String
+        let schoolText = dict?.object(forKey: "school") as?String
+        lblSchool.text = schoolText
         
-        
-        
-        lblSchool.text = dict?.object(forKey: "school") as?String
-        
-        lblCurrentwork.text = dict?.object(forKey: "work") as?String
+        let currentWork = dict?.object(forKey: "work") as?String
+        lblCurrentwork.text = currentWork
         
         
+        viewDescriptionObj.isHidden = false
+        viewSchoolDescObj.isHidden = false
+        viewCurrentWorkObj.isHidden = false
+
+        
+        if descText?.characters.count == 0
+        {
+            
+        heightConstraintViewDescription = NSLayoutConstraint(item: viewDescriptionObj, attribute: .height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+
+//           heightConstraintViewDescription = viewDescriptionObj.addConstraint(NSLayoutConstraint(item: viewDescriptionObj, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0))
+            
+            viewDescriptionObj.isHidden = true
+            
+        }
+        else
+        {
+            viewDescriptionObj .removeConstraint(heightConstraintViewDescription)
+            
+        }
+        
+        if schoolText?.characters.count == 0
+        {
+            
+        heightConstraintViewSchool = NSLayoutConstraint(item: viewSchoolDescObj, attribute: .height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+            
+//           heightConstraintViewSchool = viewSchoolDescObj.addConstraint(NSLayoutConstraint(item: viewSchoolDescObj, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0))
+            viewSchoolDescObj.isHidden = true
+        }
+        else
+        {
+            viewSchoolDescObj .removeConstraint(heightConstraintViewSchool)
+        }
+        
+        if currentWork?.characters.count == 0
+        {
+            
+            heightConstraintViewCurrentWork = NSLayoutConstraint(item: viewCurrentWorkObj, attribute: .height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+            
+//            heightConstraintViewCurrentWork =  viewCurrentWorkObj.addConstraint(NSLayoutConstraint(item: viewCurrentWorkObj, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0))
+            viewCurrentWorkObj.isHidden = true
+        }
+        else
+        {
+            viewCurrentWorkObj .removeConstraint(heightConstraintViewCurrentWork)
+        }
+
+        imgCollectionView.reloadData()
     }
 
-    func valueChanged2(_ sender: LCAnimatedPageControl) {
+    func valueChanged2(_ sender: LCAnimatedPageControl)
+    {
         //    NSLog(@"%d", sender.currentPage);
         self.imgCollectionView.setContentOffset(CGPoint(x: CGFloat(Float(self.imgCollectionView.frame.size.width) * (Float(sender.currentPage) + 0)), y: self.imgCollectionView.contentOffset.y), animated: true)
     }
@@ -141,21 +197,18 @@ class MyProfileVC: UIViewController {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        return 3
+        return arrImages2.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAtIndexPath indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = imgCollectionView.dequeueReusableCell(withReuseIdentifier: "introCell", for: indexPath) as! introCell
         
-        
         let PicStr = arrImages2.object(at: indexPath.row)  as! String
         
         let urlString : NSURL = NSURL.init(string: PicStr)!
         
-        
         let imgPlaceHolder = UIImage.init(named: "imgUserLogo.jpeg")
-        
         
         cell.imgSlideObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
         
@@ -193,6 +246,7 @@ class MyProfileVC: UIViewController {
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         
         let vc = storyboard.instantiateViewController(withIdentifier: "EditProfileVC") as! EditProfileVC
+        vc.delegate = self
         
         let navigationController = UINavigationController(rootViewController: vc)
         navigationController.isNavigationBarHidden = false
@@ -204,4 +258,12 @@ class MyProfileVC: UIViewController {
     @IBAction func selSettingAct(_ sender: AnyObject)
     {
     }
+    
+    //MARK: Delegate Method Of Display All Update Data
+    
+    func UpdateUserData()
+    {
+        self.setUpView()
+    }
+    
 }

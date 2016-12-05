@@ -172,7 +172,6 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         viewLocationInner.layer.cornerRadius = 10
         viewLocationInner.layer.masksToBounds = true
         
-        
         txtTopLoc.text = "Sapio uses your location\nto find people nearby."
         txtBottomLoc.text = "Please enable location to get \nstarted"
 

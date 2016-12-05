@@ -8,7 +8,14 @@
 
 import UIKit
 
-class EditProfileVC: UIViewController {
+protocol delegateCallUpdateData
+{
+    func UpdateUserData()
+}
+
+class EditProfileVC: UIViewController,UITextViewDelegate
+{
+    var delegate: delegateCallUpdateData?
     
     var arrImages3 = NSArray()
     
@@ -29,7 +36,14 @@ class EditProfileVC: UIViewController {
     @IBOutlet var lblName: UILabel!
     @IBOutlet var imgCollectionView: UICollectionView!
 
-    override func viewDidLoad() {
+    @IBOutlet var txtDescriptionObj: UITextView!
+    
+    @IBOutlet var txtSchoolObj: UITextView!
+    
+    @IBOutlet var txtCurrentWorkObj: UITextView!
+    
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
@@ -95,15 +109,16 @@ class EditProfileVC: UIViewController {
         
         self.pageControl.frame = CGRect(x: 0, y: 0, width: pageView.frame.size.width, height: pageView.frame.size.height)
     }
+    
     func back()
     {
+        delegate?.UpdateUserData()
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     func setUpView()
     {
     
-        
         let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "userdata")
         
         
@@ -128,18 +143,37 @@ class EditProfileVC: UIViewController {
         self.lblName.adjustsFontSizeToFitWidth = true
         self.lblRightHere.adjustsFontSizeToFitWidth = true
         
-        //  let descText = userDict.object(forKey: "") as! String
-        lblDesc.text = dict?.object(forKey: "description") as?String
+        let descText = dict?.object(forKey: "description") as?String
+        let schoolText = dict?.object(forKey: "school") as?String
+        let currentWork = dict?.object(forKey: "work") as?String
+
+        if descText?.characters.count != 0
+        {
+            txtDescriptionObj.text = descText
+        }
+        else
+        {
+            txtDescriptionObj.textColor = UIColor.lightGray
+        }
         
-        lblSchoolCity.text = dict?.object(forKey: "") as?String
-        
-        
-        
-        lblSchool.text = dict?.object(forKey: "school") as?String
-        
-        lblCurrentwork.text = dict?.object(forKey: "work") as?String
-        
-        
+        if schoolText?.characters.count != 0
+        {
+            txtSchoolObj.text = schoolText
+        }
+        else
+        {
+            txtSchoolObj.textColor = UIColor.lightGray
+        }
+
+        if currentWork?.characters.count != 0
+        {
+            txtCurrentWorkObj.text = currentWork
+        }
+        else
+        {
+            txtCurrentWorkObj.textColor = UIColor.lightGray
+        }
+
     }
     
     func valueChanged2(_ sender: LCAnimatedPageControl) {
@@ -205,11 +239,182 @@ class EditProfileVC: UIViewController {
     @IBAction func selRemovePhoto(_ sender: AnyObject) {
     }
     
-    @IBAction func selEditDesc(_ sender: AnyObject) {
+    @IBAction func selEditDesc(_ sender: UIButton)
+    {
+        if sender.isSelected
+        {
+            sender.isSelected = false
+            self.stopUserIntractionOfTextview(textview: txtDescriptionObj)
+            self.CallProfileUpdateData(fieldId: "1", text: txtDescriptionObj.text)
+        }
+        else
+        {
+            self.OpenUserIntractionOfTextview(textview: txtDescriptionObj)
+            sender.isSelected = true
+        }
     }
     
-    @IBAction func selEditWork(_ sender: AnyObject) {
+    @IBAction func selEditWork(_ sender: UIButton)
+    {
+        if sender.isSelected
+        {
+            sender.isSelected = false
+            self.stopUserIntractionOfTextview(textview: txtCurrentWorkObj)
+            self.CallProfileUpdateData(fieldId: "3", text: txtCurrentWorkObj.text)
+        }
+        else
+        {
+            self.OpenUserIntractionOfTextview(textview: txtCurrentWorkObj)
+            sender.isSelected = true
+        }
     }
-    @IBAction func selEditSchool(_ sender: AnyObject) {
+    
+    @IBAction func selEditSchool(_ sender: UIButton)
+    {
+        if sender.isSelected
+        {
+            sender.isSelected = false
+            self.stopUserIntractionOfTextview(textview: txtSchoolObj)
+            self.CallProfileUpdateData(fieldId: "2", text: txtSchoolObj.text)
+        }
+        else
+        {
+            self.OpenUserIntractionOfTextview(textview: txtSchoolObj)
+            sender.isSelected = true
+        }
+    }
+    
+    func stopUserIntractionOfTextview(textview:UITextView)
+    {
+        textview.resignFirstResponder()
+        textview.isUserInteractionEnabled = false
+    }
+    
+    func OpenUserIntractionOfTextview(textview:UITextView)
+    {
+        textview.isUserInteractionEnabled = true
+        textview.becomeFirstResponder()
+    }
+    
+    //MARK: Call Update Profile Data Service
+    
+    func CallProfileUpdateData(fieldId:String,text:String)
+    {
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        
+        let getUserId = globalMethodObj.getUserId()
+        
+        let parameters =
+            [
+                GlobalMethods.METHOD_NAME: "profile_edit_data",
+                "user_id": getUserId,
+                "field_id":fieldId,
+                "text":text,
+                ]
+        
+        globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
+            
+            MBProgressHUD.hide(for: self.view, animated: true)
+            
+            if error != nil
+            {
+                print("Error")
+            }
+            else
+            {
+                print(result)
+                
+                let status = result["status"] as! Int
+                
+                if status == 1
+                {
+                    let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "userdata")! as NSDictionary
+  
+                    if fieldId == "1"
+                    {
+                        dict.setValue(self.txtDescriptionObj.text, forKey: "description")
+                    }
+                    else if fieldId == "2"
+                    {
+                        dict.setValue(self.txtSchoolObj.text, forKey: "school")
+                    }
+                    else if fieldId == "3"
+                    {
+                         dict.setValue(self.txtCurrentWorkObj.text, forKey: "work")
+                    }
+                    
+                    let data: Data = NSKeyedArchiver.archivedData(withRootObject: dict)
+                    
+                    self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: "userdata")
+                }
+                else
+                {
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result["message"] as! String, viewcontrolelr: self)
+                }
+                
+                MBProgressHUD.hide(for: self.view, animated: true)
+            }
+        }
+
+        
+    }
+    
+    //MARK: Textview Delegate
+    
+    func textViewDidChange(_ textView: UITextView)
+    {
+       
+    }
+    
+    func textViewDidBeginEditing(_ textView: UITextView)
+    {
+        if textView.textColor == UIColor.lightGray {
+            textView.text = nil
+            textView.textColor = UIColor.black
+        }
+    }
+ 
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView == txtDescriptionObj
+        {
+            if txtDescriptionObj.text.isEmpty
+            {
+                textView.text = "Add Description"
+                textView.textColor = UIColor.lightGray
+            }
+            else
+            {
+                textView.textColor = UIColor.black
+            }
+        }
+        
+        if textView == txtSchoolObj
+        {
+            if textView.text.isEmpty
+            {
+                textView.text = "Add School"
+                textView.textColor = UIColor.lightGray
+            }
+            else
+            {
+                textView.textColor = UIColor.black
+            }
+        }
+        
+        if textView == txtCurrentWorkObj
+        {
+            if textView.text.isEmpty
+            {
+                textView.text = "Add Current Work"
+                textView.textColor = UIColor.lightGray
+            }
+            else
+            {
+                textView.textColor = UIColor.black
+            }
+        }
     }
 }
+
+
