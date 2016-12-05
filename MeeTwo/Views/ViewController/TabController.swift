@@ -2,8 +2,8 @@
 //  TabController.swift
 //  MeeTwo
 //
-//  Created by Apple on 14/11/16.
-//  Copyright © 2016 TheAppGuruz. All rights reserved.
+//  Created by Sagar Trivedi on 14/11/16.
+//  Copyright © 2016 Sagar Trivedi. All rights reserved.
 //
 
 import UIKit
@@ -23,10 +23,7 @@ class TabController: UITabBarController,UITabBarControllerDelegate {
     override func viewDidLoad()
     {
         super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool)
-    {
+        
         self.tabBar.isHidden = true
         TabBar.frame = CGRect(x: 0, y: 00, width: self.view.frame.size.width, height: 64.0)
         
@@ -37,6 +34,13 @@ class TabController: UITabBarController,UITabBarControllerDelegate {
         TabBar.layer.shadowOpacity = 0.33
         TabBar.layer.shadowOffset = CGSize(width: 0, height: 1)
         TabBar.layer.shadowRadius = 0.5
+        
+        TabSelectEvent(TabBar1)
+
+    }
+    
+    override func viewWillAppear(_ animated: Bool)
+    {
     }
     
         override func viewWillLayoutSubviews() {
@@ -62,7 +66,7 @@ class TabController: UITabBarController,UITabBarControllerDelegate {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        TabSelectEvent(TabBar1)
+       //
     }
     
     

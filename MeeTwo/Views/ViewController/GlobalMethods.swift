@@ -2,8 +2,8 @@
 //  GlobalMethods.swift
 //  MeeTwo
 //
-//  Created by Apple 1 on 11/11/16.
-//  Copyright © 2016 TheAppGuruz. All rights reserved.
+//  Created by Sagar Trivedi on 11/11/16.
+//  Copyright © 2016 Sagar Trivedi. All rights reserved.
 //
 
 import UIKit

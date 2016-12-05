@@ -44,10 +44,6 @@ class ViewController: UIViewController
         collectionViewSliderObj!.isPagingEnabled = true
         collectionViewSliderObj!.collectionViewLayout = flowLayout
         
-       //  [self.pageCollection registerNib:[UINib nibWithNibName:@"IntroductionCell" bundle:nil] forCellWithReuseIdentifier:@"IntroductionCell"];
-        
-//        self.LoginServiceCall()
-        
         self.pageControl = LCAnimatedPageControl(frame: CGRect(x: 0, y: 0, width: pageControllerObj.frame.size.width, height: pageControllerObj.frame.size.height))
         self.pageControl.numberOfPages = 3
         self.pageControl.indicatorDiameter = 5.0
@@ -110,13 +106,7 @@ class ViewController: UIViewController
         self.pageControl.frame = CGRect(x: 0, y: 0, width: pageControllerObj.frame.size.width, height: pageControllerObj.frame.size.height)
         
         collectionViewSliderObj.contentSize.width = collectionViewSliderObj.bounds.size.width * 5
-        
-//        UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-//        [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-//        [flowLayout setMinimumInteritemSpacing:0.0f];
-//        [flowLayout setMinimumLineSpacing:0.0f];
-//        [self.collectionView setPagingEnabled:YES];
-//        [self.collectionView setCollectionViewLayout:flowLayout];
+    
         
        
     }
@@ -176,6 +166,8 @@ class ViewController: UIViewController
                     
                     if (result?.isCancelled)!
                     {
+                        MBProgressHUD.hide(for: (self.view)!, animated: true)
+                        
                         return
                     }
                     

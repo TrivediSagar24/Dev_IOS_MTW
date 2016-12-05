@@ -2,20 +2,27 @@
 //  DashHomeVC.swift
 //  MeeTwo
 //
-//  Created by Apple on 15/11/16.
-//  Copyright © 2016 TheAppGuruz. All rights reserved.
+//  Created by Sagar Trivedi on 15/11/16.
+//  Copyright © 2016 Sagar Trivedi. All rights reserved.
 //
 
 import UIKit
+import CoreLocation
 
-class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayChecmistry,delegateRemoveChecmistry,delegateRemoveToBad {
+
+class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayChecmistry,delegateRemoveChecmistry,delegateRemoveToBad,CLLocationManagerDelegate {
 
     @IBOutlet var btnNo: UIButton!
     @IBOutlet var btnYes: UIButton!
     
+    @IBOutlet var viewLocation: UIView!
+    @IBOutlet var viewLocationInner: UIView!
     @IBOutlet var lblLike: UILabel!
     @IBOutlet var lblDislike: UILabel!
     
+    @IBOutlet var btnEnableLoc: UIButton!
+    @IBOutlet var txtBottomLoc: UITextView!
+    @IBOutlet var txtTopLoc: UITextView!
     @IBOutlet var lblNoDataFound: UILabel!
     
     var globalMethodObj = GlobalMethods()
@@ -35,6 +42,8 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     var ChemistryViewControllerObj = ChemistrySuccessViewController()
     var ToBadViewControllerObj = ToBadViewController()
     
+    let manager = CLLocationManager()
+    
     
     override func viewDidLoad()
     {
@@ -43,6 +52,13 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         self.DisplayChemistry()
         
         // Do any additional setup after loading the view.
+        
+        manager.delegate = self
+        
+        
+        
+      //  viewLocation.isHidden = true
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -68,8 +84,43 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             viewDisplayProfileObj.isHidden = true
         }
         
+        self.checkCurrenLocation()
+        
+    }
+    
+    func checkCurrenLocation()
+    {
+        if CLLocationManager.locationServicesEnabled()
+        {
+            manager.startUpdatingLocation()
+        }
     }
 
+   
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .notDetermined:
+            manager.requestAlwaysAuthorization()
+            viewLocation.isHidden = false
+            break
+        case .authorizedWhenInUse:
+            viewLocation.isHidden = true
+            manager.startUpdatingLocation()
+            break
+        case .authorizedAlways:
+            viewLocation.isHidden = true
+            manager.startUpdatingLocation()
+            break
+        case .restricted:
+            // restricted by e.g. parental controls. User can't enable Location Services
+            viewLocation.isHidden = false
+            break
+        case .denied:
+            viewLocation.isHidden = false
+            // user denied your app access to Location Services, but can grant access from Settings.app
+            break
+        }
+    }
     func SetupScreen()
     {
         viewYesNoObj.isHidden = false
@@ -111,6 +162,20 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         
         self.setLableFunctionality(lbl: lblLike)
         self.setLableFunctionality(lbl: lblDislike)
+        
+        btnEnableLoc.layer.borderWidth = 1
+        btnEnableLoc.layer.borderColor = btnNo.backgroundColor?.cgColor
+        btnEnableLoc.layer.cornerRadius = 10
+        btnEnableLoc.layer.masksToBounds = true
+        
+        
+        viewLocationInner.layer.cornerRadius = 10
+        viewLocationInner.layer.masksToBounds = true
+        
+        
+        txtTopLoc.text = "Sapio uses your location\nto find people nearby."
+        txtBottomLoc.text = "Please enable location to get \nstarted"
+
     }
     
     func setLableFunctionality(lbl:UILabel)
@@ -503,6 +568,8 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         let firstName = dictProfile.object(forKey: "first_name") as! String
         vc.StringNavigationTitle = firstName
         
+        vc.userDict = dictProfile
+        
         self.present(navigationController, animated: true, completion: nil)
     }
     
@@ -592,5 +659,25 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         // Pass the selected object to the new view controller.
     }
     */
+    @IBAction func btnCloseLocationview(_ sender: AnyObject)
+    {
+       // viewLocation.isHidden = true
+        
+      //  manager.startUpdatingLocation()
+        
+        
+     //   self.checkCurrenLocation()
+    }
 
+    @IBAction func btnEnableAct(_ sender: AnyObject)
+    {
+        let settingsUrl = URL(string: UIApplicationOpenSettingsURLString)
+        if UIApplication.shared.canOpenURL(settingsUrl!) {
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(settingsUrl!, completionHandler: { (success) in
+                    print("Settings opened: \(success)") // Prints true
+                })
+            }
+    }
+    }
 }

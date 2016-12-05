@@ -1,43 +1,39 @@
 //
-//  UserProfileViewController.swift
+//  EditProfileVC.swift
 //  MeeTwo
 //
-//  Created by Sagar Trivedi on 24/11/16.
+//  Created by Trivedi Sagar on 02/12/16.
 //  Copyright © 2016 Sagar Trivedi. All rights reserved.
 //
 
 import UIKit
-import Alamofire
 
-class UserProfileViewController: UIViewController {
-
-    var StringNavigationTitle : String!
-    var userDict : NSDictionary!
+class EditProfileVC: UIViewController {
     
-    var arrImages1 = NSArray()
-    
-    var globalMethodObj1 = GlobalMethods()
-    
-    @IBOutlet var imgCollectionView: UICollectionView!
-    
-    @IBOutlet var pageControllerObj1: UIView!
-    
-    @IBOutlet var lblUserName: UILabel!
-    @IBOutlet var lblAge: UILabel!
-    @IBOutlet var imgUser: UIImageView!
-    
-    @IBOutlet var lblDesc: UILabel!
-    @IBOutlet var lblSchool: UILabel!
-    @IBOutlet var lblSchoolCity: UILabel!
-    @IBOutlet var lblCurrentWork: UILabel!
+    var arrImages3 = NSArray()
     
     var pageControl: LCAnimatedPageControl!
+    var globalMethodObj = GlobalMethods()
     
-    override func viewDidLoad()
-    {
+    @IBOutlet var btnAddPhoto: UIButton!
+    @IBOutlet var btnRemove: UIButton!
+    @IBOutlet var btnEditDesc: UIButton!
+    @IBOutlet var btnEditSchool: UIButton!
+    @IBOutlet var btnEditWork: UIButton!
+    @IBOutlet var lblCurrentwork: UILabel!
+    @IBOutlet var lblSchoolCity: UILabel!
+    @IBOutlet var lblSchool: UILabel!
+    @IBOutlet var lblDesc: UILabel!
+    @IBOutlet var lblRightHere: UILabel!
+    @IBOutlet var pageView: UIView!
+    @IBOutlet var lblName: UILabel!
+    @IBOutlet var imgCollectionView: UICollectionView!
+
+    override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        self.setUpView()
         
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
@@ -46,49 +42,45 @@ class UserProfileViewController: UIViewController {
         imgCollectionView!.isPagingEnabled = true
         imgCollectionView!.collectionViewLayout = flowLayout
         
-        self.pageControl = LCAnimatedPageControl(frame: CGRect(x: 0, y: 0, width: pageControllerObj1.frame.size.width, height: pageControllerObj1.frame.size.height))
+        self.pageControl = LCAnimatedPageControl(frame: CGRect(x: 0, y: 0, width: pageView.frame.size.width, height: pageView.frame.size.height))
         self.pageControl.numberOfPages = 3
         self.pageControl.indicatorDiameter = 5.0
         self.pageControl.indicatorMargin = 15.0
         self.pageControl.indicatorMultiple = 1.4
         self.pageControl.pageStyle = .LCSquirmPageStyle
         self.pageControl.pageIndicatorColor = UIColor.white
-       // self.pageControl.currentPageIndicatorColor = UIColor.black
+        // self.pageControl.currentPageIndicatorColor = UIColor.black
         
         
         let CurrentPageColor = UIColor(red: 55/255, green: 170/255, blue: 200/255, alpha: 1)
         
-         self.pageControl.currentPageIndicatorColor = CurrentPageColor
+        self.pageControl.currentPageIndicatorColor = CurrentPageColor
         
         self.pageControl.sourceScrollView = self.imgCollectionView
         self.pageControl.prepareShow()
         
-        self.pageControllerObj1.addSubview(pageControl)
-        self.pageControl.addTarget(self, action: #selector(self.valueChanged1(_:)), for: .valueChanged)
+        self.pageView.addSubview(pageControl)
+        self.pageControl.addTarget(self, action: #selector(self.valueChanged2(_:)), for: .valueChanged)
         
-       
+        
     }
-    
     override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated)
         
-        self.pageControl.frame = CGRect(x: 0, y: 0, width: pageControllerObj1.frame.size.width, height: pageControllerObj1.frame.size.height)
+        self.pageControl.frame = CGRect(x: 0, y: 0, width: pageView.frame.size.width, height: pageView.frame.size.height)
         
         imgCollectionView.contentSize.width = imgCollectionView.bounds.size.width * 5
         
-      //  imgCollectionView.backgroundColor = UIColor.red
+        //  imgCollectionView.backgroundColor = UIColor.red
         
         
     }
-    
     override func viewWillAppear(_ animated: Bool)
     {
-        self.navigationController?.navigationBar.topItem?.title = StringNavigationTitle
-        
+        self.navigationController?.navigationBar.topItem?.title = "Edit my profile"
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont.init(name: "inglobal", size:  20.0)!]
-        
         self.navigationController?.navigationItem.hidesBackButton = false
         
         let btn1 = UIButton()
@@ -96,66 +88,61 @@ class UserProfileViewController: UIViewController {
         btn1.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
         btn1.contentMode = UIViewContentMode.scaleAspectFit
         btn1.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 30)
-        btn1.addTarget(self, action: #selector(UserProfileViewController.back), for: .touchUpInside)
+        btn1.addTarget(self, action: #selector(EditProfileVC.back), for: .touchUpInside)
         let item1 = UIBarButtonItem()
         item1.customView = btn1
         self.navigationItem.leftBarButtonItem = item1;
         
-        self.setUpView()
-        
-        self.pageControl.frame = CGRect(x: 0, y: 0, width: pageControllerObj1.frame.size.width, height: pageControllerObj1.frame.size.height)
-        
-      //  imgCollectionView.contentSize.width = imgCollectionView.bounds.size.width * 5
-        
-    }
-    func setUpView()
-    {
-        let profilePicStr = userDict.object(forKey: "profile_pic_url")  as! String
-        
-        
-        arrImages1 = [profilePicStr,profilePicStr,profilePicStr]
-        
-        let firstName = userDict.object(forKey: "first_name") as! String
-        let distance_away = userDict.object(forKey: "distance_away") as! Int
-        let age_obj = userDict.object(forKey: "age") as! String
-        
- 
-     
-        self.lblUserName.text = "\(firstName), \(age_obj)"
-        self.lblAge.text = "\(distance_away) km away"
-        
-        let normalFont = UIFont(name: "inglobal", size: 25)
-        let boldSearchFont = UIFont(name: "inglobal-Bold", size: 25)
-        self.lblUserName.attributedText = self.globalMethodObj1.addBoldText(fullString: "\(firstName), \(age_obj)" as NSString, boldPartsOfString: ["\(firstName)" as NSString], font: normalFont!, boldFont: boldSearchFont!)
-        
-        self.lblUserName.adjustsFontSizeToFitWidth = true
-        self.lblAge.adjustsFontSizeToFitWidth = true
-        
-      //  let descText = userDict.object(forKey: "") as! String
-        lblDesc.text = userDict.object(forKey: "description") as?String
-        
-        lblSchoolCity.text = userDict.object(forKey: "") as?String
-        
-       
-        
-        lblSchool.text = userDict.object(forKey: "school") as?String
-        
-        lblCurrentWork.text = userDict.object(forKey: "work") as?String
-        
-        
+        self.pageControl.frame = CGRect(x: 0, y: 0, width: pageView.frame.size.width, height: pageView.frame.size.height)
     }
     func back()
     {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func setUpView()
+    {
+    
+        
+        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "userdata")
+        
+        
+        let profilePicStr = dict?.object(forKey: "profile_pic_url")  as! String
+        
+        arrImages3 = [profilePicStr,profilePicStr,profilePicStr]
+        
+        let firstName = dict?.object(forKey: "first_name") as! String
+        
+        //  let age_obj = dict?.object(forKey: "age") as! String
+        
+        let age_obj = "1"
+        
+        
+        self.lblName.text = "\(firstName), \(age_obj)"
+        self.lblRightHere.text = "Right here"
+        
+        let normalFont = UIFont(name: "inglobal", size: 25)
+        let boldSearchFont = UIFont(name: "inglobal-Bold", size: 25)
+        self.lblName.attributedText = self.globalMethodObj.addBoldText(fullString: "\(firstName), \(age_obj)" as NSString, boldPartsOfString: ["\(firstName)" as NSString], font: normalFont!, boldFont: boldSearchFont!)
+        
+        self.lblName.adjustsFontSizeToFitWidth = true
+        self.lblRightHere.adjustsFontSizeToFitWidth = true
+        
+        //  let descText = userDict.object(forKey: "") as! String
+        lblDesc.text = dict?.object(forKey: "description") as?String
+        
+        lblSchoolCity.text = dict?.object(forKey: "") as?String
+        
+        
+        
+        lblSchool.text = dict?.object(forKey: "school") as?String
+        
+        lblCurrentwork.text = dict?.object(forKey: "work") as?String
+        
+        
     }
     
-    func valueChanged1(_ sender: LCAnimatedPageControl) {
+    func valueChanged2(_ sender: LCAnimatedPageControl) {
         //    NSLog(@"%d", sender.currentPage);
         self.imgCollectionView.setContentOffset(CGPoint(x: CGFloat(Float(self.imgCollectionView.frame.size.width) * (Float(sender.currentPage) + 0)), y: self.imgCollectionView.contentOffset.y), animated: true)
     }
@@ -172,7 +159,7 @@ class UserProfileViewController: UIViewController {
         let cell = imgCollectionView.dequeueReusableCell(withReuseIdentifier: "introCell", for: indexPath) as! introCell
         
         
-        let PicStr = arrImages1.object(at: indexPath.row)  as! String
+        let PicStr = arrImages3.object(at: indexPath.row)  as! String
         
         let urlString : NSURL = NSURL.init(string: PicStr)!
         
@@ -193,6 +180,13 @@ class UserProfileViewController: UIViewController {
         return imgCollectionView.frame.size
     }
 
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+
     /*
     // MARK: - Navigation
 
@@ -203,4 +197,19 @@ class UserProfileViewController: UIViewController {
     }
     */
 
+    @IBAction func selAddPhoto(_ sender: AnyObject)
+    {
+        
+    }
+
+    @IBAction func selRemovePhoto(_ sender: AnyObject) {
+    }
+    
+    @IBAction func selEditDesc(_ sender: AnyObject) {
+    }
+    
+    @IBAction func selEditWork(_ sender: AnyObject) {
+    }
+    @IBAction func selEditSchool(_ sender: AnyObject) {
+    }
 }

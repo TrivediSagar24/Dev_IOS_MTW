@@ -57,6 +57,8 @@
 		4C68D2BF1BFB155300C77936 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C68D2BD1BFB155300C77936 /* FBSDKCoreKit.framework */; };
 		4C68D2C01BFB155300C77936 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C68D2BE1BFB155300C77936 /* FBSDKLoginKit.framework */; };
 		521680CD1DD1D4AE00E76882 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521680CC1DD1D4AE00E76882 /* HomeVC.swift */; };
+		52755E831DEC364A0052E02D /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52755E821DEC364A0052E02D /* CoreLocation.framework */; };
+		52850A371DF18E1100646BCD /* EditProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52850A361DF18E1100646BCD /* EditProfileVC.swift */; };
 		529824241DB6445B00DA1777 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 529824171DB6445B00DA1777 /* AppDelegate.swift */; };
 		529824251DB6445B00DA1777 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 529824181DB6445B00DA1777 /* Assets.xcassets */; };
 		529824261DB6445B00DA1777 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 529824191DB6445B00DA1777 /* LaunchScreen.storyboard */; };
@@ -67,6 +69,9 @@
 		52A370281DD08D16005B011B /* inglobalb.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52A370241DD08D16005B011B /* inglobalb.ttf */; };
 		52A370291DD08D16005B011B /* inglobalbi.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52A370251DD08D16005B011B /* inglobalbi.ttf */; };
 		52A3702A1DD08D16005B011B /* inglobali.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52A370261DD08D16005B011B /* inglobali.ttf */; };
+		52BDE0B41DEEDA9300A89D04 /* NotificationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BDE0B31DEEDA9300A89D04 /* NotificationVC.swift */; };
+		52BDE0B61DEEDAB000A89D04 /* MyProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BDE0B51DEEDAB000A89D04 /* MyProfileVC.swift */; };
+		52BDE0B81DEEDAF700A89D04 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52BDE0B71DEEDAF700A89D04 /* ChatVC.swift */; };
 		EBAEF1C31A5653BCF54E1F26 /* Pods_MeeTwo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F21B0855CE15DC42DC5E4B3 /* Pods_MeeTwo.framework */; };
 /* End PBXBuildFile section */
 
@@ -153,6 +158,8 @@
 		4C68D2BD1BFB155300C77936 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		4C68D2BE1BFB155300C77936 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		521680CC1DD1D4AE00E76882 /* HomeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeVC.swift; sourceTree = "<group>"; };
+		52755E821DEC364A0052E02D /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		52850A361DF18E1100646BCD /* EditProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditProfileVC.swift; sourceTree = "<group>"; };
 		529824171DB6445B00DA1777 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		529824181DB6445B00DA1777 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5298241A1DB6445B00DA1777 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -165,6 +172,9 @@
 		52A370241DD08D16005B011B /* inglobalb.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = inglobalb.ttf; sourceTree = "<group>"; };
 		52A370251DD08D16005B011B /* inglobalbi.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = inglobalbi.ttf; sourceTree = "<group>"; };
 		52A370261DD08D16005B011B /* inglobali.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = inglobali.ttf; sourceTree = "<group>"; };
+		52BDE0B31DEEDA9300A89D04 /* NotificationVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationVC.swift; sourceTree = "<group>"; };
+		52BDE0B51DEEDAB000A89D04 /* MyProfileVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyProfileVC.swift; sourceTree = "<group>"; };
+		52BDE0B71DEEDAF700A89D04 /* ChatVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		6C01B016E8A19A6A622487C8 /* Pods-MeeTwo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeeTwo.release.xcconfig"; path = "Pods/Target Support Files/Pods-MeeTwo/Pods-MeeTwo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -173,6 +183,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				52755E831DEC364A0052E02D /* CoreLocation.framework in Frameworks */,
 				2E59728B1DDC40BC00642CE2 /* libsqlite3.tbd in Frameworks */,
 				4C68D2BF1BFB155300C77936 /* FBSDKCoreKit.framework in Frameworks */,
 				4C68D2C01BFB155300C77936 /* FBSDKLoginKit.framework in Frameworks */,
@@ -379,6 +390,10 @@
 				2ECDA84B1DE6BE3C00E70C22 /* PersonalityTestViewController.swift */,
 				2ECDA84D1DE71FB700E70C22 /* ChemistrySuccessViewController.swift */,
 				2EBF99351DE809D200107813 /* ToBadViewController.swift */,
+				52BDE0B31DEEDA9300A89D04 /* NotificationVC.swift */,
+				52BDE0B51DEEDAB000A89D04 /* MyProfileVC.swift */,
+				52BDE0B71DEEDAF700A89D04 /* ChatVC.swift */,
+				52850A361DF18E1100646BCD /* EditProfileVC.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -397,6 +412,7 @@
 		C47AD6FD56F41DFB2A2429CE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				52755E821DEC364A0052E02D /* CoreLocation.framework */,
 				2E59728A1DDC40BC00642CE2 /* libsqlite3.tbd */,
 				3F21B0855CE15DC42DC5E4B3 /* Pods_MeeTwo.framework */,
 			);
@@ -582,12 +598,14 @@
 				2ECDA84E1DE71FB700E70C22 /* ChemistrySuccessViewController.swift in Sources */,
 				2E3E02791DDB41E000099A50 /* SDWebImageDecoder.m in Sources */,
 				2E3E02351DDB18BC00099A50 /* CardView.m in Sources */,
+				52850A371DF18E1100646BCD /* EditProfileVC.swift in Sources */,
 				521680CD1DD1D4AE00E76882 /* HomeVC.swift in Sources */,
 				2E3E02841DDB41E000099A50 /* UIView+WebCache.m in Sources */,
 				2E59728E1DDC41AE00642CE2 /* DBOperation.m in Sources */,
 				2E3E027D1DDB41E000099A50 /* SDWebImagePrefetcher.m in Sources */,
 				2E3E02831DDB41E000099A50 /* UIImageView+WebCache.m in Sources */,
 				2E3E023E1DDB18E300099A50 /* LCAnimatedPageControl.m in Sources */,
+				52BDE0B81DEEDAF700A89D04 /* ChatVC.swift in Sources */,
 				2E3E02421DDB357F00099A50 /* MBProgressHUD.m in Sources */,
 				2E3E02361DDB18BC00099A50 /* YSLCardView.m in Sources */,
 				2E3E027F1DDB41E000099A50 /* UIImage+GIF.m in Sources */,
@@ -596,9 +614,11 @@
 				2E3E02771DDB41E000099A50 /* SDImageCacheConfig.m in Sources */,
 				2ECDA84A1DE6BE2C00E70C22 /* UserProfileViewController.swift in Sources */,
 				2E3E02781DDB41E000099A50 /* SDWebImageCompat.m in Sources */,
+				52BDE0B61DEEDAB000A89D04 /* MyProfileVC.swift in Sources */,
 				2E2436621DD5F73700190B70 /* QuestionVC.swift in Sources */,
 				2E3E02751DDB41E000099A50 /* NSImage+WebCache.m in Sources */,
 				2ECDA84C1DE6BE3C00E70C22 /* PersonalityTestViewController.swift in Sources */,
+				52BDE0B41DEEDA9300A89D04 /* NotificationVC.swift in Sources */,
 				2E3E027A1DDB41E000099A50 /* SDWebImageDownloader.m in Sources */,
 				2EE2C5A41DD5991500CC43E6 /* GlobalMethods.swift in Sources */,
 				2E3E022C1DDB17AC00099A50 /* DashHomeVC.swift in Sources */,
