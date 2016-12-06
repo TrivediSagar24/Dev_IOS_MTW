@@ -12,4 +12,6 @@ class introCell: UICollectionViewCell
 {
     @IBOutlet var imgSlideObj: UIImageView!
     @IBOutlet var lblTitleObj: UILabel!
+    @IBOutlet var lblAddphotoObj: UILabel!
+    
 }

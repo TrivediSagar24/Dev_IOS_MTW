@@ -25,6 +25,7 @@
 		2E3A2E331DF56F1A000C617B /* IQToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3A2E211DF56F1A000C617B /* IQToolbar.swift */; };
 		2E3A2E341DF56F1A000C617B /* IQUIView+IQKeyboardToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3A2E221DF56F1A000C617B /* IQUIView+IQKeyboardToolbar.swift */; };
 		2E3A2E351DF56F1A000C617B /* IQKeyboardManager.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2E3A2E241DF56F1A000C617B /* IQKeyboardManager.bundle */; };
+		2E3A88D61DF6831B00488BB7 /* FXBlurView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E3A88D51DF6831B00488BB7 /* FXBlurView.m */; };
 		2E3E022C1DDB17AC00099A50 /* DashHomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3E022A1DDB17AC00099A50 /* DashHomeVC.swift */; };
 		2E3E022D1DDB17AC00099A50 /* TabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3E022B1DDB17AC00099A50 /* TabController.swift */; };
 		2E3E02351DDB18BC00099A50 /* CardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E3E02301DDB18BC00099A50 /* CardView.m */; };
@@ -114,6 +115,8 @@
 		2E3A2E211DF56F1A000C617B /* IQToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IQToolbar.swift; sourceTree = "<group>"; };
 		2E3A2E221DF56F1A000C617B /* IQUIView+IQKeyboardToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIView+IQKeyboardToolbar.swift"; sourceTree = "<group>"; };
 		2E3A2E241DF56F1A000C617B /* IQKeyboardManager.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = IQKeyboardManager.bundle; sourceTree = "<group>"; };
+		2E3A88D41DF6831B00488BB7 /* FXBlurView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FXBlurView.h; sourceTree = "<group>"; };
+		2E3A88D51DF6831B00488BB7 /* FXBlurView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FXBlurView.m; sourceTree = "<group>"; };
 		2E3E022A1DDB17AC00099A50 /* DashHomeVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashHomeVC.swift; sourceTree = "<group>"; };
 		2E3E022B1DDB17AC00099A50 /* TabController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabController.swift; sourceTree = "<group>"; };
 		2E3E022F1DDB18BC00099A50 /* CardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardView.h; sourceTree = "<group>"; };
@@ -294,6 +297,15 @@
 			path = Resources;
 			sourceTree = "<group>";
 		};
+		2E3A88D31DF6831B00488BB7 /* FXBlurView */ = {
+			isa = PBXGroup;
+			children = (
+				2E3A88D41DF6831B00488BB7 /* FXBlurView.h */,
+				2E3A88D51DF6831B00488BB7 /* FXBlurView.m */,
+			);
+			path = FXBlurView;
+			sourceTree = "<group>";
+		};
 		2E3E022E1DDB18BC00099A50 /* YSLDraggableCardContainer */ = {
 			isa = PBXGroup;
 			children = (
@@ -452,6 +464,7 @@
 		5298241F1DB6445B00DA1777 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2E3A88D31DF6831B00488BB7 /* FXBlurView */,
 				2E3A2E0D1DF56F1A000C617B /* IQKeyboardManagerSwift */,
 				2EF8525F1DE40F8D001B119F /* IntroImages */,
 				2E7553CC1DE3170500181D1B /* GIFClass */,
@@ -705,6 +718,7 @@
 				2E3A2E2B1DF56F1A000C617B /* IQKeyboardManagerConstants.swift in Sources */,
 				2E3A2E2C1DF56F1A000C617B /* IQKeyboardManagerConstantsInternal.swift in Sources */,
 				52850A371DF18E1100646BCD /* EditProfileVC.swift in Sources */,
+				2E3A88D61DF6831B00488BB7 /* FXBlurView.m in Sources */,
 				2E3A2E261DF56F1A000C617B /* IQUIScrollView+Additions.swift in Sources */,
 				521680CD1DD1D4AE00E76882 /* HomeVC.swift in Sources */,
 				2E3E02841DDB41E000099A50 /* UIView+WebCache.m in Sources */,

@@ -106,12 +106,11 @@ class ViewController: UIViewController
         self.pageControl.frame = CGRect(x: 0, y: 0, width: pageControllerObj.frame.size.width, height: pageControllerObj.frame.size.height)
         
         collectionViewSliderObj.contentSize.width = collectionViewSliderObj.bounds.size.width * 5
-    
-        
        
     }
     
-    func valueChanged(_ sender: LCAnimatedPageControl) {
+    func valueChanged(_ sender: LCAnimatedPageControl)
+    {
         //    NSLog(@"%d", sender.currentPage);
         self.collectionViewSliderObj.setContentOffset(CGPoint(x: CGFloat(Float(self.collectionViewSliderObj.frame.size.width) * (Float(sender.currentPage) + 0)), y: self.collectionViewSliderObj.contentOffset.y), animated: true)
     }
@@ -584,7 +583,7 @@ class ViewController: UIViewController
                     
                     switch encodingResult
                     {
-                    case .success(let upload, _, _):
+                     case .success(let upload, _, _):
                         upload.response
                             {
                                 

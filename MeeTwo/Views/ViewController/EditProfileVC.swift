@@ -7,30 +7,32 @@
 //
 
 import UIKit
+import Alamofire
 
 protocol delegateCallUpdateData
 {
     func UpdateUserData()
 }
 
-class EditProfileVC: UIViewController,UITextViewDelegate
+class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate
 {
     var delegate: delegateCallUpdateData?
     
-    var arrImages3 = NSArray()
+    var arrImages3 = NSMutableArray()
+    var arrImagesTemp = NSArray()
+
     
     var pageControl: LCAnimatedPageControl!
     var globalMethodObj = GlobalMethods()
+    
+    var imagePickerControllerObj = UIImagePickerController()
     
     @IBOutlet var btnAddPhoto: UIButton!
     @IBOutlet var btnRemove: UIButton!
     @IBOutlet var btnEditDesc: UIButton!
     @IBOutlet var btnEditSchool: UIButton!
     @IBOutlet var btnEditWork: UIButton!
-    @IBOutlet var lblCurrentwork: UILabel!
-    @IBOutlet var lblSchoolCity: UILabel!
-    @IBOutlet var lblSchool: UILabel!
-    @IBOutlet var lblDesc: UILabel!
+    
     @IBOutlet var lblRightHere: UILabel!
     @IBOutlet var pageView: UIView!
     @IBOutlet var lblName: UILabel!
@@ -42,12 +44,25 @@ class EditProfileVC: UIViewController,UITextViewDelegate
     
     @IBOutlet var txtCurrentWorkObj: UITextView!
     
+    @IBOutlet var viewBlurEffect: FXBlurView!
+    
+    
+    @IBOutlet var btnCemeraOBj: UIButton!
+    
+    @IBOutlet var btnFacebook: UIButton!
+    
+    @IBOutlet var btnGalleryObj: UIButton!
+    
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         self.setUpView()
+        
+        imagePickerControllerObj.delegate = self
+        imagePickerControllerObj.allowsEditing = true
         
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
@@ -57,7 +72,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate
         imgCollectionView!.collectionViewLayout = flowLayout
         
         self.pageControl = LCAnimatedPageControl(frame: CGRect(x: 0, y: 0, width: pageView.frame.size.width, height: pageView.frame.size.height))
-        self.pageControl.numberOfPages = 3
+        self.pageControl.numberOfPages = 6
         self.pageControl.indicatorDiameter = 5.0
         self.pageControl.indicatorMargin = 15.0
         self.pageControl.indicatorMultiple = 1.4
@@ -76,6 +91,8 @@ class EditProfileVC: UIViewController,UITextViewDelegate
         self.pageView.addSubview(pageControl)
         self.pageControl.addTarget(self, action: #selector(self.valueChanged2(_:)), for: .valueChanged)
         
+        viewBlurEffect.isHidden = true
+        viewBlurEffect.alpha = 0.0
         
     }
     override func viewDidAppear(_ animated: Bool)
@@ -84,14 +101,27 @@ class EditProfileVC: UIViewController,UITextViewDelegate
         
         self.pageControl.frame = CGRect(x: 0, y: 0, width: pageView.frame.size.width, height: pageView.frame.size.height)
         
-        imgCollectionView.contentSize.width = imgCollectionView.bounds.size.width * 5
+        imgCollectionView.contentSize.width = imgCollectionView.bounds.size.width * 6
         
-        //  imgCollectionView.backgroundColor = UIColor.red
+        //////////// Blur View Sutup //////////
         
+        viewBlurEffect.blurRadius = 5
+        viewBlurEffect.tintColor = UIColor.white
+        
+        btnCemeraOBj.layer.cornerRadius = 10
+        btnGalleryObj.layer.cornerRadius = 10
+        btnFacebook.layer.cornerRadius = 12
+    }
+    
+    func BlueViewSetup()
+    {
         
     }
+    
+    
     override func viewWillAppear(_ animated: Bool)
     {
+        self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.topItem?.title = "Edit my profile"
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont.init(name: "inglobal", size:  20.0)!]
@@ -113,25 +143,24 @@ class EditProfileVC: UIViewController,UITextViewDelegate
     func back()
     {
         delegate?.UpdateUserData()
-        self.navigationController?.dismiss(animated: true, completion: nil)
+        let _ = navigationController?.popViewController(animated: true)
     }
     
     func setUpView()
     {
     
-        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "userdata")
+        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "UserProfileData")
         
+        arrImagesTemp =  dict?["profile_picture"] as! NSArray
         
-        let profilePicStr = dict?.object(forKey: "profile_pic_url")  as! String
-        
-        arrImages3 = [profilePicStr,profilePicStr,profilePicStr]
+        for (_, element) in arrImagesTemp.enumerated()
+        {
+                arrImages3.add(element)
+        }
         
         let firstName = dict?.object(forKey: "first_name") as! String
         
-        //  let age_obj = dict?.object(forKey: "age") as! String
-        
-        let age_obj = "1"
-        
+        let age_obj = dict?.object(forKey: "age") as! String
         
         self.lblName.text = "\(firstName), \(age_obj)"
         self.lblRightHere.text = "Right here"
@@ -173,7 +202,24 @@ class EditProfileVC: UIViewController,UITextViewDelegate
         {
             txtCurrentWorkObj.textColor = UIColor.lightGray
         }
-
+        
+        
+        for _ in arrImagesTemp.count..<6
+        {
+            let dict = [ "url" : "", "pic_id" : "", "is_profile_pic" : ""]
+//
+//            let nsDict = dict as! NSDictionary
+//            nsDict["key"] = "value"
+//
+//            let dict = NSDictionary()
+//            dict.setValue("url", forKey: "")
+//            dict.setValue("pic_id", forKey: "")
+//            dict.setValue("is_profile_pic", forKey: "")
+            arrImages3.add(dict)
+        }
+        
+        imgCollectionView.reloadData()
+        
     }
     
     func valueChanged2(_ sender: LCAnimatedPageControl) {
@@ -185,23 +231,34 @@ class EditProfileVC: UIViewController,UITextViewDelegate
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        return 3
+        return arrImages3.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAtIndexPath indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = imgCollectionView.dequeueReusableCell(withReuseIdentifier: "introCell", for: indexPath) as! introCell
         
+        let dict = arrImages3.object(at: indexPath.row)  as! NSDictionary
         
-        let PicStr = arrImages3.object(at: indexPath.row)  as! String
+        let PicStr = dict["url"] as! String
         
-        let urlString : NSURL = NSURL.init(string: PicStr)!
+        if PicStr.characters.count == 0
+        {
+            cell.lblAddphotoObj.isHidden = false
+            cell.imgSlideObj.isHidden = true
+        }
+        else
+        {
+            let urlString : NSURL = NSURL.init(string: PicStr)!
+            let imgPlaceHolder = UIImage.init(named: "imgUserLogo.jpeg")
+            cell.imgSlideObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
+            
+            cell.lblAddphotoObj.isHidden = true
+            cell.imgSlideObj.isHidden = false
+
+        }
         
-        
-        let imgPlaceHolder = UIImage.init(named: "imgUserLogo.jpeg")
-        
-        
-        cell.imgSlideObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
+       
         
         // cell.backgroundColor = UIColor.green
         
@@ -233,7 +290,11 @@ class EditProfileVC: UIViewController,UITextViewDelegate
 
     @IBAction func selAddPhoto(_ sender: AnyObject)
     {
-        
+        viewBlurEffect.isHidden = false
+        UIView.animate(withDuration: 0.5, animations: {
+            self.viewBlurEffect.alpha = 1.0
+            }) { (true) in
+        }
     }
 
     @IBAction func selRemovePhoto(_ sender: AnyObject) {
@@ -282,6 +343,61 @@ class EditProfileVC: UIViewController,UITextViewDelegate
             self.OpenUserIntractionOfTextview(textview: txtSchoolObj)
             sender.isSelected = true
         }
+    }
+    
+    
+    @IBAction func btnCloseClicked(_ sender: AnyObject)
+    {
+        UIView.animate(withDuration: 0.5, animations: {
+            self.viewBlurEffect.alpha = 0.0
+        }) { (true) in
+            self.viewBlurEffect.isHidden = true
+        }
+    }
+    
+    @IBAction func btnCemeraClicked(_ sender: AnyObject)
+    {
+        imagePickerControllerObj.sourceType = .camera
+        
+        
+        if UIImagePickerController.isSourceTypeAvailable(.camera)
+        {
+        present(imagePickerControllerObj, animated: true, completion: nil)
+        }
+        else
+        {
+            globalMethodObj.ShowAlertDisplay(titleObj: "", messageObj: "Camera not avalilable", viewcontrolelr: self)
+        }
+        
+    }
+    
+    
+    @IBAction func btnFacebookclicked(_ sender: AnyObject)
+    {
+    }
+    
+    @IBAction func btnGalleryclicked(_ sender: AnyObject)
+    {
+        imagePickerControllerObj.sourceType = .photoLibrary
+        
+        present(imagePickerControllerObj, animated: true, completion: nil)
+    }
+    
+    
+    //MARK: Image PickerController Delegate 
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
+    {
+        let imageName = info[UIImagePickerControllerOriginalImage] as! UIImage
+        let data = UIImagePNGRepresentation(imageName)! as Data
+        self.UploadPhotoWebservice(imageData: data)
+        self.btnCloseClicked(btnFacebook)
+        imagePickerControllerObj.dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController)
+    {
+        imagePickerControllerObj.dismiss(animated: true, completion: nil)
     }
     
     func stopUserIntractionOfTextview(textview:UITextView)
@@ -415,6 +531,128 @@ class EditProfileVC: UIViewController,UITextViewDelegate
             }
         }
     }
+    
+    //MARK: Upload Photo web Service
+    
+    func UploadPhotoWebservice(imageData:Data)
+    {
+        
+        let dict = arrImages3.object(at: self.pageControl.currentPage)  as! NSDictionary
+        
+        let PicStr = dict["pic_id"] as! String
+        var imageRemove = "1"
+        
+        if PicStr.characters.count == 0
+        {
+            imageRemove = ""
+        }
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        
+        let parameters =
+            [
+                GlobalMethods.METHOD_NAME: "profile_edit_image",
+                "user_id": "\(globalMethodObj.getUserId())",
+                "image_id": "\(PicStr)",
+                "is_removed": "0",
+        ]
+        
+        Alamofire.upload(multipartFormData:
+            { multipartFormData in
+                   multipartFormData.append(imageData as Data, withName: "image", fileName: "file.png", mimeType: "image/png")
+                
+                for (key, value) in parameters
+                {
+                    multipartFormData.append((value.data(using: .utf8))!, withName: key)
+                }}, to: GlobalMethods.WEB_SERVICE_URL, method: .post, headers: ["Authorization": "auth_token"],
+                    encodingCompletion: { encodingResult in
+                        
+                        switch encodingResult
+                        {
+                        case .success(let upload, _, _):
+                            upload.response
+                                {
+                                    
+                                    [weak self] response in
+                                    guard self != nil else
+                                    {
+                                        return
+                                    }
+                                    
+                                    do{
+                                        let dict = try JSONSerialization.jsonObject(with: response.data!, options: JSONSerialization.ReadingOptions.mutableContainers)
+                                        
+                                        let dictResponse = dict as! NSDictionary
+                                        
+                                        let dictData = dictResponse["data"] as! NSDictionary
+                                        
+                                        let imdId = dictData["image_id"]
+                                        let imdUrl = dictData["image_url"]
+                                        
+                                         var dictUserData = (self?.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "UserProfileData"))! as NSDictionary
+                                        
+                                        let arrProfile =  dictUserData["profile_picture"] as! NSArray
+                                        
+                                        let arrMut = arrProfile.mutableCopy() as!     NSMutableArray
+                                        
+                                        for (_, element) in (self?.arrImages3.enumerated())!
+                                        {
+                                            let PicStr = (element as! NSDictionary)["url"] as! String
+                                            
+                                            if PicStr.characters.count == 0
+                                            {
+                                                let dict = [ "url" : imdUrl, "pic_id" : imdId, "is_profile_pic" : ""]
+                                                
+                                                arrMut.add(dict)
+                                                self?.arrImages3.replaceObject(at: (self?.pageControl.currentPage)!, with: dict)
+                                                break
+                                                
+                                            }
+                                        }
+                                        
+//                                        let mutDict =  NSMutableDictionary(object: arrMut, forKey: "profile_picture")
+                                        
+//                                        dictUserData = ["profile_picture":arrMut]
+//                                        
+//                                        let data: Data = NSKeyedArchiver.archivedData(withRootObject: dictUserData)
+//                                        
+//                                        self?.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: "UserProfileData")
+//                                        
+//                                        let dictRes = self?.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "UserProfileData")
+                                        
+                                        
+                                        self?.imgCollectionView.reloadData()
+                                        
+                                        MBProgressHUD.hide(for: (self?.view)!, animated: true)
+                                        
+//                                        let status = dict["status"] as! Int
+                                        
+//                                        if status == 1
+//                                        {
+//                                            
+//                                        }
+                                        
+//                                        self?.movieQuestionVC(dictionary: dict as! NSDictionary)
+                                    }
+                                    catch
+                                    {
+                                        MBProgressHUD.hide(for: (self?.view)!, animated: true)
+                                        
+                                        self?.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: error.localizedDescription, viewcontrolelr: self!)
+                                    }
+                                    
+                                    //                                let stringResponse = NSString(data: data!, encoding: String.Encoding.utf8.rawValue)!
+                                    
+                                    
+                            }
+                        case .failure(let encodingError):
+                            MBProgressHUD.hide(for: (self.view)!, animated: true)
+                            print("error:\(encodingError)")
+                        }
+        })
+
+    }
+    
 }
 
 

@@ -89,5 +89,7 @@
 	</array>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string></string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>$(PRODUCT_NAME) uses photos</string>
 </dict>
 </plist>

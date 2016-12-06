@@ -11,7 +11,7 @@ import Alamofire
 
 class MyProfileVC: UIViewController,delegateCallUpdateData
 {
-    var arrImages2 = NSArray()
+    var arrImagesProfile = NSArray()
     
     var pageControl: LCAnimatedPageControl!
     var globalMethodObj = GlobalMethods()
@@ -27,7 +27,6 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
     @IBOutlet var lblName: UILabel!
     @IBOutlet var imgCollectionView: UICollectionView!
     
-    
     @IBOutlet var viewDescriptionObj: UIView!
     
     @IBOutlet var viewSchoolDescObj: UIView!
@@ -38,12 +37,16 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
     var heightConstraintViewSchool = NSLayoutConstraint()
     var heightConstraintViewCurrentWork = NSLayoutConstraint()
     
+    @IBOutlet var scrollViewObj: UIScrollView!
+    
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
-        self.setUpView()
+//        self.setUpView()
 
+        self.callGetProfileService()
         
     }
     override func viewDidAppear(_ animated: Bool)
@@ -59,7 +62,8 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
     }
     override func viewWillAppear(_ animated: Bool)
     {
-        
+        self.navigationController?.isNavigationBarHidden = true
+
         // Do any additional setup after loading the view.
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
@@ -91,31 +95,25 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         
         self.pageControl.frame = CGRect(x: 0, y: 0, width: pageView.frame.size.width, height: pageView.frame.size.height)
         
-        self.setUpView()
-    }
-
-    func setUpView()
-    {
-       
         btnSetting.layer.cornerRadius = 10
         btnPersonality.layer.cornerRadius = 10
         
         btnEditProfile.layer.cornerRadius = 10
         
         btnEditProfile.layer.cornerRadius = 20
+
         
-        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "userdata")
+//        self.setUpView()
+    }
+
+    func setUpView()
+    {
+       
+        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "UserProfileData")
     
-        let profilePicStr = dict?.object(forKey: "profile_pic_url")  as! String
-        
-        arrImages2 = [profilePicStr,profilePicStr,profilePicStr]
-        
         let firstName = dict?.object(forKey: "first_name") as! String
      
-      //  let age_obj = dict?.object(forKey: "age") as! String
-        
-        let age_obj = "1"
-        
+        let age_obj = dict?.object(forKey: "age") as! String
         
         self.lblName.text = "\(firstName), \(age_obj)"
         self.lblRightHere.text = "Right here"
@@ -136,11 +134,9 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         let currentWork = dict?.object(forKey: "work") as?String
         lblCurrentwork.text = currentWork
         
-        
         viewDescriptionObj.isHidden = false
         viewSchoolDescObj.isHidden = false
         viewCurrentWorkObj.isHidden = false
-
         
         if descText?.characters.count == 0
         {
@@ -183,8 +179,17 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         {
             viewCurrentWorkObj .removeConstraint(heightConstraintViewCurrentWork)
         }
+        
+        self.arrImagesProfile =  dict?["profile_picture"] as! NSArray
+        self.pageControl.numberOfPages = self.arrImagesProfile.count
 
         imgCollectionView.reloadData()
+        
+        UIView.animate(withDuration: 0.3, animations: { 
+            self.scrollViewObj.alpha = 1.0
+            }) { (true) in
+        }
+        
     }
 
     func valueChanged2(_ sender: LCAnimatedPageControl)
@@ -197,14 +202,16 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        return arrImages2.count
+        return arrImagesProfile.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAtIndexPath indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = imgCollectionView.dequeueReusableCell(withReuseIdentifier: "introCell", for: indexPath) as! introCell
         
-        let PicStr = arrImages2.object(at: indexPath.row)  as! String
+        let dict = arrImagesProfile.object(at: indexPath.row)  as! NSDictionary
+        
+        let PicStr = dict["url"] as! String
         
         let urlString : NSURL = NSURL.init(string: PicStr)!
         
@@ -239,8 +246,10 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         // Pass the selected object to the new view controller.
     }
     */
-    @IBAction func selPersonalityAct(_ sender: AnyObject) {
+    @IBAction func selPersonalityAct(_ sender: AnyObject)
+    {
     }
+    
     @IBAction func selEditProfileAct(_ sender: AnyObject)
     {
         let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
@@ -248,11 +257,12 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         let vc = storyboard.instantiateViewController(withIdentifier: "EditProfileVC") as! EditProfileVC
         vc.delegate = self
         
-        let navigationController = UINavigationController(rootViewController: vc)
-        navigationController.isNavigationBarHidden = false
-        
+//        let navigationController = UINavigationController(rootViewController: vc)
+//        navigationController.isNavigationBarHidden = false
        
-        self.present(navigationController, animated: true, completion: nil)
+        self.navigationController?.pushViewController(vc, animated: true)
+//        navigationController.pushViewController(vc, animated: true)
+//        self.present(navigationController, animated: true, completion: nil)
     }
 
     @IBAction func selSettingAct(_ sender: AnyObject)
@@ -263,7 +273,65 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
     
     func UpdateUserData()
     {
+        self.navigationController?.isNavigationBarHidden = true
+
         self.setUpView()
+    }
+    
+    //MARK:- Call Get Profile Data Service
+    
+    func callGetProfileService()
+    {
+        scrollViewObj.alpha = 0.0
+        
+        MBProgressHUD.showAdded(to: self.view, animated: true)
+        
+        let getUserId = globalMethodObj.getUserId()
+        
+        let parameters =
+            [
+                GlobalMethods.METHOD_NAME: "get_other_profile",
+                "user_id": getUserId,
+                "other_user_id": getUserId,
+                ] as [String : Any]
+        
+        globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
+            
+            MBProgressHUD.hide(for: self.view, animated: true)
+            
+            if error != nil
+            {
+                self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error?.localizedDescription)!, viewcontrolelr: self)
+            }
+            else
+            {
+                let status = result["status"] as! Int
+                
+                if status == 1
+                {
+                    let dictData = result.object(forKey: "data") as! NSDictionary
+                    let dictResponse = dictData.object(forKey: "profile") as! NSDictionary
+                    
+                    let data: Data = NSKeyedArchiver.archivedData(withRootObject: dictResponse)
+                    
+                    self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: "UserProfileData")
+                    
+                    let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "UserProfileData")
+                    
+                    self.arrImagesProfile =  dict?["profile_picture"] as! NSArray
+                    self.pageControl.numberOfPages = self.arrImagesProfile.count
+                    
+                    self.setUpView()
+
+                }
+                else
+                {
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result["message"] as! String, viewcontrolelr: self)
+                    
+                }
+                
+            }
+        }
     }
     
 }
