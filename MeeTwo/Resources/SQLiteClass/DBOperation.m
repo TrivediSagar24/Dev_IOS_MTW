@@ -153,6 +153,23 @@ static int conn;
     }
 }
 
+
+
++(CGFloat)heightForLabel:(UILabel *)label withText:(NSString *)text
+{
+    if (text.length > 0)
+    {
+        NSAttributedString *attributedText = [[NSAttributedString alloc] initWithString:text attributes:@{NSFontAttributeName:label.font}];
+        CGRect rect = [attributedText boundingRectWithSize:(CGSize){label.frame.size.width, CGFLOAT_MAX}
+                                                   options:NSStringDrawingUsesLineFragmentOrigin
+                                                   context:nil];
+        
+        return ceil(rect.size.height);
+    }
+    
+    return 0;
+}
+
 +(NSMutableArray *)SortArray : (NSMutableArray *)arrOriginal
 {
     NSSortDescriptor *sortDescriptor;
@@ -169,5 +186,19 @@ static int conn;
     [arrOriginal addObjectsFromArray:sortedArray];
     return arrOriginal;
 }
+
+#pragma mark - Remove More Space on String
+
++(NSString *)returnRemoveMoreSpace : (NSString *)str
+{
+    NSCharacterSet *whitespaces = [NSCharacterSet whitespaceCharacterSet];
+    NSPredicate *noEmptyStrings = [NSPredicate predicateWithFormat:@"SELF != ''"];
+    
+    NSArray *parts = [str componentsSeparatedByCharactersInSet:whitespaces];
+    NSArray *filteredArray = [parts filteredArrayUsingPredicate:noEmptyStrings];
+    str = [filteredArray componentsJoinedByString:@" "];
+    return str;
+}
+
 
 @end

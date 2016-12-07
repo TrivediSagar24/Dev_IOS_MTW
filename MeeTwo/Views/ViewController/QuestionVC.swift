@@ -603,9 +603,9 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
     func calllogin_save_answerService()
     {
         
-        DispatchQueue.main.async {
+//        DispatchQueue.main.async {
             MBProgressHUD.showAdded(to: self.view, animated: true)
-        }
+//        }
 
         let getUserId = globalMethodObj.getUserId()
         
@@ -648,6 +648,9 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
             
             if error != nil
             {
+                self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: error.debugDescription, viewcontrolelr: self)
+
+                MBProgressHUD.hide(for: self.view, animated: true)
                 print("Error")
             }
             else

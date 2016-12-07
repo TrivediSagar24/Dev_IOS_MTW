@@ -37,6 +37,13 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
     var heightConstraintViewSchool = NSLayoutConstraint()
     var heightConstraintViewCurrentWork = NSLayoutConstraint()
     
+    @IBOutlet var heightConstraintOfDescriptionView: NSLayoutConstraint!
+    
+    @IBOutlet var HeightConstraintOfSchoolView: NSLayoutConstraint!
+    
+    @IBOutlet var HeightConstraintOfCurrentView: NSLayoutConstraint!
+    
+    
     @IBOutlet var scrollViewObj: UIScrollView!
     
     
@@ -46,7 +53,6 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         
 //        self.setUpView()
 
-        self.callGetProfileService()
         
     }
     override func viewDidAppear(_ animated: Bool)
@@ -102,7 +108,8 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         
         btnEditProfile.layer.cornerRadius = 20
 
-        
+        self.callGetProfileService()
+
 //        self.setUpView()
     }
 
@@ -112,11 +119,21 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "UserProfileData")
     
         let firstName = dict?.object(forKey: "first_name") as! String
-     
+        
         let age_obj = dict?.object(forKey: "age") as! String
         
+        let distenceAway  = dict?.object(forKey: "distance_away") as! Int
+        
+        if  distenceAway == 0
+        {
+            self.lblRightHere.text = "Less than 1 km away"
+        }
+        else
+        {
+            self.lblRightHere.text = "\(distenceAway) km away"
+        }
+         
         self.lblName.text = "\(firstName), \(age_obj)"
-        self.lblRightHere.text = "Right here"
         
         let normalFont = UIFont(name: "inglobal", size: 25)
         let boldSearchFont = UIFont(name: "inglobal-Bold", size: 25)
@@ -137,48 +154,73 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         viewDescriptionObj.isHidden = false
         viewSchoolDescObj.isHidden = false
         viewCurrentWorkObj.isHidden = false
+     
+        let labelDescHeight = DBOperation.height(for: lblDesc, withText: lblDesc.text)
+        let labelschoolHeight = DBOperation.height(for: lblSchool, withText: lblSchool.text)
+        let labelcurrentWorkHeight =  DBOperation.height(for: lblCurrentwork, withText: lblCurrentwork.text)
+        
+        heightConstraintOfDescriptionView.constant = 200
+        HeightConstraintOfSchoolView.constant = 200
+        heightConstraintViewCurrentWork.constant = 200
+
         
         if descText?.characters.count == 0
         {
+            heightConstraintOfDescriptionView.constant = 0
+            self.view.layoutIfNeeded()
             
-        heightConstraintViewDescription = NSLayoutConstraint(item: viewDescriptionObj, attribute: .height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+//        heightConstraintViewDescription = NSLayoutConstraint(item: viewDescriptionObj, attribute: .height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+//            viewDescriptionObj.frame = CGRect(x: viewDescriptionObj.frame.origin.x, y: viewDescriptionObj.frame.origin.y, width: viewDescriptionObj.frame.size.width, height: 0)
 
 //           heightConstraintViewDescription = viewDescriptionObj.addConstraint(NSLayoutConstraint(item: viewDescriptionObj, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0))
-            
-            viewDescriptionObj.isHidden = true
+//            viewDescriptionObj.isHidden = true
             
         }
         else
         {
-            viewDescriptionObj .removeConstraint(heightConstraintViewDescription)
-            
+            heightConstraintOfDescriptionView.constant = lblDesc.frame.origin.y + labelDescHeight + 4
+            self.view.layoutIfNeeded()
+
         }
         
         if schoolText?.characters.count == 0
         {
+
+            HeightConstraintOfSchoolView.constant = labelschoolHeight
+            self.view.layoutIfNeeded()
+
             
-        heightConstraintViewSchool = NSLayoutConstraint(item: viewSchoolDescObj, attribute: .height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+//        heightConstraintViewSchool = NSLayoutConstraint(item: viewSchoolDescObj, attribute: .height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
             
 //           heightConstraintViewSchool = viewSchoolDescObj.addConstraint(NSLayoutConstraint(item: viewSchoolDescObj, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0))
-            viewSchoolDescObj.isHidden = true
+//            viewSchoolDescObj.isHidden = true
         }
         else
         {
-            viewSchoolDescObj .removeConstraint(heightConstraintViewSchool)
+            HeightConstraintOfSchoolView.constant = lblSchool.frame.origin.y + labelschoolHeight + 4
+            self.view.layoutIfNeeded()
+
+//            viewSchoolDescObj .removeConstraint(heightConstraintViewSchool)
         }
         
         if currentWork?.characters.count == 0
         {
-            
-            heightConstraintViewCurrentWork = NSLayoutConstraint(item: viewCurrentWorkObj, attribute: .height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+            heightConstraintViewCurrentWork.constant = labelcurrentWorkHeight
+            self.view.layoutIfNeeded()
+
+//            heightConstraintViewCurrentWork = NSLayoutConstraint(item: viewCurrentWorkObj, attribute: .height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
             
 //            heightConstraintViewCurrentWork =  viewCurrentWorkObj.addConstraint(NSLayoutConstraint(item: viewCurrentWorkObj, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0))
-            viewCurrentWorkObj.isHidden = true
+//            viewCurrentWorkObj.isHidden = true
         }
         else
         {
-            viewCurrentWorkObj .removeConstraint(heightConstraintViewCurrentWork)
+            heightConstraintViewCurrentWork.constant = lblCurrentwork.frame.origin.y + labelcurrentWorkHeight
+            self.view.layoutIfNeeded()
+
+//            viewCurrentWorkObj .removeConstraint(heightConstraintViewCurrentWork)
         }
+        
         
         self.arrImagesProfile =  dict?["profile_picture"] as! NSArray
         self.pageControl.numberOfPages = self.arrImagesProfile.count
@@ -274,7 +316,6 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
     func UpdateUserData()
     {
         self.navigationController?.isNavigationBarHidden = true
-
         self.setUpView()
     }
     

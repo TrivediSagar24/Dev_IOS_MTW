@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeeTwo/Views/ViewController/GlobalMethods.swift"
-            timestampString = "501768283.718194"
+            timestampString = "502800763.739764"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "255"
-            endingLineNumber = "255">
+            startingLineNumber = "272"
+            endingLineNumber = "272">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -24,11 +24,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeeTwo/Views/ViewController/GlobalMethods.swift"
-            timestampString = "501768283.718194"
+            timestampString = "502800763.739764"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "258"
-            endingLineNumber = "258">
+            startingLineNumber = "275"
+            endingLineNumber = "275">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -80,7 +80,7 @@
                   moduleName = "MeeTwo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/HD%201/Projects/MeeTwoApp/MeeTwoGit/MeeTwo/Views/ViewController/DashHomeVC.swift"
-                  timestampString = "502726644.932728"
+                  timestampString = "502809362.723376"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "527"
@@ -95,7 +95,7 @@
                   moduleName = "MeeTwo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/HD%201/Projects/MeeTwoApp/MeeTwoGit/MeeTwo/Views/ViewController/DashHomeVC.swift"
-                  timestampString = "502726644.934949"
+                  timestampString = "502809362.72627"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "528"
@@ -304,7 +304,7 @@
                   moduleName = "MeeTwo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/HD%201/Projects/MeeTwoApp/MeeTwoGit/MeeTwo/Views/ViewController/PersonalityTestViewController.swift"
-                  timestampString = "502726644.982498"
+                  timestampString = "502809362.77801"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "309"
@@ -319,7 +319,7 @@
                   moduleName = "MeeTwo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/HD%201/Projects/MeeTwoApp/MeeTwoGit/MeeTwo/Views/ViewController/PersonalityTestViewController.swift"
-                  timestampString = "502726644.984554"
+                  timestampString = "502809362.779972"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "311"
@@ -592,11 +592,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502720359.491936"
+            timestampString = "502810624.704689"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "443"
-            endingLineNumber = "443"
+            startingLineNumber = "467"
+            endingLineNumber = "467"
             landmarkName = "CallProfileUpdateData(fieldId:text:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -608,27 +608,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502720359.491936"
+            timestampString = "502810624.704689"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "419"
-            endingLineNumber = "419"
-            landmarkName = "CallProfileUpdateData(fieldId:text:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502720359.491936"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "431"
-            endingLineNumber = "431"
+            startingLineNumber = "453"
+            endingLineNumber = "453"
             landmarkName = "CallProfileUpdateData(fieldId:text:)"
             landmarkType = "7">
             <Locations>
@@ -640,11 +624,11 @@
                   moduleName = "MeeTwo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/HD%201/Projects/MeeTwoApp/MeeTwoGit/MeeTwo/Views/ViewController/EditProfileVC.swift"
-                  timestampString = "502726645.059631"
+                  timestampString = "502809362.859964"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "431"
-                  endingLineNumber = "431"
+                  startingLineNumber = "450"
+                  endingLineNumber = "450"
                   offsetFromSymbolStart = "1034">
                </Location>
                <Location
@@ -655,11 +639,11 @@
                   moduleName = "MeeTwo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/HD%201/Projects/MeeTwoApp/MeeTwoGit/MeeTwo/Views/ViewController/EditProfileVC.swift"
-                  timestampString = "502726645.061734"
+                  timestampString = "502809362.86211"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "433"
-                  endingLineNumber = "433"
+                  startingLineNumber = "452"
+                  endingLineNumber = "452"
                   offsetFromSymbolStart = "36">
                </Location>
             </Locations>
@@ -672,11 +656,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502720359.491936"
+            timestampString = "502810624.704689"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "435"
-            endingLineNumber = "435"
+            startingLineNumber = "457"
+            endingLineNumber = "457"
             landmarkName = "CallProfileUpdateData(fieldId:text:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -688,11 +672,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502720359.491936"
+            timestampString = "502810624.704689"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "462"
-            endingLineNumber = "462"
+            startingLineNumber = "492"
+            endingLineNumber = "492"
             landmarkName = "CallProfileUpdateData(fieldId:text:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -704,11 +688,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502718631.332157"
+            timestampString = "502805430.252303"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
+            startingLineNumber = "150"
+            endingLineNumber = "150"
             landmarkName = "back()"
             landmarkType = "7">
          </BreakpointContent>
@@ -720,43 +704,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502720359.491936"
+            timestampString = "502810624.704689"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "495"
-            endingLineNumber = "495"
-            landmarkName = "textViewDidEndEditing(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502720359.491936"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "487"
-            endingLineNumber = "487"
-            landmarkName = "textViewDidBeginEditing(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502720359.491936"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "381"
-            endingLineNumber = "381"
+            startingLineNumber = "402"
+            endingLineNumber = "402"
             landmarkName = "btnGalleryclicked(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -768,11 +720,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502721805.545211"
+            timestampString = "502810624.704689"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "560"
-            endingLineNumber = "560"
+            startingLineNumber = "702"
+            endingLineNumber = "702"
             landmarkName = "UploadPhotoWebservice(imageData:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -784,27 +736,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502726644.535116"
+            timestampString = "502810624.704689"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "650"
-            endingLineNumber = "650"
-            landmarkName = "UploadPhotoWebservice(imageData:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502726644.535116"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "639"
-            endingLineNumber = "639"
+            startingLineNumber = "691"
+            endingLineNumber = "691"
             landmarkName = "UploadPhotoWebservice(imageData:)"
             landmarkType = "7">
             <Locations>
@@ -816,12 +752,12 @@
                   moduleName = "MeeTwo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/HD%201/Projects/MeeTwoApp/MeeTwoGit/MeeTwo/Views/ViewController/EditProfileVC.swift"
-                  timestampString = "502726645.097295"
+                  timestampString = "502809362.887312"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "639"
-                  endingLineNumber = "639"
-                  offsetFromSymbolStart = "9500">
+                  startingLineNumber = "688"
+                  endingLineNumber = "688"
+                  offsetFromSymbolStart = "18659">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -831,12 +767,12 @@
                   moduleName = "MeeTwo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/HD%201/Projects/MeeTwoApp/MeeTwoGit/MeeTwo/Views/ViewController/EditProfileVC.swift"
-                  timestampString = "502726645.099382"
+                  timestampString = "502809362.889791"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "639"
-                  endingLineNumber = "639"
-                  offsetFromSymbolStart = "10820">
+                  startingLineNumber = "688"
+                  endingLineNumber = "688"
+                  offsetFromSymbolStart = "20297">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -896,11 +832,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502720415.413781"
+            timestampString = "502809361.258208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "234"
-            endingLineNumber = "234"
+            startingLineNumber = "222"
+            endingLineNumber = "222"
             landmarkName = "collectionView(_:numberOfItemsInSection:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -912,11 +848,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502720786.038216"
+            timestampString = "502809361.258208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "245"
-            endingLineNumber = "245"
+            startingLineNumber = "233"
+            endingLineNumber = "233"
             landmarkName = "collectionView(_:cellForItemAtIndexPath:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -928,11 +864,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502720961.985554"
+            timestampString = "502809361.258208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "293"
-            endingLineNumber = "293"
+            startingLineNumber = "281"
+            endingLineNumber = "281"
             landmarkName = "selAddPhoto(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -944,11 +880,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MeeTwo/Views/ViewController/MyProfileVC.swift"
-            timestampString = "502726227.007117"
+            timestampString = "502809361.258208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "276"
-            endingLineNumber = "276"
+            startingLineNumber = "318"
+            endingLineNumber = "318"
             landmarkName = "UpdateUserData()"
             landmarkType = "7">
          </BreakpointContent>
@@ -959,28 +895,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502726214.727935"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "596"
-            endingLineNumber = "596"
-            landmarkName = "UploadPhotoWebservice(imageData:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "MeeTwo/Views/ViewController/MyProfileVC.swift"
-            timestampString = "502724990.131481"
+            timestampString = "502809361.258208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
             landmarkName = "setUpView()"
             landmarkType = "7">
             <Locations>
@@ -992,12 +912,12 @@
                   moduleName = "MeeTwo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/HD%201/Projects/MeeTwoApp/MeeTwoGit/MeeTwo/Views/ViewController/MyProfileVC.swift"
-                  timestampString = "502726645.135296"
+                  timestampString = "502809363.092558"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "183"
-                  endingLineNumber = "183"
-                  offsetFromSymbolStart = "15022">
+                  startingLineNumber = "225"
+                  endingLineNumber = "225"
+                  offsetFromSymbolStart = "26477">
                </Location>
                <Location
                   shouldBeEnabled = "Yes"
@@ -1007,12 +927,12 @@
                   moduleName = "MeeTwo"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Volumes/HD%201/Projects/MeeTwoApp/MeeTwoGit/MeeTwo/Views/ViewController/MyProfileVC.swift"
-                  timestampString = "502726645.137295"
+                  timestampString = "502809363.095615"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "183"
-                  endingLineNumber = "183"
-                  offsetFromSymbolStart = "17789">
+                  startingLineNumber = "225"
+                  endingLineNumber = "225"
+                  offsetFromSymbolStart = "30362">
                </Location>
             </Locations>
          </BreakpointContent>
@@ -1023,46 +943,238 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
-            timestampString = "502726305.240245"
+            filePath = "MeeTwo/Views/ViewController/QuestionVC.swift"
+            timestampString = "502785649.563723"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "592"
-            endingLineNumber = "592"
+            startingLineNumber = "649"
+            endingLineNumber = "649"
+            landmarkName = "calllogin_save_answerService()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeeTwo/Views/ViewController/MyProfileVC.swift"
+            timestampString = "502809361.258208"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "206"
+            endingLineNumber = "206"
+            landmarkName = "setUpView()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
+            timestampString = "502810624.704689"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "520"
+            endingLineNumber = "520"
+            landmarkName = "setArrayForSliderPhotos(dict:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
+            timestampString = "502810624.704689"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "472"
+            endingLineNumber = "472"
+            landmarkName = "CallProfileUpdateData(fieldId:text:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
+            timestampString = "502810624.704689"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "488"
+            endingLineNumber = "488"
+            landmarkName = "CallProfileUpdateData(fieldId:text:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
+            timestampString = "502810624.704689"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "476"
+            endingLineNumber = "476"
+            landmarkName = "CallProfileUpdateData(fieldId:text:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
+            timestampString = "502810624.704689"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "544"
+            endingLineNumber = "544"
             landmarkName = "UploadPhotoWebservice(imageData:)"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MeeTwo.EditProfileVC.(UploadPhotoWebservice (imageData : Foundation.Data) -&gt; ()).(closure #2).(closure #1)"
-                  moduleName = "MeeTwo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/HD%201/Projects/MeeTwoApp/MeeTwoGit/MeeTwo/Views/ViewController/EditProfileVC.swift"
-                  timestampString = "502726645.142031"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "592"
-                  endingLineNumber = "592"
-                  offsetFromSymbolStart = "2507">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MeeTwo.EditProfileVC.(UploadPhotoWebservice (imageData : Foundation.Data) -&gt; ()).(closure #2).(closure #1)"
-                  moduleName = "MeeTwo"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Volumes/HD%201/Projects/MeeTwoApp/MeeTwoGit/MeeTwo/Views/ViewController/EditProfileVC.swift"
-                  timestampString = "502726645.144258"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "592"
-                  endingLineNumber = "592"
-                  offsetFromSymbolStart = "10675">
-               </Location>
-            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
+            timestampString = "502810624.704689"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "598"
+            endingLineNumber = "598"
+            landmarkName = "UploadPhotoWebservice(imageData:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
+            timestampString = "502810624.704689"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "615"
+            endingLineNumber = "615"
+            landmarkName = "UploadPhotoWebservice(imageData:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
+            timestampString = "502810624.704689"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "634"
+            endingLineNumber = "634"
+            landmarkName = "UploadPhotoWebservice(imageData:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
+            timestampString = "502810624.704689"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "355"
+            endingLineNumber = "355"
+            landmarkName = "selEditSchool(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeeTwo/Views/ViewController/MyProfileVC.swift"
+            timestampString = "502809361.258208"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "167"
+            endingLineNumber = "167"
+            landmarkName = "setUpView()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeeTwo/Views/ViewController/EditProfileVC.swift"
+            timestampString = "502810624.704689"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "450"
+            endingLineNumber = "450"
+            landmarkName = "CallProfileUpdateData(fieldId:text:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeeTwo/Views/ViewController/MyProfileVC.swift"
+            timestampString = "502802737.232392"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "viewWillAppear(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MeeTwo/Views/ViewController/MyProfileVC.swift"
+            timestampString = "502808888.596446"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "119"
+            endingLineNumber = "119"
+            landmarkName = "setUpView()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

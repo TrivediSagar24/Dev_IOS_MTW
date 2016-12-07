@@ -1,6 +1,7 @@
  
 #import <Foundation/Foundation.h>
 #import <sqlite3.h>
+#import <UIKit/UIKit.h>
 
 @interface DBOperation : NSObject 
 {
@@ -13,4 +14,6 @@
 +(BOOL) executeSQL:(NSString *)sqlTmp;
 +(NSMutableArray*) selectData:(NSString *)sql;
 +(NSMutableArray *)SortArray : (NSMutableArray *)arrOriginal;
++(CGFloat)heightForLabel:(UILabel *)label withText:(NSString *)text;
++(NSString *)returnRemoveMoreSpace : (NSString *)str;
 @end
