@@ -25,6 +25,10 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     var pageControl: LCAnimatedPageControl!
     var globalMethodObj = GlobalMethods()
     
+    var strStoreDesc = ""
+    var strStoreSchool = ""
+    var strStoreWork = ""
+    
     var imagePickerControllerObj = UIImagePickerController()
     
     @IBOutlet var btnAddPhoto: UIButton!
@@ -183,6 +187,10 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         let descText = dict?.object(forKey: "description") as?String
         let schoolText = dict?.object(forKey: "school") as?String
         let currentWork = dict?.object(forKey: "work") as?String
+        strStoreDesc = descText!
+        strStoreSchool = schoolText!
+        strStoreWork = currentWork!
+        
 
         if descText?.characters.count != 0
         {
@@ -324,8 +332,13 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         {
             sender.isSelected = false
             self.stopUserIntractionOfTextfield(textview: txtDesc)
-            let str = DBOperation.returnRemoveMoreSpace(txtDesc.text)
-            self.CallProfileUpdateData(fieldId: "1", text: str!)
+            
+            if strStoreDesc != txtDesc.text
+            {
+                let str = DBOperation.returnRemoveMoreSpace(txtDesc.text)
+                self.CallProfileUpdateData(fieldId: "1", text: str!)
+            }
+            
         }
         else
         {
@@ -340,8 +353,11 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         {
             sender.isSelected = false
             let str = DBOperation.returnRemoveMoreSpace(txtWork.text)
-            self.stopUserIntractionOfTextfield(textview: txtWork)
-            self.CallProfileUpdateData(fieldId: "3", text: str!)
+            if strStoreWork != txtWork.text
+            {
+                self.stopUserIntractionOfTextfield(textview: txtWork)
+                self.CallProfileUpdateData(fieldId: "3", text: str!)
+            }
         }
         else
         {
@@ -356,8 +372,11 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         {
             sender.isSelected = false
             let str = DBOperation.returnRemoveMoreSpace(txtSchool.text)
-            self.stopUserIntractionOfTextfield(textview: txtSchool)
-            self.CallProfileUpdateData(fieldId: "2", text: str!)
+            if strStoreSchool != txtSchool.text
+            {
+                self.stopUserIntractionOfTextfield(textview: txtSchool)
+                self.CallProfileUpdateData(fieldId: "2", text: str!)
+            }
         }
         else
         {
