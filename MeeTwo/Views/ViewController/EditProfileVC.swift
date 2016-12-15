@@ -172,6 +172,8 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     
     func back()
     {
+        self.view.endEditing(true)
+        
         if (strStoreDesc != txtDesc.text) || (strStoreWork != txtWork.text) || (strStoreSchool != txtSchool.text)
         {
             self.callUpdateProfileWithouField()
@@ -264,17 +266,21 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         
         let PicStr = dict[kurl] as! String
         
+        
         if PicStr.characters.count == 0
         {
-            cell.lblAddphotoObj.isHidden = false
             cell.imgSlideObj.isHidden = true
             cell.btnStarIcon.isHidden = true
+            cell.lblAddphotoObj.isHidden = false
         }
         else
         {
             let urlString : NSURL = NSURL.init(string: PicStr)!
-            let imgPlaceHolder = UIImage.init(named: kGallaryPlaceholder)
-            cell.imgSlideObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
+            let imgPlaceHolderObj = UIImage.init(named: kGallaryPlaceholder)
+            
+            cell.imgPlaceholder.image = imgPlaceHolderObj
+            cell.imgSlideObj.sd_setImage(with: urlString as URL)
+//            cell.imgSlideObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
             
             cell.lblAddphotoObj.isHidden = true
             cell.imgSlideObj.isHidden = false
@@ -296,7 +302,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
             cell.btnStarIcon.addTarget(self, action: #selector(self.clickedOnStarIcon), for: .touchUpInside)
             
             cell.btnStarIcon.tag = indexPath.row
-            
+            cell.lblAddphotoObj.isHidden = true
         }
         
         return cell
@@ -457,6 +463,8 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
 
     @IBAction func selEditDesc(_ sender: UIButton)
     {
+        
+        
         if sender.isSelected
         {
             sender.isSelected = false

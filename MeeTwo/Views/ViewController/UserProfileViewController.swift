@@ -132,8 +132,6 @@ class UserProfileViewController: UIViewController {
         let distance_away = userDict.object(forKey: kdistance_away) as! Int
         let age_obj = userDict.object(forKey: kage) as! String
         
- 
-     
         self.lblUserName.text = "\(firstName), \(age_obj)"
         self.lblAge.text = "\(distance_away) km away"
         

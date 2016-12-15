@@ -15,3 +15,4 @@
 #import "IQKeyboardManagerSwift.h"
 #import "FXBlurView.h"
 #import "JTProgressHUD.h"
+#import "NMRangeSlider.h"

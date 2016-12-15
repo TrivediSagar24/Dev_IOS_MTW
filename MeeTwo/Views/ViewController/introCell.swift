@@ -12,6 +12,7 @@ class introCell: UICollectionViewCell
 {
     @IBOutlet var imgSlideObj: UIImageView!
     @IBOutlet var lblTitleObj: UILabel!
+    @IBOutlet var imgPlaceholder: UIImageView!
     @IBOutlet var lblAddphotoObj: UILabel!
     @IBOutlet var btnStarIcon: UIButton!
     

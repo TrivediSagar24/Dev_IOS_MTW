@@ -42,6 +42,14 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     @IBOutlet var lblUserName: UILabel!
     @IBOutlet var lblDistance: UILabel!
     
+    @IBOutlet var viewVisibilityObj: UIView!
+    
+    @IBOutlet var imgUserObj: UIImageView!
+    @IBOutlet var lblVisibilityDescObj: UILabel!
+    
+    @IBOutlet var btnActivateVisibility: UIButton!
+    
+    
     var ChemistryViewControllerObj = ChemistrySuccessViewController()
     var ToBadViewControllerObj = ToBadViewController()
     
@@ -50,6 +58,8 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        viewLocation.isHidden = true
         
         let imageName = "loginBG"
         
@@ -74,23 +84,30 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         
       //  viewLocation.isHidden = true
         
+        self.SetupScreen()
+        
+        self.visibilitySetupView()
+        
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool)
+    {
         
         if globalMethodObj.isConnectedToNetwork()
         {
-            if arrProfiles.count == 0
-            {
-                if viewDisplayProfileObj.isHidden == true
+                viewVisibilityObj.isHidden = true
+                
+                if arrProfiles.count == 0
                 {
-                    self.SetupScreen()
+                    if viewDisplayProfileObj.isHidden == true
+                    {
+                        self.SetupScreen()
+                    }
+                    else
+                    {
+                        self.GetMatchProfileServiceCall()
+                    }
                 }
-                else
-                {
-                    self.GetMatchProfileServiceCall()
-                }
-            }
         }
         else
         {
@@ -99,11 +116,13 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             viewDisplayProfileObj.isHidden = true
         }
         self.checkCurrenLocation()
+        self.visibilitySetupView()
     }
     
     override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated)
+        
     }
     
     //MARK: Check Current Location
@@ -140,6 +159,76 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             // user denied your app access to Location Services, but can grant access from Settings.app
             break
         }
+        
+    }
+    
+    
+    //MARK: Visibility View Setup 
+    
+    
+    func visibilitySetupView()
+    {
+        // Visibility True/False Setup
+        
+        lblVisibilityDescObj.text = "Your profile is invisible. Turn on visibility to find people nearby."
+        
+        var dict: NSDictionary!
+        
+        if globalMethodObj.checkUserDefaultKey(kUsernameKey: kUserProfileData)
+        {
+            dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
+        }
+        else
+        {
+            dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)
+        }
+        
+        GlobalMethods.checkUser_active = dict?.object(forKey: kis_active) as! String
+        
+        
+        let gender = dict?.object(forKey: kgender) as! String
+        
+        var imgPlaceHolder = UIImage.init(named: kimgUserLogo)
+
+        let dictObj = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)
+        
+        let profilePicUrl = dictObj?.object(forKey: kprofile_pic_url) as! String
+        
+        let urlString : NSURL = NSURL.init(string: profilePicUrl)!
+        
+        if gender == "1"
+        {
+            imgPlaceHolder = UIImage.init(named: kMalePlaceholder)
+        }
+        else if gender == "2"
+        {
+            imgPlaceHolder = UIImage.init(named: kFemalePlaceholder)
+        }
+        
+        imgUserObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
+        
+        let cornerRadius = (UIScreen.main.bounds.size.width / 320 * 100) / 2
+        imgUserObj.layer.cornerRadius = cornerRadius
+        imgUserObj.clipsToBounds = true
+        
+        btnActivateVisibility.layer.cornerRadius = 5
+        
+        
+        //            #define kDEV_PROPROTIONAL_Width(val) ([UIScreen mainScreen].bounds.size.width / IPHONE5_WIDTH * val)
+        
+        imgUserObj.layer.borderWidth = 1
+        imgUserObj.layer.borderColor =  btnYes.backgroundColor?.cgColor
+        
+        if GlobalMethods.checkUser_active == "0"
+        {
+            viewVisibilityObj.isHidden = false
+        }
+        else
+        {
+            viewVisibilityObj.isHidden = true
+        }
+        
+        
         
     }
     
@@ -194,8 +283,10 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         viewLocationInner.layer.cornerRadius = 10
         viewLocationInner.layer.masksToBounds = true
         
-        txtTopLoc.text = "Sapio uses your location\nto find people nearby."
+        txtTopLoc.text = "Meetwo uses your\nlocation to find people\nnearby."
         txtBottomLoc.text = "Please enable location to get \nstarted"
+        
+        self.visibilitySetupView()
 
     }
     
@@ -680,11 +771,11 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                         
                         if gender == "1"
                         {
-                            imgPlaceHolder = UIImage.init(named: kFemalePlaceholder)
+                            imgPlaceHolder = UIImage.init(named: kMalePlaceholder)
                         }
                         else if gender == "2"
                         {
-                            imgPlaceHolder = UIImage.init(named: kMalePlaceholder)
+                            imgPlaceHolder = UIImage.init(named: kFemalePlaceholder)
                         }
                         
                         self.imgUserProfileObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
@@ -895,6 +986,85 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             self.lblUserName.alpha = 0.0
             self.lblDistance.alpha = 0.0
         })
+    }
+    
+    @IBAction func btnActiveVisibilityClicked(_ sender: AnyObject)
+    {
+        JTProgressHUD.show()
+        
+        let getUserId = globalMethodObj.getUserId()
+        
+        let parameters =
+            [
+                GlobalMethods.METHOD_NAME: "set_user_active",
+                "user_id": getUserId,
+                "is_active": "1",
+                ]  as [String : Any]
+        
+        globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
+            
+            JTProgressHUD.hide()
+            
+            if error != nil
+            {
+                self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error?.localizedDescription)!, viewcontrolelr: self)
+            }
+            else
+            {
+                let status = result["status"] as! Int
+                
+                if status == 1
+                {
+                    
+                    var dictUserData: NSDictionary!
+                    
+                    if self.globalMethodObj.checkUserDefaultKey(kUsernameKey: kUserProfileData)
+                    {
+                        dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
+                    }
+                    else
+                    {
+                        dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)
+                    }
+                    
+                    let NewDictUserData = NSMutableDictionary(dictionary: dictUserData)
+                    
+                    NewDictUserData.setObject("1", forKey: kis_active as NSCopying)
+                    
+                    let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData)
+                    
+                    if self.globalMethodObj.checkUserDefaultKey(kUsernameKey: kUserProfileData)
+                    {
+                         self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: kUserProfileData)
+                    }
+                    else
+                    {
+                         self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: kUSERDATA)
+                    }
+                    
+                    GlobalMethods.checkUser_active = "0"
+                    
+                    UIView.animate(withDuration: 0.5, animations: { 
+                        self.viewVisibilityObj.alpha = 0.0
+                        }, completion: { (true) in
+                            self.viewVisibilityObj.isHidden = true
+                            self.viewVisibilityObj.alpha = 1.0
+                    })
+                    
+                }
+                else
+                {
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result["message"] as! String, viewcontrolelr: self)
+                }
+                
+            }
+        }
+
+    }
+    
+    override func viewWillLayoutSubviews()
+    {
+        self.visibilitySetupView()
     }
     
 }

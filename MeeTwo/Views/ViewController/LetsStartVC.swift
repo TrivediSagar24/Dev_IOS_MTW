@@ -51,6 +51,7 @@ class LetsStartVC: UIViewController {
         let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)
         let is_question_attempted = dict?.object(forKey: kfirst_name) as! String
 
+        
         if is_question_attempted == kONE
         {
             self.MoveToDashboardHomeVC()

@@ -16,6 +16,7 @@ import UIKit
 ["Meetwo uses chemistry to find you matches","Meetwo finds best matches for you","Create your personality in Meetwo"]
 */
 
+
 let kINTRO_IMG_0          = "intro-0.png"
 let kINTRO_IMG_1          = "intro-1.png"
 let kINTRO_IMG_2          = "intro-2.png"
@@ -112,3 +113,5 @@ let kpic_id = "pic_id"
 
 let kimage_id = "image_id"
 let kimage_url = "image_url"
+
+let kis_active = "is_active"

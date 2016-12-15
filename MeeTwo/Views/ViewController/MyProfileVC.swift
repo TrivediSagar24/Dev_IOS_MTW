@@ -274,13 +274,10 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
 
         
         cell.btnStarIcon.isUserInteractionEnabled = false
-        let imgPlaceHolder = UIImage.init(named: kGallaryPlaceholder)
+        let imgPlaceHolderObj = UIImage.init(named: kGallaryPlaceholder)
         
-        cell.imgSlideObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
-        
-        
-        
-        // cell.backgroundColor = UIColor.green
+        cell.imgPlaceholder.image = imgPlaceHolderObj
+        cell.imgSlideObj.sd_setImage(with: urlString as URL)
         
         return cell
     }
@@ -327,6 +324,17 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
 
     @IBAction func selSettingAct(_ sender: AnyObject)
     {
+        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let vc = storyboard.instantiateViewController(withIdentifier: "SettingVC") as! SettingVC
+        
+        /*
+        let navigationController = UINavigationController(rootViewController: vc)
+        
+        navigationController.isNavigationBarHidden = false
+ */
+        self.navigationController?.pushViewController(vc, animated: true)
+//        self.present(navigationController, animated: true, completion: nil)
     }
     
     //MARK: Delegate Method Of Display All Update Data

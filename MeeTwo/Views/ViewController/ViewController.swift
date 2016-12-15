@@ -8,8 +8,9 @@
 
 import UIKit
 import Alamofire
+import CoreLocation
 
-class ViewController: UIViewController
+class ViewController: UIViewController,CLLocationManagerDelegate
 {
     
     @IBOutlet var btnFacebook: UIButton!
@@ -25,12 +26,15 @@ class ViewController: UIViewController
     
     let fbLoginManager : FBSDKLoginManager = FBSDKLoginManager()
   
+    let manager = CLLocationManager()
 
 //    MARK: ViewLifeCycle Methods
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        manager.delegate = self
         
         btnFacebook.layer.cornerRadius = 4
         btnFacebook.layer.masksToBounds = true
@@ -94,6 +98,28 @@ class ViewController: UIViewController
         
     }
     
+    override func viewWillAppear(_ animated: Bool)
+    {
+        if(FBSDKAccessToken.current() == nil)
+        {
+            btnFacebook.setTitle(kLoginWithFacebook, for: UIControlState.normal)
+            
+            // configureFacebook()
+        }
+        else
+        {
+            btnFacebook.setTitle("Logout", for: UIControlState.normal)
+        }
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
+    func checkCurrenLocation()
+    {
+        if CLLocationManager.locationServicesEnabled()
+        {
+            manager.startUpdatingLocation()
+        }
+    }
     override func viewDidAppear(_ animated: Bool)
     {
         super.viewDidAppear(animated)
@@ -101,8 +127,34 @@ class ViewController: UIViewController
         self.pageControl.frame = CGRect(x: 0, y: 0, width: pageControllerObj.frame.size.width, height: pageControllerObj.frame.size.height)
         
         collectionViewSliderObj.contentSize.width = collectionViewSliderObj.bounds.size.width * 5
+        self.checkCurrenLocation()
        
     }
+    func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
+        switch status {
+        case .notDetermined:
+            manager.requestAlwaysAuthorization()
+            
+            break
+        case .authorizedWhenInUse:
+            
+            manager.startUpdatingLocation()
+            break
+        case .authorizedAlways:
+            
+            manager.startUpdatingLocation()
+            break
+        case .restricted:
+            // restricted by e.g. parental controls. User can't enable Location Services
+            
+            break
+        case .denied:
+            
+            // user denied your app access to Location Services, but can grant access from Settings.app
+            break
+        }
+    }
+
     
     func valueChanged(_ sender: LCAnimatedPageControl)
     {
@@ -194,7 +246,6 @@ class ViewController: UIViewController
                 {
                     print("result \(result)")
                     
-                    JTProgressHUD.hide()
 //                    MBProgressHUD.hide(for: (self.view)!, animated: true)
 
                     self.btnFacebook.setTitle("Logout", for: UIControlState.normal)
@@ -423,7 +474,6 @@ class ViewController: UIViewController
     
     func uploadWithAlamofire(dictionary : NSDictionary)
     {
-        
         JTProgressHUD.show()
 //        MBProgressHUD.showAdded(to: self.view, animated: true)
         
@@ -577,7 +627,6 @@ class ViewController: UIViewController
                         upload.response
                             {
                                 
-                                
                                 [weak self] response in
                                 guard self != nil else
                                 {
@@ -671,6 +720,8 @@ class ViewController: UIViewController
             
             let data: Data = NSKeyedArchiver.archivedData(withRootObject: dictResponse)
             self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: kUSERDATA)
+            
+            GlobalMethods.checkUser_active = dictResponse.object(forKey: kis_active) as! String
             
             if dictResponse[kIS_QUESTION_ATTEMPTED] as! String == kONE
             {

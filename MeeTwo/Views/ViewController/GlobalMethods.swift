@@ -18,6 +18,8 @@ class GlobalMethods: NSObject {
     static let userDataKey = "UserData"
     static var deviceToken = ""
     var request: Alamofire.Request?
+    static var checkUser_active = ""
+    
     
     func callWebService(parameter: AnyObject!,  completionHandler:@escaping (AnyObject, NSError?)->()) ->()
     {
@@ -45,7 +47,7 @@ class GlobalMethods: NSObject {
                 }
                 else
                 {
-                    MBProgressHUD.hide(for: (UIApplication.topViewController()?.view)!, animated: true)
+                    JTProgressHUD.hide()
                     self.alertNoInternetConnection()
                 }
             }
@@ -113,6 +115,7 @@ class GlobalMethods: NSObject {
         {
             return name as AnyObject?
         }
+        
         return nil
     }
     
