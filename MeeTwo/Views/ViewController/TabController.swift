@@ -23,24 +23,21 @@ class TabController: UITabBarController,UITabBarControllerDelegate {
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
-        self.tabBar.isHidden = true
-        TabBar.frame = CGRect(x: 0, y: 00, width: self.view.frame.size.width, height: 64.0)
-        
-        self.view.addSubview(TabBar)
-        self.delegate = self
-        
-        TabBar.layer.shadowColor = UIColor.gray.cgColor
-        TabBar.layer.shadowOpacity = 0.33
-        TabBar.layer.shadowOffset = CGSize(width: 0, height: 1)
-        TabBar.layer.shadowRadius = 0.5
-        
-        TabSelectEvent(TabBar1)
 
+        TabSelectEvent(TabBar1)
+       
     }
     
     override func viewWillAppear(_ animated: Bool)
     {
+        self.tabBar.isHidden = true
+        TabBar.frame = CGRect(x: 0, y: 00, width: self.view.frame.size.width, height: 64.0)
+        TabBar.layer.shadowColor = UIColor.gray.cgColor
+        TabBar.layer.shadowOpacity = 0.33
+        TabBar.layer.shadowOffset = CGSize(width: 0, height: 1)
+        TabBar.layer.shadowRadius = 0.5
+        self.view.addSubview(TabBar)
+        self.delegate = self
     }
     
         override func viewWillLayoutSubviews() {

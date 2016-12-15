@@ -25,6 +25,9 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     @IBOutlet var txtTopLoc: UITextView!
     @IBOutlet var lblNoDataFound: UILabel!
     
+    var arrLikeText = NSMutableArray()
+    var arrDislikeText = NSMutableArray()
+    
     var globalMethodObj = GlobalMethods()
     var arrProfiles = NSArray()
     
@@ -44,18 +47,30 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     
     let manager = CLLocationManager()
     
-    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
+        let imageName = "loginBG"
+        
+        arrLikeText.add("Yes")
+        arrLikeText.add("Yea")
+        arrLikeText.add("Aye")
+        arrLikeText.add("Yup")
+        arrLikeText.add("Totally")
+        
+        arrDislikeText.add("No")
+        arrDislikeText.add("Nope")
+        arrDislikeText.add("Nah")
+        arrDislikeText.add("No way")
+        
+        self.view.backgroundColor = UIColor(patternImage: UIImage(named: imageName)!)
+        
         self.DisplayChemistry()
+        self.setLikeDislikeTextRandomaly()
         
         // Do any additional setup after loading the view.
-        
         manager.delegate = self
-        
-        
         
       //  viewLocation.isHidden = true
         
@@ -83,10 +98,15 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             viewYesNoObj.isHidden = true
             viewDisplayProfileObj.isHidden = true
         }
-        
         self.checkCurrenLocation()
-        
     }
+    
+    override func viewDidAppear(_ animated: Bool)
+    {
+        super.viewDidAppear(animated)
+    }
+    
+    //MARK: Check Current Location
     
     func checkCurrenLocation()
     {
@@ -96,7 +116,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         }
     }
 
-   
+    
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         switch status {
         case .notDetermined:
@@ -120,7 +140,11 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             // user denied your app access to Location Services, but can grant access from Settings.app
             break
         }
+        
     }
+    
+    //MARK :- Setup Screen ( UI Setup )
+    
     func SetupScreen()
     {
         viewYesNoObj.isHidden = false
@@ -145,6 +169,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         lblDistance.clipsToBounds = true
         viewDisplayProfileObj.clipsToBounds = true
         
+        /*
         let RightGesture = UISwipeGestureRecognizer(target: self, action:#selector(self.rightSwipeGestureDirection))
         RightGesture.direction = UISwipeGestureRecognizerDirection.right
         RightGesture.delegate = self
@@ -154,11 +179,9 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         LeftGesture.direction = UISwipeGestureRecognizerDirection.left
         LeftGesture.delegate = self
         imgUserProfileObj.addGestureRecognizer(LeftGesture)
-        
+ */
+ 
         self.GetMatchProfileServiceCall()
-        
-        lblLike.text = " Like "
-        lblDislike.text = " DisLike "
         
         self.setLableFunctionality(lbl: lblLike)
         self.setLableFunctionality(lbl: lblDislike)
@@ -167,7 +190,6 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         btnEnableLoc.layer.borderColor = btnNo.backgroundColor?.cgColor
         btnEnableLoc.layer.cornerRadius = 10
         btnEnableLoc.layer.masksToBounds = true
-        
         
         viewLocationInner.layer.cornerRadius = 10
         viewLocationInner.layer.masksToBounds = true
@@ -186,11 +208,101 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         lbl.alpha = 0.0
     }
     
+    //MARK: Gesture For 3D Ratation Angle
     
-    override func viewDidAppear(_ animated: Bool)
+    func imagePanned(_ iRecognizer: UIPanGestureRecognizer)
     {
-        super.viewDidAppear(animated)
+        let translation = iRecognizer.translation(in: iRecognizer.view?.superview!)
+        let percent: CGFloat = translation.x / iRecognizer.view!.frame.size.width
+        var rotationPercent: CGFloat = percent
+        
+        if iRecognizer.state == UIGestureRecognizerState.ended
+        {
+            if rotationPercent >= 0.30
+            {
+                rotationPercent = 3.0
+            }
+            else if rotationPercent <= 0.30 && rotationPercent >= 0.0
+            {
+                rotationPercent = 0
+            }
+            else if  rotationPercent >= -0.30 && rotationPercent <= 0.0
+            {
+                rotationPercent = -0
+            }
+            else if rotationPercent <= -0.30
+            {
+                rotationPercent = -3.0
+            }
+        }
+        
+        if iRecognizer.state == UIGestureRecognizerState.changed
+        {
+            if rotationPercent >= 1.5
+            {
+                rotationPercent = 1.5
+            }
+            
+            if rotationPercent <= -1.5
+            {
+                rotationPercent = -1.5
+            }
+        }
+        
+        if rotationPercent >= 0.0
+        {
+            lblLike.alpha = rotationPercent
+        }
+        else if rotationPercent <= 0.0
+        {
+            lblDislike.alpha = abs(rotationPercent)
+        }
+        
+        UIView.animate(withDuration: 0.5, delay: 0, options: [], animations: {() -> Void in
+            
+            self.setTransformOnView(rotationPercent: rotationPercent)
+
+            }, completion: { (true) in
+                
+                if rotationPercent == 3.0
+                {
+                    rotationPercent = 0
+                    self.setTransformOnView(rotationPercent: rotationPercent)
+                    self.LikeData()
+                    self.lblUserName.alpha = 0.0
+                    self.lblDistance.alpha = 0.0
+                }
+                else if rotationPercent == -3.0
+                {
+                    rotationPercent = -0
+                    self.setTransformOnView(rotationPercent: rotationPercent)
+                    self.DislikeData()
+                    self.lblUserName.alpha = 0.0
+                    self.lblDistance.alpha = 0.0
+
+                }
+                else if rotationPercent == -0 || rotationPercent == 0
+                {
+                    self.setTransformOnView(rotationPercent: rotationPercent)
+                }
+            })
     }
+
+    func setAlpha()
+    {
+        lblLike.alpha = 0.0
+        lblDislike.alpha = 0.0
+    }
+    
+    func setTransformOnView(rotationPercent: CGFloat)
+    {
+        var myTransform = CATransform3DIdentity
+        myTransform.m34 = 1.0 / -800
+        myTransform = CATransform3DRotate(myTransform, rotationPercent, 0.0, 1.0, 0.0)
+        self.viewDisplayProfileObj.layer.transform = myTransform
+        self.setAlpha()
+    }
+    
     
     //MARK: Right / Left Gesture
     func rightSwipeGestureDirection(gesture: UISwipeGestureRecognizer)
@@ -211,12 +323,12 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     {
         if globalMethodObj.isConnectedToNetwork()
         {
+            self.setUserNameAlphaOff()
             self.StoreProfileLikeDisplineInDb(likeDislike:1)
             self.callLikeDisLikeService()
             self.userintractionTrueFalse(sender: true)
             
-            let storyBoardObj = UIStoryboard(name: "Main", bundle: nil)
-            let PersonalityVCObj = storyBoardObj.instantiateViewController(withIdentifier: "PersonalityTestViewController") as! PersonalityTestViewController
+            let PersonalityVCObj = self.storyboard?.instantiateViewController(withIdentifier: "PersonalityTestViewController") as! PersonalityTestViewController
             
             PersonalityVCObj.delegate = self
             
@@ -226,6 +338,8 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
 
             let dictProfile = self.arrProfiles.object(at: self.indexOfProfile) as! NSDictionary
             PersonalityVCObj.dictionaryProfile = dictProfile
+            
+            self.setLikeDislikeTextRandomaly()
             
             self.present(navigationController, animated: true, completion: nil)
             
@@ -239,7 +353,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                     }
                     self.viewDisplayProfileObj.alpha = 1.0
             })
-            
+            self.setUserNameAlphaOn()
             
             if indexOfProfile != arrProfiles.count - 1
             {
@@ -257,16 +371,16 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 indexPageCount = indexPageCount + 1
                 self.GetMatchProfileServiceCall()
                 
-                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: {
-                    
+//                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: {
+                
                     self.viewDisplayProfileObj.isHidden = true
                     self.viewYesNoObj.isHidden = true
                     self.lblDistance.text = ""
                     self.lblUserName.text = ""
                     
-                    }, completion:  { finished in
+//                    }, completion:  { finished in
                         self.userintractionTrueFalse(sender: true)
-                })
+//                })
             }
 
         }
@@ -277,21 +391,28 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     {
         if globalMethodObj.isConnectedToNetwork()
         {
+            
             if indexOfProfile != arrProfiles.count - 1
             {
+                self.setUserNameAlphaOff()
+                self.setLikeDislikeTextRandomaly()
+                
                 self.StoreProfileLikeDisplineInDb(likeDislike:0)
                 self.callLikeDisLikeService()
                 
-                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {
-                    
+//                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {
+                
                     if self.indexOfProfile != self.arrProfiles.count - 1
                     {
                         self.displayProfile()
                     }
                     
-                    }, completion:  { finished in
+//                    }, completion:  { finished in
                         self.userintractionTrueFalse(sender: true)
-                })
+//                })
+                
+                self.setUserNameAlphaOn()
+
             }
             else
             {
@@ -299,17 +420,18 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 indexPageCount = indexPageCount + 1
                 self.GetMatchProfileServiceCall()
                 
-                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {
-                    
+//                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {
+                
                     self.viewDisplayProfileObj.isHidden = true
                     self.viewYesNoObj.isHidden = true
                     self.lblDistance.text = ""
                     self.lblUserName.text = ""
                     
-                    }, completion:  { finished in
+//                    }, completion:  { finished in
                         self.userintractionTrueFalse(sender: true)
-                })
+//                })
             }
+            
         }
     }
     
@@ -318,7 +440,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     func StoreProfileLikeDisplineInDb(likeDislike:Int)
     {
         let dictProfile = self.arrProfiles.object(at: indexOfProfile) as! NSDictionary
-        let id = dictProfile.object(forKey: "id") as! String
+        let id = dictProfile.object(forKey: kid) as! String
         
         DBOperation.executeSQL("insert into LikeDislikeProfile (user_id,other_user_id,likeDislike) VALUES ('\(globalMethodObj.getUserId())','\(id)','\(likeDislike)')")
         
@@ -336,26 +458,40 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         indexOfProfile = indexOfProfile + 1
         
         let dictProfile = self.arrProfiles.object(at: indexOfProfile) as! NSDictionary
-        let profilePicStr = dictProfile.object(forKey: "profile_pic_url")  as! String
-        let firstName = dictProfile.object(forKey: "first_name") as! String
-        let distance_away = dictProfile.object(forKey: "distance_away") as! Int
-        let age_obj = dictProfile.object(forKey: "age") as! String
+        let firstName = dictProfile.object(forKey: kfirst_name) as! String
+        let distance_away = dictProfile.object(forKey: kdistance_away) as! Int
+        let age_obj = dictProfile.object(forKey: kage) as! String
+        var profilePicStr = ""
+        
+        let arrProfilePic = dictProfile.object(forKey: kprofile_picture)  as! NSArray
+        
+        for (_,element) in arrProfilePic.enumerated()
+        {
+            let dict =  element as! NSDictionary
+            let checkProfile = dict.object(forKey: kis_profile_pic)  as! Bool
+            
+            if checkProfile == true
+            {
+                profilePicStr =  dict.object(forKey: kurl)  as! String
+            }
+        }
         
         let urlString : NSURL = NSURL.init(string: profilePicStr)!
-        let imgPlaceHolder = UIImage.init(named: "imgUserLogo.jpeg")
+        let imgPlaceHolder = UIImage.init(named: kimgUserLogo)
         self.imgUserProfileObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
 //      self.imgUserProfileObj.sd_setImage(with: urlString as URL)
         self.lblUserName.text = "\(firstName), \(age_obj)"
         self.lblDistance.text = "\(distance_away) km away"
         
-        let normalFont = UIFont(name: "inglobal", size: 30)
-        let boldSearchFont = UIFont(name: "inglobal-Bold", size: 30)
+        let normalFont = UIFont(name: kinglobal, size: 30)
+        let boldSearchFont = UIFont(name: kinglobal_Bold, size: 30)
         self.lblUserName.attributedText = self.globalMethodObj.addBoldText(fullString: "\(firstName), \(age_obj)" as NSString, boldPartsOfString: ["\(firstName)" as NSString], font: normalFont!, boldFont: boldSearchFont!)
         
         self.lblUserName.adjustsFontSizeToFitWidth = true
         self.lblDistance.adjustsFontSizeToFitWidth = true
         
-        
+        self.setUserNameAlphaOn()
+
         
     }
     
@@ -365,11 +501,41 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     {
         if sender.tag == 1 // No Click
         {
+            if indexOfProfile != arrProfiles.count - 1
+            {
+                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {
+                    }, completion:  { finished in
+                })
+
+            }
+            else
+            {
+                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {
+                    }, completion:  { finished in
+                })
+
+                
+                
+            }
+            
             self.userintractionTrueFalse(sender: false)
             self.DislikeData()
         }
         else // Yes Click
         {
+            if indexOfProfile != arrProfiles.count - 1
+            {
+                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: {
+                    }, completion:  { finished in
+                })
+            }
+            else
+            {
+                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: {
+                    }, completion:  { finished in
+                })
+            }
+            
             self.userintractionTrueFalse(sender: false)
 
             self.LikeData()
@@ -391,7 +557,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         for (_, element) in (profileArray.enumerated())
         {
             let elementObj = element as! NSDictionary
-            let OtherId = elementObj["other_user_id"] as! String
+            let OtherId = elementObj[kother_user_id] as! String
             let likeDislikeObj = elementObj["likeDislike"] as! String
             
             if stringOtherId == ""
@@ -409,8 +575,8 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         let parameters =
             [
                 GlobalMethods.METHOD_NAME:"user_like_dislike",
-                "user_id": getUserId,
-                "other_user_id":stringOtherId,
+                kuser_id: getUserId,
+                kother_user_id:stringOtherId,
                 "like":likeDislike
                 ] as [String : Any]
         
@@ -423,13 +589,13 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             else
             {
                 
-                let status = result["status"] as! Int
+                let status = result[kstatus] as! Int
                 
                 if status == 1
                 {
                     
-                    let responseotherUserIdDict = result.object(forKey: "data") as! NSDictionary
-                    let responseotherUserId = responseotherUserIdDict.object(forKey: "other_user_id") as! String
+                    let responseotherUserIdDict = result.object(forKey: kDATA) as! NSDictionary
+                    let responseotherUserId = responseotherUserIdDict.object(forKey: kother_user_id) as! String
                     
                     let words = responseotherUserId.components(separatedBy: ",") as NSArray
                     
@@ -448,7 +614,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 }
                 else
                 {
-                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result["message"] as! String, viewcontrolelr: self)
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
                 }
             }
         }
@@ -466,7 +632,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         let parameters =
             [
                 GlobalMethods.METHOD_NAME: "get_match_profile",
-                "user_id": getUserId,
+                kuser_id: getUserId,
                 "page_no": indexPageCount,
                 ] as [String : Any]
         
@@ -478,30 +644,56 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             }
             else
             {
-                let status = result["status"] as! Int
+                let status = result[kstatus] as! Int
                 
                 if status == 1
                 {
-                    let dictData = result.object(forKey: "data") as! NSDictionary
+                    let dictData = result.object(forKey: kDATA) as! NSDictionary
                     self.arrProfiles = dictData.object(forKey: "profiles") as! NSArray
+                    print(dictData)
+                    var profilePicStr = ""
                     
                     if self.arrProfiles.count != 0
                     {
                         let dictProfile = self.arrProfiles.object(at: self.indexOfProfile) as! NSDictionary
-                        let profilePicStr = dictProfile.object(forKey: "profile_pic_url")  as! String
-                        let firstName = dictProfile.object(forKey: "first_name") as! String
-                        let distance_away = dictProfile.object(forKey: "distance_away") as! Int
-                        let age_obj = dictProfile.object(forKey: "age") as! String
+                        
+                        let arrProfilePic = dictProfile.object(forKey: kprofile_picture)  as! NSArray
+                        
+                        for (_,element) in arrProfilePic.enumerated()
+                        {
+                            let dict =  element as! NSDictionary
+                            let checkProfile = dict.object(forKey: "is_profile_pic")  as! Bool
+
+                            if checkProfile == true
+                            {
+                                profilePicStr =  dict.object(forKey: "url")  as! String
+                            }
+                        }
+                        
+                        let firstName = dictProfile.object(forKey: kfirst_name) as! String
+                        let distance_away = dictProfile.object(forKey: kdistance_away) as! Int
+                        let age_obj = dictProfile.object(forKey: kage) as! String
+                        let gender = dictProfile.object(forKey: kgender) as! String
                         
                         let urlString : NSURL = NSURL.init(string: profilePicStr)!
-                        let imgPlaceHolder = UIImage.init(named: "imgUserLogo.jpeg")
+                        var imgPlaceHolder = UIImage.init(named: kimgUserLogo)
+                        
+                        if gender == "1"
+                        {
+                            imgPlaceHolder = UIImage.init(named: kFemalePlaceholder)
+                        }
+                        else if gender == "2"
+                        {
+                            imgPlaceHolder = UIImage.init(named: kMalePlaceholder)
+                        }
+                        
                         self.imgUserProfileObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
                         //                    self.imgUserProfileObj.sd_setImage(with: urlString as URL)
                         self.lblUserName.text = "\(firstName), \(age_obj)"
                         self.lblDistance.text = "\(distance_away) km away"
                         
-                        let normalFont = UIFont(name: "inglobal", size: 30)
-                        let boldSearchFont = UIFont(name: "inglobal-Bold", size: 30)
+                        let normalFont = UIFont(name: kinglobal, size: 30)
+                        let boldSearchFont = UIFont(name: kinglobal_Bold, size: 30)
                         self.lblUserName.attributedText = self.globalMethodObj.addBoldText(fullString: "\(firstName), \(age_obj)" as NSString, boldPartsOfString: ["\(firstName)" as NSString], font: normalFont!, boldFont: boldSearchFont!)
                         
                         self.lblUserName.adjustsFontSizeToFitWidth = true
@@ -539,15 +731,12 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 }
                 else
                 {
-                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result["message"] as! String, viewcontrolelr: self)
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
  
                 }
                 
                 self.userintractionTrueFalse(sender: true)
-                
-//               self.cardContainer.dataSource = self
-//                self.cardContainer.delegate = self
-//                self.cardContainer.reload()
+     
             }
         }
     }
@@ -556,15 +745,13 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     
     @IBAction func btnProfileClicked(_ sender: AnyObject)
     {
-        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        
-        let vc = storyboard.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
         
         let navigationController = UINavigationController(rootViewController: vc)
         navigationController.isNavigationBarHidden = false
         
         let dictProfile = self.arrProfiles.object(at: indexOfProfile) as! NSDictionary
-        let firstName = dictProfile.object(forKey: "first_name") as! String
+        let firstName = dictProfile.object(forKey: kfirst_name) as! String
         vc.StringNavigationTitle = firstName
         
         vc.userDict = dictProfile
@@ -584,11 +771,11 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     
     func DisplayChemistry() // this function the first controllers
     {
-        if globalMethodObj.checkUserDefaultKey(kUsernameKey: "displayChemistry")
+        if globalMethodObj.checkUserDefaultKey(kUsernameKey: kdisplayChemistry)
         {
-            let status = globalMethodObj.getUserDefault(KeyToReturnValye: "displayChemistry") as! String
+            let status = globalMethodObj.getUserDefault(KeyToReturnValye: kdisplayChemistry) as! String
             
-            if status == "1"
+            if status == kONE
             {
                 ChemistryViewControllerObj = self.storyboard?.instantiateViewController(withIdentifier: "ChemistrySuccessViewController") as! ChemistrySuccessViewController
                 
@@ -619,6 +806,9 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 })
             }
         }
+        
+        let RightGesture = UIPanGestureRecognizer(target: self, action:#selector(self.imagePanned))
+        viewDisplayProfileObj.addGestureRecognizer(RightGesture)
     }
 
     
@@ -679,4 +869,32 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             }
     }
     }
+    
+    func setLikeDislikeTextRandomaly()
+    {
+        let value = arrLikeText.count
+        let valueDislike = arrDislikeText.count
+        let randomDisLike = Int(arc4random_uniform(UInt32(valueDislike)))
+        let randomLike = Int(arc4random_uniform(UInt32(value)))
+        
+        lblLike.text = " \(arrLikeText.object(at: randomLike)) "
+        lblDislike.text = " \(arrDislikeText.object(at: randomDisLike)) "
+    }
+    
+    func setUserNameAlphaOn()
+    {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.lblUserName.alpha = 1.0
+            self.lblDistance.alpha = 1.0
+        })
+    }
+    
+    func setUserNameAlphaOff()
+    {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.lblUserName.alpha = 0.0
+            self.lblDistance.alpha = 0.0
+        })
+    }
+    
 }

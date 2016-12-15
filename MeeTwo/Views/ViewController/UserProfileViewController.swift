@@ -87,7 +87,7 @@ class UserProfileViewController: UIViewController {
         self.navigationController?.navigationBar.topItem?.title = StringNavigationTitle
         
         self.navigationController?.navigationBar.titleTextAttributes =
-            [NSFontAttributeName: UIFont.init(name: "inglobal", size:  20.0)!]
+            [NSFontAttributeName: UIFont.init(name: kinglobal, size:  20.0)!]
         
         self.navigationController?.navigationItem.hidesBackButton = false
         
@@ -110,37 +110,50 @@ class UserProfileViewController: UIViewController {
     }
     func setUpView()
     {
-        let profilePicStr = userDict.object(forKey: "profile_pic_url")  as! String
+//        let profilePicStr = userDict.object(forKey: kprofile_pic_url)  as! String
         
+        var profilePicStr = ""
+        let profilePicarr = userDict.object(forKey: kprofile_picture)  as! NSArray
+        
+        for (_,element) in profilePicarr.enumerated()
+        {
+            let dict =  element as! NSDictionary
+            let checkProfile = dict.object(forKey: "is_profile_pic")  as! Bool
+            
+            if checkProfile == true
+            {
+                profilePicStr =  dict.object(forKey: "url")  as! String
+            }
+        }
         
         arrImages1 = [profilePicStr,profilePicStr,profilePicStr]
         
-        let firstName = userDict.object(forKey: "first_name") as! String
-        let distance_away = userDict.object(forKey: "distance_away") as! Int
-        let age_obj = userDict.object(forKey: "age") as! String
+        let firstName = userDict.object(forKey: kfirst_name) as! String
+        let distance_away = userDict.object(forKey: kdistance_away) as! Int
+        let age_obj = userDict.object(forKey: kage) as! String
         
  
      
         self.lblUserName.text = "\(firstName), \(age_obj)"
         self.lblAge.text = "\(distance_away) km away"
         
-        let normalFont = UIFont(name: "inglobal", size: 25)
-        let boldSearchFont = UIFont(name: "inglobal-Bold", size: 25)
+        let normalFont = UIFont(name: kinglobal, size: 25)
+        let boldSearchFont = UIFont(name: kinglobal_Bold, size: 25)
         self.lblUserName.attributedText = self.globalMethodObj1.addBoldText(fullString: "\(firstName), \(age_obj)" as NSString, boldPartsOfString: ["\(firstName)" as NSString], font: normalFont!, boldFont: boldSearchFont!)
         
         self.lblUserName.adjustsFontSizeToFitWidth = true
         self.lblAge.adjustsFontSizeToFitWidth = true
         
       //  let descText = userDict.object(forKey: "") as! String
-        lblDesc.text = userDict.object(forKey: "description") as?String
+        lblDesc.text = userDict.object(forKey: kdescription) as?String
         
         lblSchoolCity.text = userDict.object(forKey: "") as?String
         
        
         
-        lblSchool.text = userDict.object(forKey: "school") as?String
+        lblSchool.text = userDict.object(forKey: kschool) as?String
         
-        lblCurrentWork.text = userDict.object(forKey: "work") as?String
+        lblCurrentWork.text = userDict.object(forKey: kwork) as?String
         
         
     }
@@ -177,7 +190,7 @@ class UserProfileViewController: UIViewController {
         let urlString : NSURL = NSURL.init(string: PicStr)!
         
         
-        let imgPlaceHolder = UIImage.init(named: "imgUserLogo.jpeg")
+        let imgPlaceHolder = UIImage.init(named: kimgUserLogo)
         
         
         cell.imgSlideObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)

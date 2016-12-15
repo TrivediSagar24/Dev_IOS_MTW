@@ -72,6 +72,8 @@
 		2EF852691DE40F8D001B119F /* intro-3.png in Resources */ = {isa = PBXBuildFile; fileRef = 2EF852631DE40F8D001B119F /* intro-3.png */; };
 		2EF8526A1DE40F8D001B119F /* intro-4.png in Resources */ = {isa = PBXBuildFile; fileRef = 2EF852641DE40F8D001B119F /* intro-4.png */; };
 		2EF8526B1DE40F8D001B119F /* intro-5.png in Resources */ = {isa = PBXBuildFile; fileRef = 2EF852651DE40F8D001B119F /* intro-5.png */; };
+		41253A481DFB4CCA00214CDA /* JTProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 41253A471DFB4CCA00214CDA /* JTProgressHUD.m */; };
+		41494E381DFC7C2300ABA81D /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = 41494E371DFC7C2300ABA81D /* Global.swift */; };
 		4C68D2BF1BFB155300C77936 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C68D2BD1BFB155300C77936 /* FBSDKCoreKit.framework */; };
 		4C68D2C01BFB155300C77936 /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C68D2BE1BFB155300C77936 /* FBSDKLoginKit.framework */; };
 		521680CD1DD1D4AE00E76882 /* HomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 521680CC1DD1D4AE00E76882 /* HomeVC.swift */; };
@@ -192,6 +194,9 @@
 		2EF852641DE40F8D001B119F /* intro-4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "intro-4.png"; sourceTree = "<group>"; };
 		2EF852651DE40F8D001B119F /* intro-5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "intro-5.png"; sourceTree = "<group>"; };
 		3F21B0855CE15DC42DC5E4B3 /* Pods_MeeTwo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MeeTwo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		41253A461DFB4CCA00214CDA /* JTProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JTProgressHUD.h; sourceTree = "<group>"; };
+		41253A471DFB4CCA00214CDA /* JTProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JTProgressHUD.m; sourceTree = "<group>"; };
+		41494E371DFC7C2300ABA81D /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		4C68D28C1BFB14EA00C77936 /* MeeTwo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeeTwo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4C68D2BD1BFB155300C77936 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		4C68D2BE1BFB155300C77936 /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
@@ -416,6 +421,15 @@
 			path = IntroImages;
 			sourceTree = "<group>";
 		};
+		41253A451DFB4CCA00214CDA /* JTProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				41253A461DFB4CCA00214CDA /* JTProgressHUD.h */,
+				41253A471DFB4CCA00214CDA /* JTProgressHUD.m */,
+			);
+			path = JTProgressHUD;
+			sourceTree = "<group>";
+		};
 		4C68D2831BFB14EA00C77936 = {
 			isa = PBXGroup;
 			children = (
@@ -464,6 +478,7 @@
 		5298241F1DB6445B00DA1777 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				41253A451DFB4CCA00214CDA /* JTProgressHUD */,
 				2E3A88D31DF6831B00488BB7 /* FXBlurView */,
 				2E3A2E0D1DF56F1A000C617B /* IQKeyboardManagerSwift */,
 				2EF8525F1DE40F8D001B119F /* IntroImages */,
@@ -508,6 +523,7 @@
 				52BDE0B51DEEDAB000A89D04 /* MyProfileVC.swift */,
 				52BDE0B71DEEDAF700A89D04 /* ChatVC.swift */,
 				52850A361DF18E1100646BCD /* EditProfileVC.swift */,
+				41494E371DFC7C2300ABA81D /* Global.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -751,6 +767,7 @@
 				2E3E027A1DDB41E000099A50 /* SDWebImageDownloader.m in Sources */,
 				2E3A2E321DF56F1A000C617B /* IQTitleBarButtonItem.swift in Sources */,
 				2EE2C5A41DD5991500CC43E6 /* GlobalMethods.swift in Sources */,
+				41253A481DFB4CCA00214CDA /* JTProgressHUD.m in Sources */,
 				2E3E022C1DDB17AC00099A50 /* DashHomeVC.swift in Sources */,
 				2E3A2E291DF56F1A000C617B /* IQUIViewController+Additions.swift in Sources */,
 				2E3E02801DDB41E000099A50 /* UIImage+MultiFormat.m in Sources */,
@@ -764,6 +781,7 @@
 				2EBF99361DE809D200107813 /* ToBadViewController.swift in Sources */,
 				529824241DB6445B00DA1777 /* AppDelegate.swift in Sources */,
 				2E3E02761DDB41E000099A50 /* SDImageCache.m in Sources */,
+				41494E381DFC7C2300ABA81D /* Global.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -832,7 +850,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "4e88e8e4-63de-4e61-931d-6efd4ddab272";
+				PROVISIONING_PROFILE = "4e34a2a9-c3a1-402a-8c35-15d7beda1a78";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -874,7 +892,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				PROVISIONING_PROFILE = "4e88e8e4-63de-4e61-931d-6efd4ddab272";
+				PROVISIONING_PROFILE = "4e34a2a9-c3a1-402a-8c35-15d7beda1a78";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				VALIDATE_PRODUCT = YES;

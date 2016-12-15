@@ -28,19 +28,19 @@ class LetsStartVC: UIViewController {
         
         btnLetsStart.layer.cornerRadius = 4.0
         
-        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "userdata")
-        let userName = dict?.object(forKey: "first_name") as! String
+        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)
+        let userName = dict?.object(forKey: kfirst_name) as! String
         
         lblNameObj.text = "Hey \(userName)"
-        lblChemistriy.text = "People interested in you will first need to pass your test to get a chance to chat with you."
-        lblChemistryBold.text = "That's how we create chemistry!"
+        lblChemistriy.text = kchemistry_desc
+        lblChemistryBold.text = kchemistry_bold_desc
         
         
-        let normalFont = UIFont(name: "inglobal", size: 20)
-        let boldSearchFont = UIFont(name: "inglobal-Bold", size: 20)
+        let normalFont = UIFont(name: kinglobal, size: 20)
+        let boldSearchFont = UIFont(name: kinglobal_Bold, size: 20)
         lblMeetwo.attributedText = globalMethodObj.addBoldText(fullString: "Thank you for joining Meetwo", boldPartsOfString: ["Meetwo"], font: normalFont!, boldFont: boldSearchFont!)
         
-        globalMethodObj.setUserDefault(ObjectToSave: "no" as AnyObject?, KeyToSave: "DisplayLetsStart")
+        globalMethodObj.setUserDefault(ObjectToSave: "no" as AnyObject?, KeyToSave: kDisplayLetsStart)
         
         // Do any additional setup after loading the view.
     }
@@ -48,10 +48,10 @@ class LetsStartVC: UIViewController {
     
     @IBAction func btnLetsStartClicked(_ sender: AnyObject)
     {
-        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "userdata")
-        let is_question_attempted = dict?.object(forKey: "first_name") as! String
+        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)
+        let is_question_attempted = dict?.object(forKey: kfirst_name) as! String
 
-        if is_question_attempted == "1"
+        if is_question_attempted == kONE
         {
             self.MoveToDashboardHomeVC()
         }
@@ -64,10 +64,8 @@ class LetsStartVC: UIViewController {
     //MARK: - Move To Dashboard ViewController
     
     func MoveToDashboardHomeVC()
-    {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        
-        let TabViewController = storyBoard.instantiateViewController(withIdentifier: "TabController") as! TabController
+    {        
+        let TabViewController = self.storyboard?.instantiateViewController(withIdentifier: "TabController") as! TabController
         self.navigationController?.pushViewController(TabViewController, animated: true)
     }
     

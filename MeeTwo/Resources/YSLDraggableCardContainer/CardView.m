@@ -74,7 +74,7 @@
     _detailLabel.backgroundColor = [UIColor clearColor];
     _detailLabel.frame = CGRectMake(0, self.frame.size.height * 0.90, self.frame.size.width, self.frame.size.height * 0.1);
     _detailLabel.textAlignment = NSTextAlignmentCenter;
-    _detailLabel.font = [UIFont fontWithName:@"inglobal" size:17];
+    _detailLabel.font = [UIFont fontWithName:@"inglobal-Bold" size:17];
     [self addSubview:_detailLabel];
 }
 

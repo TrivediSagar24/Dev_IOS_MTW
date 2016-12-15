@@ -9,8 +9,6 @@
 import UIKit
 import Alamofire
 
-
-
 class ViewController: UIViewController
 {
     
@@ -58,28 +56,25 @@ class ViewController: UIViewController
         self.pageControllerObj.addSubview(pageControl)
         self.pageControl.addTarget(self, action: #selector(self.valueChanged(_:)), for: .valueChanged)
         
-        arrImages = ["intro-0.png","intro-1.png","intro-2.png"]
-        arrText = ["Meetwo uses chemistry to find you matches","Meetwo finds best matches for you","Create your personality in Meetwo"]
+        arrImages = [kINTRO_IMG_0,kINTRO_IMG_1,kINTRO_IMG_2]
+        arrText = [kINTRO_DESC_0,kINTRO_DESC_1,kINTRO_DESC_2]
         
         if(FBSDKAccessToken.current() == nil)
         {
-            print("not logged in")
-            btnFacebook.setTitle("Login With Facebook", for: UIControlState.normal)
+            btnFacebook.setTitle(kLoginWithFacebook, for: UIControlState.normal)
             
             // configureFacebook()
         }
         else
         {
             btnFacebook.setTitle("Logout", for: UIControlState.normal)
-            print("logged in already")
-            //            MoveToHomeView()
             
-            let dict = globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "userdata")
+            let dict = globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)
             
             if dict != nil
             {
                 let dictObj = dict! as NSDictionary
-                if dictObj["is_question_attempted"] as! String == "1"
+                if dictObj[kIS_QUESTION_ATTEMPTED] as! String == kONE
                 {
                     self.MoveToDashboardHomeVC(sender:false)
                 }
@@ -91,7 +86,7 @@ class ViewController: UIViewController
             else
             {
                 fbLoginManager.logOut()
-                btnFacebook.setTitle("Login With Facebook", for: UIControlState.normal)
+                btnFacebook.setTitle(kLoginWithFacebook, for: UIControlState.normal)
             }
             
         }
@@ -139,9 +134,9 @@ class ViewController: UIViewController
             {
                 print("result \(result)")
                 
-                //                    let strFirstName: String = (result.objectForKey("first_name") as? String)!
-                //                    let strLastName: String = (result.objectForKey("last_name") as? String)!
-                //                    let strPictureURL: String = (result.objectForKey("picture")?.objectForKey("data")?.objectForKey("url") as? String)!
+                //                    let strFirstName: String = (result.objectForKey(kfirst_name) as? String)!
+                //                    let strLastName: String = (result.objectForKey(klast_name) as? String)!
+                //                    let strPictureURL: String = (result.objectForKey("picture")?.objectForKey("data")?.objectForKey(kurl) as? String)!
                 
             }
             else
@@ -159,13 +154,15 @@ class ViewController: UIViewController
         {
             if(FBSDKAccessToken.current() == nil)
             {
-                MBProgressHUD.showAdded(to: self.view, animated: true)
+                JTProgressHUD.show()
+//                MBProgressHUD.showAdded(to: self.view, animated: true)
                 
-                fbLoginManager .logIn(withReadPermissions: ["public_profile", "email", "user_friends","user_education_history","user_about_me","user_birthday","user_work_history"], handler: { (result, error) -> Void in
+                fbLoginManager .logIn(withReadPermissions: ["public_profile", kemail, "user_friends","user_education_history","user_about_me","user_birthday","user_work_history"], handler: { (result, error) -> Void in
                     
                     if (result?.isCancelled)!
                     {
-                        MBProgressHUD.hide(for: (self.view)!, animated: true)
+                        JTProgressHUD.hide()
+//                        MBProgressHUD.hide(for: (self.view)!, animated: true)
                         
                         return
                     }
@@ -173,7 +170,7 @@ class ViewController: UIViewController
                     if (error == nil)
                     {
                         let fbloginresult : FBSDKLoginManagerLoginResult = result!
-                        if(fbloginresult.grantedPermissions.contains("email"))
+                        if(fbloginresult.grantedPermissions.contains(kemail))
                         {
                             self.getFBUserData()
                             //fbLoginManager.logOut()
@@ -183,7 +180,7 @@ class ViewController: UIViewController
             }
             else
             {
-                btnFacebook.setTitle("Login With Facebook", for: UIControlState.normal)
+                btnFacebook.setTitle(kLoginWithFacebook, for: UIControlState.normal)
                 fbLoginManager.logOut()
             }
         }
@@ -197,7 +194,8 @@ class ViewController: UIViewController
                 {
                     print("result \(result)")
                     
-                    MBProgressHUD.hide(for: (self.view)!, animated: true)
+                    JTProgressHUD.hide()
+//                    MBProgressHUD.hide(for: (self.view)!, animated: true)
 
                     self.btnFacebook.setTitle("Logout", for: UIControlState.normal)
 //                    self.LoginServiceCall(dictionary:result as! NSDictionary)
@@ -206,7 +204,8 @@ class ViewController: UIViewController
                 }
                 else
                 {
-                    MBProgressHUD.hide(for: (self.view)!, animated: true)
+                    JTProgressHUD.hide()
+//                    MBProgressHUD.hide(for: (self.view)!, animated: true)
                     
                     print("error \(error)")
                 }
@@ -215,25 +214,20 @@ class ViewController: UIViewController
     }
     func MoveToLetsView()
     {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        
-        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "LetsStartVC") as! LetsStartVC
+        let nextViewController = self.storyboard?.instantiateViewController(withIdentifier: "LetsStartVC") as! LetsStartVC
         self.navigationController?.pushViewController(nextViewController, animated: true)
     }
     
     func MoveToQuestionVC(sender:Bool)
     {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-
-        let questionViewController = storyBoard.instantiateViewController(withIdentifier: "QuestionVC") as! QuestionVC
+        let questionViewController = self.storyboard?.instantiateViewController(withIdentifier: "QuestionVC") as! QuestionVC
         self.navigationController?.pushViewController(questionViewController, animated: true)
     }
     
     func MoveToDashboardHomeVC(sender:Bool)
     {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
         
-        let TabViewController = storyBoard.instantiateViewController(withIdentifier: "TabController") as! TabController
+        let TabViewController = self.storyboard?.instantiateViewController(withIdentifier: "TabController") as! TabController
         self.navigationController?.pushViewController(TabViewController, animated: sender)
     }
     
@@ -271,11 +265,12 @@ class ViewController: UIViewController
     func LoginServiceCall(dictionary : NSDictionary)
     {
         
+        
         // Convert Date Format
         var convertedDate: String = ""
-        if globalMethodObj.checkDictionaryKeyExits(key: "birthday", response: dictionary)
+        if globalMethodObj.checkDictionaryKeyExits(key: kbirthday, response: dictionary)
         {
-            let dateAsString = dictionary["birthday"] as! String
+            let dateAsString = dictionary[kbirthday] as! String
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MM/dd/yyyy"
             let date = dateFormatter.date(from: dateAsString)
@@ -291,13 +286,13 @@ class ViewController: UIViewController
         // Check Gender
         
         var gender = ""
-        if globalMethodObj.checkDictionaryKeyExits(key: "gender", response: dictionary)
+        if globalMethodObj.checkDictionaryKeyExits(key: kgender, response: dictionary)
         {
-            gender = dictionary["gender"] as! String
+            gender = dictionary[kgender] as! String
             
             if gender == "male"
             {
-                gender = "1"
+                gender = kONE
             }
             else
             {
@@ -312,9 +307,9 @@ class ViewController: UIViewController
         
         // Check Email
         var email = ""
-        if globalMethodObj.checkDictionaryKeyExits(key: "email", response: dictionary)
+        if globalMethodObj.checkDictionaryKeyExits(key: kemail, response: dictionary)
         {
-            email = dictionary["email"] as! String
+            email = dictionary[kemail] as! String
         }
         else
         {
@@ -325,11 +320,11 @@ class ViewController: UIViewController
         
         // Get School Name
         var school = ""
-        if globalMethodObj.checkDictionaryKeyExits(key: "education", response: dictionary)
+        if globalMethodObj.checkDictionaryKeyExits(key: keducation, response: dictionary)
         {
-            let schoolArray = dictionary.object(forKey: "education") as! NSArray
+            let schoolArray = dictionary.object(forKey: keducation) as! NSArray
             let schoolNameDict = schoolArray.object(at: 0) as! NSDictionary
-            let schoolName = schoolNameDict["school"] as! NSDictionary
+            let schoolName = schoolNameDict[kschool] as! NSDictionary
             school = schoolName["name"] as! String
         }
         else
@@ -340,9 +335,9 @@ class ViewController: UIViewController
         
         // Get Work Name
         var work = ""
-        if globalMethodObj.checkDictionaryKeyExits(key: "work", response: dictionary)
+        if globalMethodObj.checkDictionaryKeyExits(key: kwork, response: dictionary)
         {
-            let workArray = dictionary.object(forKey: "work") as! NSArray
+            let workArray = dictionary.object(forKey: kwork) as! NSArray
             let workNameDict = workArray.object(at: 0) as! NSDictionary
             let workName = workNameDict["employer"] as! NSDictionary
             work = workName["name"] as! String
@@ -354,13 +349,13 @@ class ViewController: UIViewController
         }
         
         //Other Parameter
-        let id = dictionary["id"] as! String
+        let id = dictionary[kid] as! String
         
         
         var firstname = ""
-        if globalMethodObj.checkDictionaryKeyExits(key: "first_name", response: dictionary)
+        if globalMethodObj.checkDictionaryKeyExits(key: kfirst_name, response: dictionary)
         {
-            firstname = dictionary["first_name"] as! String
+            firstname = dictionary[kfirst_name] as! String
         }
         else
         {
@@ -369,9 +364,9 @@ class ViewController: UIViewController
 
         
         var lastname = ""
-        if globalMethodObj.checkDictionaryKeyExits(key: "last_name", response: dictionary)
+        if globalMethodObj.checkDictionaryKeyExits(key: klast_name, response: dictionary)
         {
-            lastname = dictionary["last_name"] as! String
+            lastname = dictionary[klast_name] as! String
         }
         else
         {
@@ -384,37 +379,42 @@ class ViewController: UIViewController
         if globalMethodObj.checkDictionaryKeyExits(key: "picture", response: dictionary)
         {
             let profilePicDic = dictionary["picture"] as! NSDictionary
-            let profilePicDataDict = profilePicDic["data"] as! NSDictionary
-            ProfileURL = profilePicDataDict ["url"] as! String
+            let profilePicDataDict = profilePicDic[kDATA] as! NSDictionary
+            ProfileURL = profilePicDataDict [kurl] as! String
         }
         else
         {
             ProfileURL = ""
         }
+        
+        JTProgressHUD.show()
+
 
         let parameters =
             [
-            GlobalMethods.METHOD_NAME: "login",
-            "facebook_id": id,
-            "profile_pic_url": ProfileURL,
-            "first_name": firstname,
-            "last_name": lastname,
-            "description": "",
-            "gender": gender,
-            "school": school,
-            "work": work,
-            "email":email,
-            "birth_date": convertedDate
+            GlobalMethods.METHOD_NAME: klogin,
+            kfacebook_id: id,
+            kprofile_pic_url: ProfileURL,
+            kfirst_name: firstname,
+            klast_name: lastname,
+            kdescription: "",
+            kgender: gender,
+            kschool: school,
+            kwork: work,
+            kemail:email,
+            kbirth_date: convertedDate
         ]
         
         globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
             if error != nil
             {
-                
+                JTProgressHUD.hide()
             }
             else
             {
-                let dictResponse = result.object(forKey: "data") as! NSDictionary
+                JTProgressHUD.hide()
+
+                let dictResponse = result.object(forKey: kDATA) as! NSDictionary
                 self.movieQuestionVC(dictionary: dictResponse)
             }
         }
@@ -423,33 +423,24 @@ class ViewController: UIViewController
     
     func uploadWithAlamofire(dictionary : NSDictionary)
     {
-        MBProgressHUD.showAdded(to: self.view, animated: true)
+        
+        JTProgressHUD.show()
+//        MBProgressHUD.showAdded(to: self.view, animated: true)
         
         let profilePicDic = dictionary["picture"] as! NSDictionary
-        let profilePicDataDict = profilePicDic["data"] as! NSDictionary
-        let ProfileURL = profilePicDataDict ["url"] as! String
+        let profilePicDataDict = profilePicDic[kDATA] as! NSDictionary
+        let ProfileURL = profilePicDataDict [kurl] as! String
         let url = URL(string:ProfileURL)
         
         let dataProPic = try? Data(contentsOf: url!)
         
-        
-//        if ProfileURL.characters.count > 0
-//        {
-//            image.sd_setImage(with: url as URL?, completed: {
-//                (image, error, cacheType, url) in
-//                
-//                print("Hi")
-//            })
-//        }
-        
-        
-        
+    
         
         // Convert Date Format
         var convertedDate: String = ""
-        if globalMethodObj.checkDictionaryKeyExits(key: "birthday", response: dictionary)
+        if globalMethodObj.checkDictionaryKeyExits(key: kbirthday, response: dictionary)
         {
-            let dateAsString = dictionary["birthday"] as! String
+            let dateAsString = dictionary[kbirthday] as! String
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "MM/dd/yyyy"
             let date = dateFormatter.date(from: dateAsString)
@@ -465,19 +456,18 @@ class ViewController: UIViewController
         // Check Gender
         
         var gender = ""
-        if globalMethodObj.checkDictionaryKeyExits(key: "gender", response: dictionary)
+        if globalMethodObj.checkDictionaryKeyExits(key: kgender, response: dictionary)
         {
-            gender = dictionary["gender"] as! String
+            gender = dictionary[kgender] as! String
             
             if gender == "male"
             {
-                gender = "1"
+                gender = kONE
             }
             else
             {
                 gender = "2"
             }
-            
         }
         else
         {
@@ -486,9 +476,9 @@ class ViewController: UIViewController
         
         // Check Email
         var email = ""
-        if globalMethodObj.checkDictionaryKeyExits(key: "email", response: dictionary)
+        if globalMethodObj.checkDictionaryKeyExits(key: kemail, response: dictionary)
         {
-            email = dictionary["email"] as! String
+            email = dictionary[kemail] as! String
         }
         else
         {
@@ -499,11 +489,11 @@ class ViewController: UIViewController
         
         // Get School Name
         var school = ""
-        if globalMethodObj.checkDictionaryKeyExits(key: "education", response: dictionary)
+        if globalMethodObj.checkDictionaryKeyExits(key: keducation, response: dictionary)
         {
-            let schoolArray = dictionary.object(forKey: "education") as! NSArray
+            let schoolArray = dictionary.object(forKey: keducation) as! NSArray
             let schoolNameDict = schoolArray.object(at: 0) as! NSDictionary
-            let schoolName = schoolNameDict["school"] as! NSDictionary
+            let schoolName = schoolNameDict[kschool] as! NSDictionary
             school = schoolName["name"] as! String
         }
         else
@@ -514,9 +504,9 @@ class ViewController: UIViewController
         
         // Get Work Name
         var work = ""
-        if globalMethodObj.checkDictionaryKeyExits(key: "work", response: dictionary)
+        if globalMethodObj.checkDictionaryKeyExits(key: kwork, response: dictionary)
         {
-            let workArray = dictionary.object(forKey: "work") as! NSArray
+            let workArray = dictionary.object(forKey: kwork) as! NSArray
             let workNameDict = workArray.object(at: 0) as! NSDictionary
             let workName = workNameDict["employer"] as! NSDictionary
             work = workName["name"] as! String
@@ -528,13 +518,13 @@ class ViewController: UIViewController
         }
         
         //Other Parameter
-        let id = dictionary["id"] as! String
+        let id = dictionary[kid] as! String
         
         
         var firstname = ""
-        if globalMethodObj.checkDictionaryKeyExits(key: "first_name", response: dictionary)
+        if globalMethodObj.checkDictionaryKeyExits(key: kfirst_name, response: dictionary)
         {
-            firstname = dictionary["first_name"] as! String
+            firstname = dictionary[kfirst_name] as! String
         }
         else
         {
@@ -543,9 +533,9 @@ class ViewController: UIViewController
         
         
         var lastname = ""
-        if globalMethodObj.checkDictionaryKeyExits(key: "last_name", response: dictionary)
+        if globalMethodObj.checkDictionaryKeyExits(key: klast_name, response: dictionary)
         {
-            lastname = dictionary["last_name"] as! String
+            lastname = dictionary[klast_name] as! String
         }
         else
         {
@@ -555,23 +545,23 @@ class ViewController: UIViewController
     
         let parameters =
             [
-                GlobalMethods.METHOD_NAME: "login",
-                "facebook_id": id,
-                "first_name": firstname,
-                "last_name": lastname,
-                "description": "",
-                "gender": gender,
-                "school": school,
-                "work": work,
-                "email":email,
-                "birth_date": convertedDate
+                GlobalMethods.METHOD_NAME: klogin,
+                kfacebook_id: id,
+                kfirst_name: firstname,
+                klast_name: lastname,
+                kdescription: "",
+                kgender: gender,
+                kschool: school,
+                kwork: work,
+                kemail:email,
+                kbirth_date: convertedDate
         ]
         
         Alamofire.upload(multipartFormData:
             { multipartFormData in
             if dataProPic != nil
             {
-                multipartFormData.append(dataProPic!, withName: "profile_pic_url", fileName: "file.png", mimeType: "image/png")
+                multipartFormData.append(dataProPic!, withName: kprofile_pic_url, fileName: "file.png", mimeType: "image/png")
             }
                 
             for (key, value) in parameters
@@ -597,12 +587,15 @@ class ViewController: UIViewController
                                 do{
                                 let dict = try JSONSerialization.jsonObject(with: response.data!, options: JSONSerialization.ReadingOptions.mutableContainers)
                                     
-                                    MBProgressHUD.hide(for: (self?.view)!, animated: true)
+                                    JTProgressHUD.hide()
+//                                    MBProgressHUD.hide(for: (self?.view)!, animated: true)
 
                                     self?.movieQuestionVC(dictionary: dict as! NSDictionary)
                                 }
                                 catch {
-                                    MBProgressHUD.hide(for: (self?.view)!, animated: true)
+                                    
+                                    JTProgressHUD.hide()
+//                                    MBProgressHUD.hide(for: (self?.view)!, animated: true)
 
                                     self?.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: error.localizedDescription, viewcontrolelr: self!)
                                 }
@@ -612,7 +605,9 @@ class ViewController: UIViewController
                                 
                         }
                     case .failure(let encodingError):
-                        MBProgressHUD.hide(for: (self.view)!, animated: true)
+                        JTProgressHUD.hide()
+
+//                        MBProgressHUD.hide(for: (self.view)!, animated: true)
                         print("error:\(encodingError)")
                     }
         })
@@ -630,7 +625,7 @@ class ViewController: UIViewController
                 [
                     GlobalMethods.METHOD_NAME: "gcm_token",
                     "token":  GlobalMethods.deviceToken,
-                    "user_id": userId,
+                    kuser_id: userId,
                     "device_type": "2",
                     "device_id": UDID,
                     ]
@@ -644,9 +639,9 @@ class ViewController: UIViewController
                 {
                     print(result)
                     
-                    if self.globalMethodObj.checkUserDefaultKey(kUsernameKey: "DisplayLetsStart")
+                    if self.globalMethodObj.checkUserDefaultKey(kUsernameKey: kDisplayLetsStart)
                     {
-                        let displayLestStartObj = self.globalMethodObj.getUserDefault(KeyToReturnValye: "DisplayLetsStart") as! String
+                        let displayLestStartObj = self.globalMethodObj.getUserDefault(KeyToReturnValye: kDisplayLetsStart) as! String
                         
                         if displayLestStartObj != "no"
                         {
@@ -668,15 +663,16 @@ class ViewController: UIViewController
     
     func movieQuestionVC(dictionary:NSDictionary)
     {
-        let status = dictionary["status"] as! Int
+        
+        let status = dictionary[kstatus] as! Int
         if status == 1
         {
-            let dictResponse = dictionary.object(forKey: "data") as! NSDictionary
+            let dictResponse = dictionary.object(forKey: kDATA) as! NSDictionary
             
             let data: Data = NSKeyedArchiver.archivedData(withRootObject: dictResponse)
-            self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: "userdata")
+            self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: kUSERDATA)
             
-            if dictResponse["is_question_attempted"] as! String == "1"
+            if dictResponse[kIS_QUESTION_ATTEMPTED] as! String == kONE
             {
                 self.MoveToDashboardHomeVC(sender:true)
             }
@@ -690,7 +686,7 @@ class ViewController: UIViewController
         }
         else
         {
-            globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: dictionary["message"] as! String, viewcontrolelr: self)
+            globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: dictionary[kmessage] as! String, viewcontrolelr: self)
         }
         
     }
@@ -699,9 +695,9 @@ class ViewController: UIViewController
     
     func pushViewController(sender:Bool)
     {
-        if self.globalMethodObj.checkUserDefaultKey(kUsernameKey: "DisplayLetsStart")
+        if self.globalMethodObj.checkUserDefaultKey(kUsernameKey: kDisplayLetsStart)
         {
-            let displayLestStartObj = self.globalMethodObj.getUserDefault(KeyToReturnValye: "DisplayLetsStart") as! String
+            let displayLestStartObj = self.globalMethodObj.getUserDefault(KeyToReturnValye: kDisplayLetsStart) as! String
             
             if displayLestStartObj != "no"
             {
@@ -710,7 +706,7 @@ class ViewController: UIViewController
             else
             {
                 self.MoveToQuestionVC(sender: sender)
-                //                    self.MoveToDashboardHomeVC()
+                //self.MoveToDashboardHomeVC()
             }
         }
         else

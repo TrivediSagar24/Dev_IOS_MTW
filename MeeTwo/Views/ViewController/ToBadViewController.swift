@@ -35,12 +35,12 @@ class ToBadViewController: UIViewController {
         btnKeepSearching.layer.shadowOpacity = 0.4
         btnKeepSearching.layer.shadowRadius = 10
         
-        let otherFirstName = globalMethodObj.getUserDefault(KeyToReturnValye: "otherFirstName") as! String
+        let otherFirstName = globalMethodObj.getUserDefault(KeyToReturnValye: kotherFirstName) as! String
         
-        lblDescription.text = "The test showed that the \(otherFirstName) dosen't seem to be the right person for you. \n\n Keep going and let's find you the perfect crush!"
+        lblDescription.text = "The test showed that \(otherFirstName) doesn't seem to be the right person for you. \n\n Keep going and let's find you the perfect crush!"
         
         
-        globalMethodObj.removeuserDefaultKey(string: "displayChemistry")
+        globalMethodObj.removeuserDefaultKey(string: kdisplayChemistry)
         
         // Do any additional setup after loading the view.
     }

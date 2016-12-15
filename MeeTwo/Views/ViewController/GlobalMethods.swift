@@ -134,8 +134,8 @@ class GlobalMethods: NSObject {
     //MARK: Get User Id
     func getUserId() -> String
     {
-        let dict = self.getUserDefaultDictionaryValue(KeyToReturnValye: "userdata")
-        let userName = dict?.object(forKey: "user_id") as! String
+        let dict = self.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)
+        let userName = dict?.object(forKey: kuser_id) as! String
         return userName
     }
     
@@ -166,7 +166,7 @@ class GlobalMethods: NSObject {
     {
         let fontSize = UIFont.systemFontSize
         let attrs = [
-            NSFontAttributeName: UIFont.init(name: "inglobal-Bold", size:  20.0),
+            NSFontAttributeName: UIFont.init(name: kinglobal_Bold, size:  20.0),
             NSForegroundColorAttributeName: UIColor.black
         ] as [String : Any]
         let nonBoldAttribute = [

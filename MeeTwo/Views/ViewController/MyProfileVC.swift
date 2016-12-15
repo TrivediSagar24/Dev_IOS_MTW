@@ -33,26 +33,19 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
     
     @IBOutlet var viewCurrentWorkObj: UIView!
     
-    var heightConstraintViewDescription = NSLayoutConstraint()
-    var heightConstraintViewSchool = NSLayoutConstraint()
-    var heightConstraintViewCurrentWork = NSLayoutConstraint()
-    
     @IBOutlet var heightConstraintOfDescriptionView: NSLayoutConstraint!
     
     @IBOutlet var HeightConstraintOfSchoolView: NSLayoutConstraint!
     
     @IBOutlet var HeightConstraintOfCurrentView: NSLayoutConstraint!
     
-    
     @IBOutlet var scrollViewObj: UIScrollView!
-    
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
 //        self.setUpView()
-
         
     }
     override func viewDidAppear(_ animated: Bool)
@@ -116,13 +109,11 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
     func setUpView()
     {
        
-        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "UserProfileData")
+        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
     
-        let firstName = dict?.object(forKey: "first_name") as! String
-        
-        let age_obj = dict?.object(forKey: "age") as! String
-        
-        let distenceAway  = dict?.object(forKey: "distance_away") as! Int
+        let firstName = dict?.object(forKey: kfirst_name) as! String
+        let age_obj = dict?.object(forKey: kage) as! String
+        let distenceAway  = dict?.object(forKey: kdistance_away) as! Int
         
         if  distenceAway == 0
         {
@@ -135,99 +126,110 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
          
         self.lblName.text = "\(firstName), \(age_obj)"
         
-        let normalFont = UIFont(name: "inglobal", size: 25)
-        let boldSearchFont = UIFont(name: "inglobal-Bold", size: 25)
+        let normalFont = UIFont(name: kinglobal, size: 25)
+        let boldSearchFont = UIFont(name: kinglobal_Bold, size: 25)
         self.lblName.attributedText = self.globalMethodObj.addBoldText(fullString: "\(firstName), \(age_obj)" as NSString, boldPartsOfString: ["\(firstName)" as NSString], font: normalFont!, boldFont: boldSearchFont!)
         
         self.lblName.adjustsFontSizeToFitWidth = true
         self.lblRightHere.adjustsFontSizeToFitWidth = true
         
-        let descText = dict?.object(forKey: "description") as?String
+        let descText = dict?.object(forKey: kdescription) as?String
         lblDesc.text = descText
         
-        let schoolText = dict?.object(forKey: "school") as?String
+        let schoolText = dict?.object(forKey: kschool) as?String
         lblSchool.text = schoolText
         
-        let currentWork = dict?.object(forKey: "work") as?String
+        let currentWork = dict?.object(forKey: kwork) as?String
         lblCurrentwork.text = currentWork
         
         viewDescriptionObj.isHidden = false
         viewSchoolDescObj.isHidden = false
         viewCurrentWorkObj.isHidden = false
-     
+        
         let labelDescHeight = DBOperation.height(for: lblDesc, withText: lblDesc.text)
         let labelschoolHeight = DBOperation.height(for: lblSchool, withText: lblSchool.text)
         let labelcurrentWorkHeight =  DBOperation.height(for: lblCurrentwork, withText: lblCurrentwork.text)
         
-        heightConstraintOfDescriptionView.constant = 200
-        HeightConstraintOfSchoolView.constant = 200
-        heightConstraintViewCurrentWork.constant = 200
-
-        
-        if descText?.characters.count == 0
-        {
-            heightConstraintOfDescriptionView.constant = 0
-            self.view.layoutIfNeeded()
-            
-//        heightConstraintViewDescription = NSLayoutConstraint(item: viewDescriptionObj, attribute: .height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
-//            viewDescriptionObj.frame = CGRect(x: viewDescriptionObj.frame.origin.x, y: viewDescriptionObj.frame.origin.y, width: viewDescriptionObj.frame.size.width, height: 0)
-
-//           heightConstraintViewDescription = viewDescriptionObj.addConstraint(NSLayoutConstraint(item: viewDescriptionObj, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0))
-//            viewDescriptionObj.isHidden = true
-            
-        }
-        else
-        {
-            heightConstraintOfDescriptionView.constant = lblDesc.frame.origin.y + labelDescHeight + 4
-            self.view.layoutIfNeeded()
-
-        }
-        
-        if schoolText?.characters.count == 0
-        {
-
-            HeightConstraintOfSchoolView.constant = labelschoolHeight
-            self.view.layoutIfNeeded()
-
-            
-//        heightConstraintViewSchool = NSLayoutConstraint(item: viewSchoolDescObj, attribute: .height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
-            
-//           heightConstraintViewSchool = viewSchoolDescObj.addConstraint(NSLayoutConstraint(item: viewSchoolDescObj, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0))
-//            viewSchoolDescObj.isHidden = true
-        }
-        else
-        {
-            HeightConstraintOfSchoolView.constant = lblSchool.frame.origin.y + labelschoolHeight + 4
-            self.view.layoutIfNeeded()
-
-//            viewSchoolDescObj .removeConstraint(heightConstraintViewSchool)
-        }
-        
-        if currentWork?.characters.count == 0
-        {
-            heightConstraintViewCurrentWork.constant = labelcurrentWorkHeight
-            self.view.layoutIfNeeded()
-
-//            heightConstraintViewCurrentWork = NSLayoutConstraint(item: viewCurrentWorkObj, attribute: .height, relatedBy: NSLayoutRelation.equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
-            
-//            heightConstraintViewCurrentWork =  viewCurrentWorkObj.addConstraint(NSLayoutConstraint(item: viewCurrentWorkObj, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0))
-//            viewCurrentWorkObj.isHidden = true
-        }
-        else
-        {
-            heightConstraintViewCurrentWork.constant = lblCurrentwork.frame.origin.y + labelcurrentWorkHeight
-            self.view.layoutIfNeeded()
-
-//            viewCurrentWorkObj .removeConstraint(heightConstraintViewCurrentWork)
-        }
+        heightConstraintOfDescriptionView.constant = 400
+        HeightConstraintOfSchoolView.constant = 400
+        HeightConstraintOfCurrentView.constant = 400
+        self.view.layoutIfNeeded()
         
         
-        self.arrImagesProfile =  dict?["profile_picture"] as! NSArray
+            if descText?.characters.count == 0
+            {
+                self.heightConstraintOfDescriptionView.constant = 0
+                self.view.layoutIfNeeded()
+            }
+            else
+            {
+                self.heightConstraintOfDescriptionView.constant = self.lblDesc.frame.origin.y + labelDescHeight + 8
+                self.view.layoutIfNeeded()
+            }
+            
+            
+            if schoolText?.characters.count == 0
+            {
+                self.HeightConstraintOfSchoolView.constant = labelschoolHeight
+                self.view.layoutIfNeeded()
+            }
+            else
+            {
+                self.HeightConstraintOfSchoolView.constant = self.lblSchool.frame.origin.y + labelschoolHeight + 8
+                self.view.layoutIfNeeded()
+                
+            }
+            
+            if currentWork?.characters.count == 0
+            {
+                self.HeightConstraintOfCurrentView.constant = labelcurrentWorkHeight
+                self.view.layoutIfNeeded()
+            }
+            else
+            {
+                self.HeightConstraintOfCurrentView.constant = self.lblCurrentwork.frame.origin.y + labelcurrentWorkHeight + 8
+                self.view.layoutIfNeeded()
+            }
+        
+        self.arrImagesProfile =  dict?[kprofile_picture] as! NSArray
+        
+        let arrMutuable = self.arrImagesProfile.mutableCopy() as! NSMutableArray
+        var dictTrueURLData = NSDictionary()
+
+        for (index,element) in self.arrImagesProfile.enumerated()
+        {
+            let dictUrlData = element as! NSDictionary
+            
+            if dictUrlData.object(forKey: kis_profile_pic) as! Bool == true
+            {
+                dictTrueURLData = dictUrlData
+                arrMutuable.removeObject(at: index)
+            }
+        }
+        
+        arrMutuable.insert(dictTrueURLData, at: 0)
+        
+        let NewDictUserData = NSMutableDictionary(dictionary: dict!)
+
+        NewDictUserData.setObject(arrMutuable, forKey: kprofile_picture as NSCopying)
+        
+        let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData)
+        
+        self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: kUserProfileData)
+        
+        let dictRes = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
+        
+        self.arrImagesProfile =  dictRes?[kprofile_picture] as! NSArray
+
         self.pageControl.numberOfPages = self.arrImagesProfile.count
 
         imgCollectionView.reloadData()
         
-        UIView.animate(withDuration: 0.3, animations: { 
+        imgCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0),
+                                             at: UICollectionViewScrollPosition.right,
+                                             animated: true)
+        
+        UIView.animate(withDuration: 0.3, animations: {
             self.scrollViewObj.alpha = 1.0
             }) { (true) in
         }
@@ -253,13 +255,30 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         
         let dict = arrImagesProfile.object(at: indexPath.row)  as! NSDictionary
         
-        let PicStr = dict["url"] as! String
+        let PicStr = dict[kurl] as! String
         
         let urlString : NSURL = NSURL.init(string: PicStr)!
         
-        let imgPlaceHolder = UIImage.init(named: "imgUserLogo.jpeg")
+        let checkProfile = dict.object(forKey: kis_profile_pic)  as! Bool
+
+        if checkProfile
+        {
+            let image = UIImage(named: kicon_star_selected)
+            cell.btnStarIcon.setImage(image, for: .normal)
+        }
+        else
+        {
+            let image = UIImage(named: kicon_star_unselected)
+            cell.btnStarIcon.setImage(image, for: .normal)
+        }
+
+        
+        cell.btnStarIcon.isUserInteractionEnabled = false
+        let imgPlaceHolder = UIImage.init(named: kGallaryPlaceholder)
         
         cell.imgSlideObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
+        
+        
         
         // cell.backgroundColor = UIColor.green
         
@@ -294,9 +313,8 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
     
     @IBAction func selEditProfileAct(_ sender: AnyObject)
     {
-        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
         
-        let vc = storyboard.instantiateViewController(withIdentifier: "EditProfileVC") as! EditProfileVC
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "EditProfileVC") as! EditProfileVC
         vc.delegate = self
         
 //        let navigationController = UINavigationController(rootViewController: vc)
@@ -325,20 +343,22 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
     {
         scrollViewObj.alpha = 0.0
         
-        MBProgressHUD.showAdded(to: self.view, animated: true)
+        JTProgressHUD.show()
+//        MBProgressHUD.showAdded(to: self.view, animated: true)
         
         let getUserId = globalMethodObj.getUserId()
         
         let parameters =
             [
                 GlobalMethods.METHOD_NAME: "get_other_profile",
-                "user_id": getUserId,
-                "other_user_id": getUserId,
+                kuser_id: getUserId,
+                kother_user_id: getUserId,
                 ] as [String : Any]
         
         globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
             
-            MBProgressHUD.hide(for: self.view, animated: true)
+            JTProgressHUD.hide()
+//            MBProgressHUD.hide(for: self.view, animated: true)
             
             if error != nil
             {
@@ -346,20 +366,20 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
             }
             else
             {
-                let status = result["status"] as! Int
+                let status = result[kstatus] as! Int
                 
                 if status == 1
                 {
-                    let dictData = result.object(forKey: "data") as! NSDictionary
+                    let dictData = result.object(forKey: kDATA) as! NSDictionary
                     let dictResponse = dictData.object(forKey: "profile") as! NSDictionary
                     
                     let data: Data = NSKeyedArchiver.archivedData(withRootObject: dictResponse)
                     
-                    self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: "UserProfileData")
+                    self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: kUserProfileData)
                     
-                    let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "UserProfileData")
+                    let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
                     
-                    self.arrImagesProfile =  dict?["profile_picture"] as! NSArray
+                    self.arrImagesProfile =  dict?[kprofile_picture] as! NSArray
                     self.pageControl.numberOfPages = self.arrImagesProfile.count
                     
                     self.setUpView()
@@ -367,12 +387,11 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
                 }
                 else
                 {
-                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result["message"] as! String, viewcontrolelr: self)
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
                     
                 }
                 
             }
         }
     }
-    
 }

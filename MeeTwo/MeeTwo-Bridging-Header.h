@@ -14,3 +14,4 @@
 #import "SwiftGif.h"
 #import "IQKeyboardManagerSwift.h"
 #import "FXBlurView.h"
+#import "JTProgressHUD.h"

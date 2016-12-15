@@ -40,7 +40,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
         btnNO.layer.cornerRadius = 10
         btnYes.layer.cornerRadius = 10
         
-        globalMethodObj.setUserDefault(ObjectToSave: "0" as AnyObject?, KeyToSave: "CallQuestionService")
+        globalMethodObj.setUserDefault(ObjectToSave: kZERO as AnyObject?, KeyToSave: "CallQuestionService")
         
         /*
         let RightGesture = UISwipeGestureRecognizer(target: self, action:#selector(self.rightSwipeGestureDirection))
@@ -76,7 +76,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
             {
                 self.getOriginalArray()
                 self.displayQuestion()
-                btnSkip.setTitle("SUBMIT>", for: UIControlState.normal)
+                btnSkip.setTitle(kSUBMIT, for: UIControlState.normal)
                 lblQuestionNumber.text = "10"
             }
             else
@@ -89,14 +89,6 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                 }
                 else
                 {
-                    /*
-                     let countTotal = ArrQuestionsObj.count / 10
-                     
-                     let attempttedArray = DBOperation.selectData("select * from mee_two_question where question_is_attempted = \(true)")
-                     
-                     let unAttemptAndUnSkipped = DBOperation.selectData("select * from mee_two_question where question_is_answered = \(false) && is_skipped = \(false)")
-                     */
-                    
                     self.getOriginalArray()
                     self.displayQuestion()
                 }
@@ -108,7 +100,8 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
         // Do any additional setup after loading the view.
     }
 
-    override func didReceiveMemoryWarning() {
+    override func didReceiveMemoryWarning()
+    {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
@@ -124,6 +117,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
         self.btnYesNoClick(btnYes)
     }
     
+    
     func LeftSwipeGestureDirection(gesture: UIGestureRecognizer)
     {
         self.userintractionTrueFalse(sender: false)
@@ -131,19 +125,20 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
         self.btnYesNoClick(btnNO)
     }
     
+    
     @IBAction func btnYesNoClick(_ sender: UIButton)
     {
         self.userintractionTrueFalse(sender: false)
         
         if globalMethodObj.isConnectedToNetwork()
         {
-            if btnSkip.titleLabel?.text != "SUBMIT>"
+            if btnSkip.titleLabel?.text != kSUBMIT
             {
                 let dictQustion = self.ArrQuestionsObj[self.indexOfQuestionArray] as! NSDictionary
-                let questionId = dictQustion["question_id"] as! String
-                let dictOptionsAID = dictQustion.object(forKey: "option_a_id") as! String
-                let dictOptionsBID = dictQustion.object(forKey: "option_b_id") as! String
-                let answerId = dictQustion["answer_id"] as! String
+                let questionId = dictQustion[kquestion_id] as! String
+                let dictOptionsAID = dictQustion.object(forKey: koption_a_id) as! String
+                let dictOptionsBID = dictQustion.object(forKey: koption_b_id) as! String
+                let answerId = dictQustion[kanswer_id] as! String
                 
                 if sender.tag == 1 // NO Click
                 {
@@ -198,7 +193,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                 
                 if self.AttemptedQuestion().count == 10  && (self.btnSkip.titleLabel?.text == "SKIP >" ||  self.indexOfQuestionArray == 10)
                 {
-                    self.btnSkip.setTitle("SUBMIT>", for: UIControlState.normal)
+                    self.btnSkip.setTitle(kSUBMIT, for: UIControlState.normal)
                     self.setProgressBarCode()
                     self.calllogin_save_answerService()
                 }
@@ -226,8 +221,8 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
             self.userintractionTrueFalse(sender: false)
             
             let dictQustion = self.ArrQuestionsObj[self.indexOfQuestionArray] as! NSDictionary
-            let questionId = dictQustion["question_id"] as! String
-            let answerId = dictQustion["answer_id"] as! String
+            let questionId = dictQustion[kquestion_id] as! String
+            let answerId = dictQustion[kanswer_id] as! String
             
             if sender.tag == 3
             {
@@ -243,7 +238,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                     {
                         let elementObj = element as! NSDictionary
                         
-                        if elementObj.object(forKey: "question_is_answered") as! String == "0" && elementObj.object(forKey: "is_skipped") as! String == "0"
+                        if elementObj.object(forKey: "question_is_answered") as! String == kZERO && elementObj.object(forKey: "is_skipped") as! String == kZERO
                         {
                             self.indexOfQuestionArray = index
                             break
@@ -258,7 +253,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
             }
             else
             {
-                if sender.titleLabel?.text != "SUBMIT>"
+                if sender.titleLabel?.text != kSUBMIT
                 {
                     
                     if answerId != ""
@@ -280,7 +275,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                 
                 if self.AttemptedQuestion().count == 10 && (self.btnSkip.titleLabel?.text == "SKIP >" ||  self.indexOfQuestionArray == 10)
                 {
-                    self.btnSkip.setTitle("SUBMIT>", for: UIControlState.normal)
+                    self.btnSkip.setTitle(kSUBMIT, for: UIControlState.normal)
                     self.setProgressBarCode()
                 }
                 else
@@ -301,29 +296,30 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
     
     func QuestionServiceCall()
     {
-        MBProgressHUD.showAdded(to: self.view, animated: true)
         
+        JTProgressHUD.show()
+//        MBProgressHUD.showAdded(to: self.view, animated: true)
         
         let getUserId = globalMethodObj.getUserId()
         var getPageNo = ""
         
-        if globalMethodObj.getUserDefault(KeyToReturnValye: "pageno") == nil
+        if globalMethodObj.getUserDefault(KeyToReturnValye: kpageno) == nil
         {
-            globalMethodObj.setUserDefault(ObjectToSave: "0" as AnyObject?, KeyToSave: "pageno")
-            getPageNo = "0"
+            globalMethodObj.setUserDefault(ObjectToSave: kZERO as AnyObject?, KeyToSave: kpageno)
+            getPageNo = kZERO
         }
         else
         {
-            let pageNo = globalMethodObj.getUserDefault(KeyToReturnValye: "pageno") as! String
+            let pageNo = globalMethodObj.getUserDefault(KeyToReturnValye: kpageno) as! String
             let Number = Int(pageNo)! + 1
             getPageNo = String(Number)
-            globalMethodObj.setUserDefault(ObjectToSave: String(getPageNo) as AnyObject?, KeyToSave: "pageno")
+            globalMethodObj.setUserDefault(ObjectToSave: String(getPageNo) as AnyObject?, KeyToSave: kpageno)
         }
         
         let parameters =
             [
                 GlobalMethods.METHOD_NAME: "login_get_question",
-                "user_id": getUserId,
+                kuser_id: getUserId,
                 "page_no":getPageNo,
             ]
         
@@ -336,11 +332,11 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
             else
             {
                 
-                let status = result["status"] as! Int
+                let status = result[kstatus] as! Int
                 
                 if status == 1
                 {
-                    let dataDict = result.object(forKey: "data") as! NSDictionary
+                    let dataDict = result.object(forKey: kDATA) as! NSDictionary
                     //                var QuestionArray = NSMutableArray()
                     let tempArray : NSArray = dataDict.object(forKey: "questions") as! NSArray
                     //                let tempArray : NSMutableArray = dataDict.object(forKey: "questions") as! NSMutableArray
@@ -356,19 +352,19 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                             
                             let questionNumber = questionDict.object(forKey: "question_number") as! Int
                             
-                            let questionId = questionDict.object(forKey: "question_id") as! String
-                            let question = questionDict.object(forKey: "question") as! String
+                            let questionId = questionDict.object(forKey: kquestion_id) as! String
+                            let question = questionDict.object(forKey: kquestion) as! String
                             
-                            let arrOptions = questionDict.object(forKey: "options") as! NSArray
+                            let arrOptions = questionDict.object(forKey: koptions) as! NSArray
                             
                             let dictOptionsA = arrOptions.object(at: 0) as! NSDictionary
                             let dictOptionsB = arrOptions.object(at: 1) as! NSDictionary
                             
-                            let dictOptionsAID = dictOptionsA.object(forKey: "optionId") as! String
-                            let dictOptionsAtext = dictOptionsA.object(forKey: "optionText") as! String
+                            let dictOptionsAID = dictOptionsA.object(forKey: koptionId) as! String
+                            let dictOptionsAtext = dictOptionsA.object(forKey: koptionText) as! String
                             
-                            let dictOptionsBID = dictOptionsB.object(forKey: "optionId") as! String
-                            let dictOptionsBtext = dictOptionsB.object(forKey: "optionText") as! String
+                            let dictOptionsBID = dictOptionsB.object(forKey: koptionId) as! String
+                            let dictOptionsBtext = dictOptionsB.object(forKey: koptionText) as! String
                             
                             DBOperation.executeSQL("INSERT INTO mee_two_question (user_id,question_no,question_id,question_text,answer_id,question_is_answered,option_a_id,option_a_text,option_b_id,option_b_text,is_skipped) VALUES ('\(getUserId)','\(String(questionNumber))','\(questionId)','\(question)','','0','\(dictOptionsAID)','\(dictOptionsAtext)','\(dictOptionsBID)','\(dictOptionsBtext)','0')")
                         }
@@ -380,7 +376,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                     }
                     else
                     {
-                        self.globalMethodObj.setUserDefault(ObjectToSave: "1" as AnyObject?, KeyToSave: "CallQuestionService")
+                        self.globalMethodObj.setUserDefault(ObjectToSave: kONE as AnyObject?, KeyToSave: "CallQuestionService")
                         
                         let arrQuestionTempObj = DBOperation.selectData("select * from mee_two_question")
                         
@@ -389,9 +385,9 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                             for (index, _) in (arrQuestionTempObj?.enumerated())!
                             {
                                 let dictQustion = arrQuestionTempObj?[index] as! NSDictionary
-                                let questionId = dictQustion["question_id"] as! String
-//                                let dictOptionsBID = dictQustion.object(forKey: "option_b_id") as! String
-//                                let answerId = dictQustion["answer_id"] as! String
+                                let questionId = dictQustion[kquestion_id] as! String
+//                                let dictOptionsBID = dictQustion.object(forKey: koption_b_id) as! String
+//                                let answerId = dictQustion[kanswer_id] as! String
                                 
                                 DBOperation.executeSQL("update mee_two_question set question_is_answered = '0',is_skipped = '0' where user_id = '\(self.globalMethodObj.getUserId())' AND question_id = '\(questionId)' AND is_skipped = '1'")
                             }
@@ -402,7 +398,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                         }
                         else
                         {
-                            self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result["message"] as! String, viewcontrolelr: self)
+                            self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
                         }
                     }
                     
@@ -413,12 +409,14 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                 }
                 else
                 {
-                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result["message"] as! String, viewcontrolelr: self)
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
                 }
                 
                 self.userintractionTrueFalse(sender: true)
                 
-                MBProgressHUD.hide(for: self.view, animated: true)
+                JTProgressHUD.hide()
+
+//                MBProgressHUD.hide(for: self.view, animated: true)
             }
         }
     }
@@ -453,9 +451,9 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                     let dictQustion = ArrQuestionsObj[indexOfQuestionArray] as! NSDictionary
                     let questionText =  dictQustion["question_text"] as! String
                     let optionAtext =  dictQustion["option_a_text"] as! String
-                    let optionAId =  dictQustion["option_a_id"] as! String
+                    let optionAId =  dictQustion[koption_a_id] as! String
                     let optionBtext =  dictQustion["option_b_text"] as! String
-                    let AnswerId =  dictQustion["answer_id"] as! String
+                    let AnswerId =  dictQustion[kanswer_id] as! String
                     
                     if AnswerId != ""
                     {
@@ -512,7 +510,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
             
             let chckWebServiceCallOrNot = globalMethodObj.getUserDefault(KeyToReturnValye: "CallQuestionService") as! String
             
-            if chckWebServiceCallOrNot == "0"
+            if chckWebServiceCallOrNot == kZERO
             {
                 self.QuestionServiceCall()
             }
@@ -523,9 +521,9 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                 for (index, _) in (arrQuestionTempObj?.enumerated())!
                 {
                     let dictQustion = arrQuestionTempObj?[index] as! NSDictionary
-                    let questionId = dictQustion["question_id"] as! String
-                    // let dictOptionsBID = dictQustion.object(forKey: "option_b_id") as! String
-                    // let answerId = dictQustion["answer_id"] as! String
+                    let questionId = dictQustion[kquestion_id] as! String
+                    // let dictOptionsBID = dictQustion.object(forKey: koption_b_id) as! String
+                    // let answerId = dictQustion[kanswer_id] as! String
                     
                     DBOperation.executeSQL("update mee_two_question set question_is_answered = '0',is_skipped = '0' where user_id = '\(self.globalMethodObj.getUserId())' AND question_id = '\(questionId)' AND is_skipped = '1'")
                 }
@@ -564,7 +562,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
         {
             let elementObj = element as! NSDictionary
             
-            if elementObj.object(forKey: "question_is_answered") as! String == "0" && elementObj.object(forKey: "is_skipped") as! String == "0"
+            if elementObj.object(forKey: "question_is_answered") as! String == kZERO && elementObj.object(forKey: "is_skipped") as! String == kZERO
             {
                 indexOfQuestionArray = index
                 return
@@ -604,7 +602,9 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
     {
         
 //        DispatchQueue.main.async {
-            MBProgressHUD.showAdded(to: self.view, animated: true)
+        JTProgressHUD.show()
+
+//            MBProgressHUD.showAdded(to: self.view, animated: true)
 //        }
 
         let getUserId = globalMethodObj.getUserId()
@@ -620,13 +620,13 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                 
                 if questionId == ""
                 {
-                    questionId = questionId.appending("\(elementObj["question_id"] as! String)")
-                    AnswersId = AnswersId.appending("\(elementObj["answer_id"] as! String)")
+                    questionId = questionId.appending("\(elementObj[kquestion_id] as! String)")
+                    AnswersId = AnswersId.appending("\(elementObj[kanswer_id] as! String)")
                 }
                 else
                 {
-                    questionId = questionId.appending(",\(elementObj["question_id"] as! String)")
-                    AnswersId = AnswersId.appending(",\(elementObj["answer_id"] as! String)")
+                    questionId = questionId.appending(",\(elementObj[kquestion_id] as! String)")
+                    AnswersId = AnswersId.appending(",\(elementObj[kanswer_id] as! String)")
                 }
             }
             else
@@ -639,8 +639,8 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
         let parameters =
             [
                 GlobalMethods.METHOD_NAME: "login_save_answer",
-                "user_id": getUserId,
-                "question_id":questionId,
+                kuser_id: getUserId,
+                kquestion_id:questionId,
                 "answer":AnswersId
             ]
         
@@ -650,21 +650,25 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
             {
                 self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: error.debugDescription, viewcontrolelr: self)
 
-                MBProgressHUD.hide(for: self.view, animated: true)
+                JTProgressHUD.hide()
+
+//                MBProgressHUD.hide(for: self.view, animated: true)
                 print("Error")
             }
             else
             {
-                MBProgressHUD.hide(for: self.view, animated: true)
+                JTProgressHUD.hide()
+
+//                MBProgressHUD.hide(for: self.view, animated: true)
                 
-                let status = result["status"] as! Int
+                let status = result[kstatus] as! Int
                 
                 if status == 1
                 {
-                    let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: "userdata")! as! NSMutableDictionary
-                    dict["is_question_attempted"] = "1"
+                    let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)! as! NSMutableDictionary
+                    dict[kIS_QUESTION_ATTEMPTED] = kONE
                     let data: Data = NSKeyedArchiver.archivedData(withRootObject: dict as NSDictionary)
-                    self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: "userdata")
+                    self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: kUSERDATA)
 
                     DBOperation.executeSQL("delete from mee_two_question")
                     
@@ -672,7 +676,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                 }
                 else
                 {
-                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result["message"] as! String, viewcontrolelr: self)
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
                 }
             }
         }
@@ -682,9 +686,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
     
     func MoveToDashboardHomeVC()
     {
-        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        
-        let TabViewController = storyBoard.instantiateViewController(withIdentifier: "TabController") as! TabController
+        let TabViewController = self.storyboard?.instantiateViewController(withIdentifier: "TabController") as! TabController
         self.navigationController?.pushViewController(TabViewController, animated: true)
     }
     

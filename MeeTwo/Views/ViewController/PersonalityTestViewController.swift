@@ -81,17 +81,30 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
     
     func SetupScreen()
     {
-        let profilePicStr = dictionaryProfile.object(forKey: "profile_pic_url")  as! String
-        let firstName = dictionaryProfile.object(forKey: "first_name") as! String
-        let distance_away = dictionaryProfile.object(forKey: "distance_away") as! Int
-        let age_obj = dictionaryProfile.object(forKey: "age") as! String
-        otherUserId = dictionaryProfile["id"] as! String
+        let arrProfilePic = dictionaryProfile.object(forKey: kprofile_picture)  as! NSArray
+        var profilePicStr = ""
+        
+        for (_,element) in arrProfilePic.enumerated()
+        {
+            let dict =  element as! NSDictionary
+            let checkProfile = dict.object(forKey: kis_profile_pic)  as! Bool
+            
+            if checkProfile == true
+            {
+                profilePicStr =  dict.object(forKey: kurl)  as! String
+            }
+        }
+        
+        let firstName = dictionaryProfile.object(forKey: kfirst_name) as! String
+        let distance_away = dictionaryProfile.object(forKey: kdistance_away) as! Int
+        let age_obj = dictionaryProfile.object(forKey: kage) as! String
+        otherUserId = dictionaryProfile[kid] as! String
         
         lblStaticText.text = "\(firstName) would like to know more about you by asking few questions."
         imgUserProfile.alpha = 0.0
         
         let urlString : NSURL = NSURL.init(string: profilePicStr)!
-        let imgPlaceHolder = UIImage.init(named: "imgUserLogo.jpeg")
+        let imgPlaceHolder = UIImage.init(named: kimgUserLogo)
         
         imgUserProfile.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
         //      self.imgUserProfileObj.sd_setImage(with: urlString as URL)
@@ -99,8 +112,8 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
         lblUserDistance.text = "\(distance_away) km away"
         
         
-        let normalFont = UIFont(name: "inglobal", size: 30)
-        let boldSearchFont = UIFont(name: "inglobal-Bold", size: 30)
+        let normalFont = UIFont(name: kinglobal, size: 30)
+        let boldSearchFont = UIFont(name: kinglobal_Bold, size: 30)
         self.lblUserName.attributedText = globalMethodObj.addBoldText(fullString: "\(firstName), \(age_obj)" as NSString, boldPartsOfString: ["\(firstName)" as NSString], font: normalFont!, boldFont: boldSearchFont!)
         
         lblUserName.adjustsFontSizeToFitWidth = true
@@ -111,7 +124,8 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
     
         if globalMethodObj.isConnectedToNetwork()
         {
-            MBProgressHUD.showAdded(to: self.view, animated: true)
+            JTProgressHUD.show()
+//            MBProgressHUD.showAdded(to: self.view, animated: true)
             self.GetMatchProfileAndQuestionsServiceCall()
             viewDisplayQuestionObj.isHidden = false
         }
@@ -177,11 +191,11 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
     func DisplayQuestion()
     {
         let dict = self.returnQuestionDic()
-        let questionText = dict["question"] as! String
+        let questionText = dict[kquestion] as! String
         
-        let options = dict["options"] as! NSArray
-        let optionNo = (options[0] as! NSDictionary)["optionText"] as! String
-        let optionYes = (options[1] as! NSDictionary)["optionText"] as! String
+        let options = dict[koptions] as! NSArray
+        let optionNo = (options[0] as! NSDictionary)[koptionText] as! String
+        let optionYes = (options[1] as! NSDictionary)[koptionText] as! String
         
         lblQuestion.text = questionText
         btnNo.setTitle(optionNo, for: UIControlState.normal)
@@ -220,9 +234,9 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
             
             let dictStoreValue = NSMutableDictionary()
             
-            let question_idObj = dict["question_id"] as! String
-            let questionTextObj = dict["question"] as! String
-            let options = dict["options"] as! NSArray
+            let question_idObj = dict[kquestion_id] as! String
+            let questionTextObj = dict[kquestion] as! String
+            let options = dict[koptions] as! NSArray
             var optionAns = ""
             var optionAnsText = ""
             
@@ -239,8 +253,8 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
                 }
  */
                 
-                optionAns = (options[0] as! NSDictionary)["optionId"] as! String
-                optionAnsText = (options[0] as! NSDictionary)["optionText"] as! String
+                optionAns = (options[0] as! NSDictionary)[koptionId] as! String
+                optionAnsText = (options[0] as! NSDictionary)[koptionText] as! String
             }
             else
             {
@@ -254,15 +268,15 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
                     })
                 }*/
                 
-                optionAns = (options[1] as! NSDictionary)["optionId"] as! String
-                optionAnsText = (options[1] as! NSDictionary)["optionText"] as! String
+                optionAns = (options[1] as! NSDictionary)[koptionId] as! String
+                optionAnsText = (options[1] as! NSDictionary)[koptionText] as! String
             }
             
-            dictStoreValue.setValue(question_idObj, forKey: "question_id")
-            dictStoreValue.setValue(questionTextObj, forKey: "question")
-            dictStoreValue.setValue(optionAns, forKey: "optionId")
-            dictStoreValue.setValue(otherUserId, forKey: "other_user_id")
-            dictStoreValue.setValue(optionAnsText, forKey: "optionText")
+            dictStoreValue.setValue(question_idObj, forKey: kquestion_id)
+            dictStoreValue.setValue(questionTextObj, forKey: kquestion)
+            dictStoreValue.setValue(optionAns, forKey: koptionId)
+            dictStoreValue.setValue(otherUserId, forKey: kother_user_id)
+            dictStoreValue.setValue(optionAnsText, forKey: koptionText)
             self.arrAnsStore.add(dictStoreValue)
             
             if indexOfProfile == self.arrQuestionsStore.count
@@ -302,13 +316,13 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
         let parameters =
             [
                 GlobalMethods.METHOD_NAME: "get_other_profile",
-                "user_id": getUserId,
-                "other_user_id": otherUserId,
+                kuser_id: getUserId,
+                kother_user_id: otherUserId,
                 ] as [String : Any]
         
         globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
             
-            MBProgressHUD.hide(for: self.view, animated: true)
+            JTProgressHUD.hide()
             
             if error != nil
             {
@@ -316,11 +330,11 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
             }
             else
             {
-                let status = result["status"] as! Int
+                let status = result[kstatus] as! Int
                 
                 if status == 1
                 {
-                    let dictData = result.object(forKey: "data") as! NSDictionary
+                    let dictData = result.object(forKey: kDATA) as! NSDictionary
                     let ArrAllQuestions = dictData.object(forKey: "questions") as! NSArray
                     
                     for (index, element) in (ArrAllQuestions.enumerated())
@@ -342,7 +356,7 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
                 }
                 else
                 {
-                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result["message"] as! String, viewcontrolelr: self)
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
                     
                 }
                 
@@ -359,7 +373,7 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
     
     func callsave_four_question()
     {
-        MBProgressHUD.showAdded(to: self.view, animated: true)
+        JTProgressHUD.show()
         
         let user_id = globalMethodObj.getUserId()
         
@@ -374,28 +388,28 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
                 
                 if questionId == ""
                 {
-                    questionId = questionId.appending("\(elementObj["question_id"] as! String)")
-                    AnswersId = AnswersId.appending("\(elementObj["optionId"] as! String)")
+                    questionId = questionId.appending("\(elementObj[kquestion_id] as! String)")
+                    AnswersId = AnswersId.appending("\(elementObj[koptionId] as! String)")
                 }
                 else
                 {
-                    questionId = questionId.appending(",\(elementObj["question_id"] as! String)")
-                    AnswersId = AnswersId.appending(",\(elementObj["optionId"] as! String)")
+                    questionId = questionId.appending(",\(elementObj[kquestion_id] as! String)")
+                    AnswersId = AnswersId.appending(",\(elementObj[koptionId] as! String)")
                 }
             }
         }
 
         let parameters = [
             "methodName" : "save_four_question",
-            "user_id"  : user_id,
-            "other_user_id"  : otherUserId,
+            kuser_id  : user_id,
+            kother_user_id  : otherUserId,
             "question_ids"  : questionId,
             "answer_ids"  : AnswersId,
         ]
         
         globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
             
-            MBProgressHUD.hide(for: self.view, animated: true)
+            JTProgressHUD.hide()
             
             if error != nil
             {
@@ -403,11 +417,11 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
             }
             else
             {
-                let status = result["status"] as! Int
+                let status = result[kstatus] as! Int
                 
                 if status == 1
                 {
-                    let dictData = result.object(forKey: "data") as! NSDictionary
+                    let dictData = result.object(forKey: kDATA) as! NSDictionary
                     let result = dictData.object(forKey: "result") as! Int
 
                     if result == 1
@@ -418,23 +432,23 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
                             {
                                 let dict = element as! NSDictionary
                                 
-                                DBOperation.executeSQL("insert into PersonalityTest (user_id,other_user_id,question_id,correct_option_id,question_text,option_text) values ('\(self.globalMethodObj.getUserId())','\(self.otherUserId)','\(dict["question_id"] as! String)','\(dict["optionId"] as! String)','\(dict["question"] as! String)','\(dict["optionText"] as! String)')")
+                                DBOperation.executeSQL("insert into PersonalityTest (user_id,other_user_id,question_id,correct_option_id,question_text,option_text) values ('\(self.globalMethodObj.getUserId())','\(self.otherUserId)','\(dict[kquestion_id] as! String)','\(dict[koptionId] as! String)','\(dict[kquestion] as! String)','\(dict[koptionText] as! String)')")
                             }
                             
                         }
                         
-                        self.globalMethodObj.setUserDefault(ObjectToSave: "1" as AnyObject?, KeyToSave: "displayChemistry")
+                        self.globalMethodObj.setUserDefault(ObjectToSave: kONE as AnyObject?, KeyToSave: kdisplayChemistry)
                     }
                     else
                     {
-                        self.globalMethodObj.setUserDefault(ObjectToSave: "0" as AnyObject?, KeyToSave: "displayChemistry")
+                        self.globalMethodObj.setUserDefault(ObjectToSave: kZERO as AnyObject?, KeyToSave: kdisplayChemistry)
                     }
                     
-                    let string = self.dictionaryProfile["first_name"] as! String
-                    let stringProfilePic = self.dictionaryProfile["profile_pic_url"] as! String
+                    let string = self.dictionaryProfile[kfirst_name] as! String
+                    let stringProfilePic = self.dictionaryProfile[kprofile_pic_url] as! String
                     
-                    self.globalMethodObj.setUserDefault(ObjectToSave: string as AnyObject?, KeyToSave: "otherFirstName")
-                    self.globalMethodObj.setUserDefault(ObjectToSave: stringProfilePic as AnyObject?, KeyToSave: "otherProfilePic")
+                    self.globalMethodObj.setUserDefault(ObjectToSave: string as AnyObject?, KeyToSave: kotherFirstName)
+                    self.globalMethodObj.setUserDefault(ObjectToSave: stringProfilePic as AnyObject?, KeyToSave: kotherProfilePic)
                     
                     self.delegate?.DisplayChemistry()
 
@@ -443,7 +457,7 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
                 }
                 else
                 {
-                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result["message"] as! String, viewcontrolelr: self)
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
                     
                 }
                 
