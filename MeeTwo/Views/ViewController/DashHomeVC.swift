@@ -183,7 +183,15 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)
         }
         
-        GlobalMethods.checkUser_active = dict?.object(forKey: kis_active) as! String
+        if dict?.object(forKey: kis_active) == nil
+        {
+            GlobalMethods.checkUser_active = "1"
+        }
+        else
+        {
+            GlobalMethods.checkUser_active = dict?.object(forKey: kis_active) as! String
+        }
+        
         
         
         let gender = dict?.object(forKey: kgender) as! String

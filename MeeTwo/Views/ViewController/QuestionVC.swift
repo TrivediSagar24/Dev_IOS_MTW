@@ -32,6 +32,8 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
     var ArrQuestionsObj = NSMutableArray()
     var globalMethodObj = GlobalMethods()
     
+    
+
 
     override func viewDidLoad()
     {
@@ -481,6 +483,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                     btnYes.setTitle(optionBtext, for: UIControlState.normal)
                     btnNO.setTitle(optionAtext, for: UIControlState.normal)
                     
+                    
 //                    if lblQuestionNumber.text == ""
 //                    {
                         if self.indexOfQuestionArray == 10
@@ -716,6 +719,21 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
         btnPrevious.isUserInteractionEnabled = sender
     }
     
+    //MARK: Return Height Of Textview( Question )
+    
+    func calculateHeight(textView:UITextView, data:String) -> CGRect
+    {
+        
+        var newFrame:CGRect!
+        let fixedWidth = textView.frame.size.width
+        textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        newFrame = textView.frame
+        newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+        print("height \(newFrame.height)")
+        return newFrame
+    }
+
     
     /*
     // MARK: - Navigation
