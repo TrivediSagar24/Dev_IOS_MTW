@@ -81,13 +81,13 @@ class NotificationVC: UIViewController {
         //  scrollViewObj.alpha = 0.0
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
-        
+
         let getUserId = globalMethodObj.getUserId()
         
         let parameters =
             [
                 GlobalMethods.METHOD_NAME: "user_get_notification",
-                "user_id": "9",
+                "user_id": getUserId,
                 "page_no": "1"
                 ] as [String : Any]
         

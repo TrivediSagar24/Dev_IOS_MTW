@@ -86,7 +86,8 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         
         self.SetupScreen()
         
-        self.visibilitySetupView()
+//        self.visibilitySetupView()
+        self.visibilitySetup()
         
     }
     
@@ -116,7 +117,8 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             viewDisplayProfileObj.isHidden = true
         }
         self.checkCurrenLocation()
-        self.visibilitySetupView()
+//        self.visibilitySetupView()
+        self.visibilitySetup()
     }
     
     override func viewDidAppear(_ animated: Bool)
@@ -193,7 +195,6 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         }
         
         
-        
         let gender = dict?.object(forKey: kgender) as! String
         
         var imgPlaceHolder = UIImage.init(named: kimgUserLogo)
@@ -239,6 +240,167 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         
         
     }
+    
+    // MARK: Visibility Setup
+    
+    func visibilitySetup()
+    {
+        // Visibility True/False Setup
+        
+        lblVisibilityDescObj.text = "Your profile is invisible. Turn on visibility to find people nearby."
+        
+        var dict: NSDictionary!
+        
+        dict = globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info) as NSDictionary!
+        
+        let dictSetting = dict[settings]  as! NSDictionary!
+        let dictProfile = dict[profile]  as! NSDictionary!
+    
+        let is_active = dictSetting?["is_active"]
+        
+        GlobalMethods.checkUser_active = is_active as! String
+        
+        if GlobalMethods.checkUser_active == "0"
+        {
+            viewVisibilityObj.isHidden = false
+        }
+        else
+        {
+            viewVisibilityObj.isHidden = true
+        }
+        
+        
+        /*
+        let gender = dictProfile?.object(forKey: kgender) as! String
+        
+        var imgPlaceHolder = UIImage.init(named: kimgUserLogo)
+        
+        let dictObj = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)
+        
+        let profilePicUrl = dictObj?.object(forKey: kprofile_pic_url) as! String
+        
+        let urlString : NSURL = NSURL.init(string: profilePicUrl)!
+        
+        if gender == "1"
+        {
+            imgPlaceHolder = UIImage.init(named: kMalePlaceholder)
+        }
+        else if gender == "2"
+        {
+            imgPlaceHolder = UIImage.init(named: kFemalePlaceholder)
+        }
+        */
+        
+        var profilePicStr = ""
+        
+        let arrProfilePic = dictProfile?.object(forKey: kprofile_picture)  as! NSArray
+        
+        for (_,element) in arrProfilePic.enumerated()
+        {
+            let dictArray =  element as! NSDictionary
+            let checkProfile = dictArray.object(forKey: kis_profile_pic)  as! Bool
+            
+            if checkProfile == true
+            {
+                profilePicStr = dictArray.object(forKey: kurl)  as! String
+            }
+        }
+
+        let urlString : NSURL = NSURL.init(string: profilePicStr)!
+        
+        var imgPlaceHolder = UIImage.init(named: kimgUserLogo)
+        
+        let gender = dictProfile?.object(forKey: kgender) as! String
+        
+        if gender == "1"
+        {
+            imgPlaceHolder = UIImage.init(named: kMalePlaceholder)
+        }
+        else if gender == "2"
+        {
+            imgPlaceHolder = UIImage.init(named: kFemalePlaceholder)
+        }
+        
+        imgUserObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
+        
+        imgUserObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
+        
+        let cornerRadius = (UIScreen.main.bounds.size.width / 320 * 100) / 2
+        imgUserObj.layer.cornerRadius = cornerRadius
+        imgUserObj.clipsToBounds = true
+        
+        btnActivateVisibility.layer.cornerRadius = 5
+        
+        imgUserObj.layer.borderWidth = 1
+        imgUserObj.layer.borderColor =  btnYes.backgroundColor?.cgColor
+
+        
+        /*
+        if globalMethodObj.checkUserDefaultKey(kUsernameKey: kUserProfileData)
+        {
+            dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
+        }
+        else
+        {
+            dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)
+        }
+        
+        if dict?.object(forKey: kis_active) == nil
+        {
+            GlobalMethods.checkUser_active = "1"
+        }
+        else
+        {
+            GlobalMethods.checkUser_active = dict?.object(forKey: kis_active) as! String
+        }
+        
+        
+        let gender = dict?.object(forKey: kgender) as! String
+        
+        var imgPlaceHolder = UIImage.init(named: kimgUserLogo)
+        
+        let dictObj = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)
+        
+        let profilePicUrl = dictObj?.object(forKey: kprofile_pic_url) as! String
+        
+        let urlString : NSURL = NSURL.init(string: profilePicUrl)!
+        
+        if gender == "1"
+        {
+            imgPlaceHolder = UIImage.init(named: kMalePlaceholder)
+        }
+        else if gender == "2"
+        {
+            imgPlaceHolder = UIImage.init(named: kFemalePlaceholder)
+        }
+        
+        imgUserObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
+        
+        let cornerRadius = (UIScreen.main.bounds.size.width / 320 * 100) / 2
+        imgUserObj.layer.cornerRadius = cornerRadius
+        imgUserObj.clipsToBounds = true
+        
+        btnActivateVisibility.layer.cornerRadius = 5
+        
+        
+        //            #define kDEV_PROPROTIONAL_Width(val) ([UIScreen mainScreen].bounds.size.width / IPHONE5_WIDTH * val)
+        
+        imgUserObj.layer.borderWidth = 1
+        imgUserObj.layer.borderColor =  btnYes.backgroundColor?.cgColor
+        
+        if GlobalMethods.checkUser_active == "0"
+        {
+            viewVisibilityObj.isHidden = false
+        }
+        else
+        {
+            viewVisibilityObj.isHidden = true
+        }
+        */
+        
+        
+    }
+
     
     //MARK :- Setup Screen ( UI Setup )
     
@@ -294,7 +456,8 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         txtTopLoc.text = "Meetwo uses your\nlocation to find people\nnearby."
         txtBottomLoc.text = "Please enable location to get \nstarted"
         
-        self.visibilitySetupView()
+//        self.visibilitySetupView()
+        self.visibilitySetup()
 
     }
     
@@ -368,16 +531,16 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                     rotationPercent = 0
                     self.setTransformOnView(rotationPercent: rotationPercent)
                     self.LikeData()
-                    self.lblUserName.alpha = 0.0
-                    self.lblDistance.alpha = 0.0
+//                    self.lblUserName.alpha = 0.0
+//                    self.lblDistance.alpha = 0.0
                 }
                 else if rotationPercent == -3.0
                 {
                     rotationPercent = -0
                     self.setTransformOnView(rotationPercent: rotationPercent)
                     self.DislikeData()
-                    self.lblUserName.alpha = 0.0
-                    self.lblDistance.alpha = 0.0
+//                    self.lblUserName.alpha = 0.0
+//                    self.lblDistance.alpha = 0.0
 
                 }
                 else if rotationPercent == -0 || rotationPercent == 0
@@ -985,12 +1148,18 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         UIView.animate(withDuration: 0.3, animations: {
             self.lblUserName.alpha = 1.0
             self.lblDistance.alpha = 1.0
+            
+            self.view.bringSubview(toFront: self.lblUserName)
+            self.view.bringSubview(toFront: self.lblDistance)
+            
+            self.lblUserName.isHidden = false
+            self.lblDistance.isHidden = false
         })
     }
     
     func setUserNameAlphaOff()
     {
-        UIView.animate(withDuration: 0.3, animations: {
+        UIView.animate(withDuration: 0.1, animations: {
             self.lblUserName.alpha = 0.0
             self.lblDistance.alpha = 0.0
         })
@@ -1025,6 +1194,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 {
                     
                     var dictUserData: NSDictionary!
+                    /*
                     
                     if self.globalMethodObj.checkUserDefaultKey(kUsernameKey: kUserProfileData)
                     {
@@ -1058,6 +1228,24 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                             self.viewVisibilityObj.isHidden = true
                             self.viewVisibilityObj.alpha = 1.0
                     })
+                    */
+                    
+                    
+                    dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info) as! NSDictionary!
+                    
+                    let dictSetting = dictUserData[settings]  as! NSDictionary!
+                    
+                    let NewDictUserData = NSMutableDictionary(dictionary: dictUserData)
+
+                    let NewDictSetting = NSMutableDictionary(dictionary: dictSetting!)
+
+                    NewDictSetting.setObject("1", forKey: kis_active as NSCopying)
+                    
+                    NewDictUserData.setObject(NewDictSetting, forKey: settings as NSCopying)
+                    
+                    let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData)
+                    
+                    self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: get_user_all_info)
                     
                 }
                 else
@@ -1072,7 +1260,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     
     override func viewWillLayoutSubviews()
     {
-        self.visibilitySetupView()
+//        self.visibilitySetupView()
     }
     
 }

@@ -203,6 +203,13 @@ class UserProfileViewController: UIViewController {
         
         return imgCollectionView.frame.size
     }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView)
+    {
+        let verticalIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
+        
+        verticalIndicator.backgroundColor = UIColor.init(hexString: "37AAC8")
+    }
 
     /*
     // MARK: - Navigation

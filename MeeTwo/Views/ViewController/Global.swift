@@ -115,3 +115,12 @@ let kimage_id = "image_id"
 let kimage_url = "image_url"
 
 let kis_active = "is_active"
+
+let get_user_all_info = "get_user_all_info"
+
+let questions = "questions"
+
+let settings = "settings"
+
+let profile = "profile"
+

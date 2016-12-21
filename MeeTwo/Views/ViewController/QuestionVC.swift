@@ -24,6 +24,10 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
     
     @IBOutlet var viewQuestionPopUp: UIView!
     
+    @IBOutlet var txtQuetionViewObj: UITextView!
+    
+    @IBOutlet var heightConstraintOfTextviewObj: NSLayoutConstraint!
+    
     
     @IBOutlet var progressBarWidthConstraint: NSLayoutConstraint!
     
@@ -371,7 +375,6 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                             DBOperation.executeSQL("INSERT INTO mee_two_question (user_id,question_no,question_id,question_text,answer_id,question_is_answered,option_a_id,option_a_text,option_b_id,option_b_text,is_skipped) VALUES ('\(getUserId)','\(String(questionNumber))','\(questionId)','\(question)','','0','\(dictOptionsAID)','\(dictOptionsAtext)','\(dictOptionsBID)','\(dictOptionsBtext)','0')")
                         }
                         
-                        
                         self.getOriginalArray()
                         self.displayQuestion()
                         
@@ -476,10 +479,23 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                     {
                         btnSkip.setTitle("SKIP >", for: UIControlState.normal)
                     }
+
                     
-                    lblquestionText.text = questionText
-                    lblquestionText.adjustsFontSizeToFitWidth = true
-                    lblquestionText.numberOfLines = 0
+                    txtQuetionViewObj.text = questionText
+                    heightConstraintOfTextviewObj.constant = self.calculateHeight(textView: txtQuetionViewObj, data: questionText).height
+                    
+                    let propotionalHeightOfTextview = UIScreen.main.bounds.size.height / 568 * 92
+                    
+                    if heightConstraintOfTextviewObj.constant > propotionalHeightOfTextview
+                    {
+                       heightConstraintOfTextviewObj.constant = propotionalHeightOfTextview
+                    }
+                    
+                    self.view.layoutIfNeeded()
+                    
+//                    lblquestionText.text = questionText
+//                    lblquestionText.adjustsFontSizeToFitWidth = true
+//                    lblquestionText.numberOfLines = 0
                     btnYes.setTitle(optionBtext, for: UIControlState.normal)
                     btnNO.setTitle(optionAtext, for: UIControlState.normal)
                     
@@ -730,10 +746,8 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
         let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
         newFrame = textView.frame
         newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
-        print("height \(newFrame.height)")
         return newFrame
     }
-
     
     /*
     // MARK: - Navigation

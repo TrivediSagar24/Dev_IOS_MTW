@@ -59,6 +59,8 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     @IBOutlet var btnGalleryObj: UIButton!
     
     
+    @IBOutlet var scrollViewObj: UIScrollView!
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -116,8 +118,10 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
             btnRemove.isHidden = false
             btnAddPhoto.isHidden = true
         }
-
         
+//        scrollViewObj.delegate = self
+//      globalMethodObj.setScrollViewIndicatorColor(scrollView: scrollViewObj)
+
     }
     
     override func viewDidAppear(_ animated: Bool)
@@ -244,6 +248,19 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         
         imgCollectionView.reloadData()
         
+        
+        btnRemove.isHidden = false
+        btnAddPhoto.isHidden = true
+        
+        if self.checkDeleteButtonHideOrNot()
+        {
+            btnRemove.isHidden = false
+        }
+        else
+        {
+            btnRemove.isHidden = true
+            btnAddPhoto.isHidden = true
+        }
     }
     
     func valueChanged2(_ sender: LCAnimatedPageControl) {
@@ -266,12 +283,12 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         
         let PicStr = dict[kurl] as! String
         
-        
         if PicStr.characters.count == 0
         {
             cell.imgSlideObj.isHidden = true
             cell.btnStarIcon.isHidden = true
             cell.lblAddphotoObj.isHidden = false
+            cell.imgPlaceholder.isHidden = false
         }
         else
         {
@@ -285,7 +302,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
             cell.lblAddphotoObj.isHidden = true
             cell.imgSlideObj.isHidden = false
             cell.btnStarIcon.isHidden = false
-            
+            cell.imgPlaceholder.isHidden = true
             let checkProfile = dict.object(forKey: kis_profile_pic)  as! Bool
             
             if checkProfile
@@ -303,6 +320,16 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
             
             cell.btnStarIcon.tag = indexPath.row
             cell.lblAddphotoObj.isHidden = true
+        
+            if self.checkDeleteButtonHideOrNot()
+            {
+                btnRemove.isHidden = false
+            }
+            else
+            {
+                btnRemove.isHidden = true
+                btnAddPhoto.isHidden = true
+            }
         }
         
         return cell
@@ -313,7 +340,23 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         
         return imgCollectionView.frame.size
     }
-
+    
+    
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath){
+        
+        let dict = arrImages3.object(at: indexPath.row)  as! NSDictionary
+        
+        let PicStr = dict[kurl] as! String
+        
+        if PicStr.characters.count == 0
+        {
+            self.selAddPhoto(btnAddPhoto)
+        }
+        else
+        {
+        }
+    }
+    
     func clickedOnStarIcon(sender : UIButton)
     {
         let dict = arrImages3.object(at: sender.tag)  as! NSDictionary
@@ -330,7 +373,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         
         let arrMutuable = arrImagesArray.mutableCopy() as! NSMutableArray
         
-        JTProgressHUD.show()
+//        JTProgressHUD.show()
         
         if checkProfile == false
         {
@@ -343,7 +386,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
             
             globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
                 
-                JTProgressHUD.hide()
+//                JTProgressHUD.hide()
                 
                 if error != nil
                 {
@@ -398,6 +441,31 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
             }
         }
     }
+    
+    func checkDeleteButtonHideOrNot() ->Bool
+    {
+        var checkWebserviceCallOrnot = 0
+        
+        for (index,_) in arrImages3.enumerated()
+        {
+            let dict = arrImages3.object(at: index)  as! NSDictionary
+            
+            let PicURL = dict[kurl] as! String
+            
+            if PicURL.characters.count != 0
+            {
+                checkWebserviceCallOrnot = checkWebserviceCallOrnot + 1
+            }
+            
+        }
+
+        if checkWebserviceCallOrnot > 1
+        {
+            return true
+        }
+        
+        return false
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -430,32 +498,49 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
 
     @IBAction func selRemovePhoto(_ sender: AnyObject)
     {
-        let dict = arrImages3.object(at: self.pageControl.currentPage)  as! NSDictionary
+        var checkWebserviceCallOrnot = 0
         
-        let PicURL = dict[kurl] as! String
-
-        if PicURL.characters.count == 0
+        for (index,element) in arrImages3.enumerated()
         {
-            globalMethodObj.ShowAlertDisplay(titleObj: "", messageObj: "Please upload an image", viewcontrolelr: self)
-
+            let dict = arrImages3.object(at: index)  as! NSDictionary
+            
+            let PicURL = dict[kurl] as! String
+            
+            if PicURL.characters.count != 0
+            {
+                checkWebserviceCallOrnot = checkWebserviceCallOrnot + 1
+            }
         }
-        else
+        
+        if checkWebserviceCallOrnot > 1
         {
-            let alertObj = UIAlertController.init(title: "", message: "Are you sure you want to delete this photo?", preferredStyle: UIAlertControllerStyle.alert)
+            let dict = arrImages3.object(at: self.pageControl.currentPage)  as! NSDictionary
             
-            alertObj.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { (nil) in
-                let data = Data()
-                self.UploadPhotoWebservice(imageData: data)
-                alertObj.dismiss(animated: true, completion: nil)
-            }))
+            let PicURL = dict[kurl] as! String
             
-            alertObj.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (nil) in
+            if PicURL.characters.count == 0
+            {
+                globalMethodObj.ShowAlertDisplay(titleObj: "", messageObj: "Please upload an image", viewcontrolelr: self)
                 
-                alertObj.dismiss(animated: true, completion: nil)
-            }))
+            }
+            else
+            {
+                let alertObj = UIAlertController.init(title: "", message: "Are you sure you want to delete this photo?", preferredStyle: UIAlertControllerStyle.alert)
+                
+                alertObj.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { (nil) in
+                    let data = Data()
+                    self.UploadPhotoWebservice(imageData: data)
+                    alertObj.dismiss(animated: true, completion: nil)
+                }))
+                
+                alertObj.addAction(UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: { (nil) in
+                    
+                    alertObj.dismiss(animated: true, completion: nil)
+                }))
+                
+                self.present(alertObj, animated: true, completion: nil)
             
-            self.present(alertObj, animated: true, completion: nil)
-
+            }
         }
     }
     
@@ -571,7 +656,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
     {
         let imageName = info[UIImagePickerControllerEditedImage] as! UIImage
-        let data = UIImageJPEGRepresentation(imageName, 0.8)! as Data
+        let data = UIImageJPEGRepresentation(imageName, 1.0)! as Data
 
 //        let data = UIImagePNGRepresentation(imageName)! as Data
         self.UploadPhotoWebservice(imageData: data)
@@ -632,29 +717,54 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                 {
                     let text = dict["text"] as! String
                     
-                    let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)! as NSDictionary
+//                    let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)! as NSDictionary
                     
-                    let NewDictUserData = NSMutableDictionary(dictionary: dict)
+                    let dict2 = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
+
+                    let profileData = dict2?.object(forKey: profile) as! NSDictionary
+                    
+                    let NewDictUserData2 = NSMutableDictionary(dictionary: profileData)
+                    
+                    let NewDictUserData = NSMutableDictionary(dictionary: dict2!)
+                    
+//                    strStoreDesc = descText!
+//                    strStoreSchool = schoolText!
+//                    strStoreWork = currentWork!
   
                     if fieldId == kONE
                     {
-                        NewDictUserData.setObject(text, forKey: kdescription as NSCopying)
+                        NewDictUserData2.setObject(text, forKey: kdescription as NSCopying)
+                        self.strStoreDesc = text
 //                        dict.setValue(self.txtDescriptionObj.text, forKey: kdescription)
                     }
                     else if fieldId == "2"
                     {
-                        NewDictUserData.setObject(text, forKey: kschool as NSCopying)
+                        NewDictUserData2.setObject(text, forKey: kschool as NSCopying)
+                         self.strStoreSchool = text
+
 //                        dict.setValue(self.txtSchool.text, forKey: kschool)
                     }
                     else if fieldId == "3"
                     {
-                        NewDictUserData.setObject(text, forKey: kwork as NSCopying)
+                        NewDictUserData2.setObject(text, forKey: kwork as NSCopying)
+                         self.strStoreWork = text
+
 //                         dict.setValue("\(self.txtWork.text!)", forKey: kwork)
                     }
                     
+                    NewDictUserData.setObject(NewDictUserData2, forKey: profile as NSCopying)
+                    
                     let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData)
                     
-                    self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: kUserProfileData)
+                    self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: get_user_all_info)
+                    
+                  print(self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info))
+                    
+                    let dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
+                    
+                    let dict = dictUserData?[profile] as! NSDictionary
+
+                    
                 }
                 else
                 {
@@ -706,6 +816,25 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                 
                 if status == 1
                 {
+                    let dict2  = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)! as NSDictionary
+                    
+                    let profileData = dict2.object(forKey: profile) as! NSDictionary
+                    
+                    let NewDictUserData = NSMutableDictionary(dictionary: profileData)
+                    
+                    let NewDictUserData2 = NSMutableDictionary(dictionary: dict2)
+
+                    NewDictUserData.setObject(dictObj.object(forKey: "text_desc") as! String, forKey: kdescription as NSCopying)
+                    NewDictUserData.setObject(dictObj.object(forKey: "text_school") as! String, forKey: kschool as NSCopying)
+                    NewDictUserData.setObject(dictObj.object(forKey: "text_work") as! String, forKey: kwork as NSCopying)
+                    
+                    NewDictUserData2.setObject(NewDictUserData, forKey: profile as NSCopying)
+                    
+                    let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData)
+                    
+                    self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: get_user_all_info)
+                    
+                    /*
                     let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)! as NSDictionary
                     
                     let NewDictUserData = NSMutableDictionary(dictionary: dict)
@@ -717,7 +846,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                     let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData)
                     
                     self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: kUserProfileData)
-                    
+                    */
                     
                     self.delegate?.UpdateUserData()
 
@@ -852,7 +981,11 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                                                 imdUrl = dictData[kimage_url] as! String
                                             }
                                             
-                                            let dictUserData = (self?.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData))! as NSDictionary
+                                            let dictUserOriginalData = (self?.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye:get_user_all_info))! as NSDictionary
+                                            
+                                            let dictUserOriginalDataMut = NSMutableDictionary(dictionary: dictUserOriginalData)
+
+                                            let dictUserData = dictUserOriginalData.object(forKey:profile) as! NSDictionary
                                             
                                             let NewDictUserData = NSMutableDictionary(dictionary: dictUserData)
                                             
@@ -864,11 +997,9 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                                             if imageRemove == kONE
                                             {
                                                 arrMutuable.removeObject(at: (self?.pageControl.currentPage)!)
-                                               
                                             }
                                             else
                                             {
-                                               
                                                 for (index, element) in (self?.arrImages3.enumerated())!
                                                 {
                                                     let PicStr = (element as! NSDictionary)[kurl] as! String
@@ -905,15 +1036,31 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                                             
                                             NewDictUserData.setObject(arrMutuable, forKey: kprofile_picture as NSCopying)
                                             
-                                            let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData)
                                             
-                                            self?.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: kUserProfileData)
+                                            dictUserOriginalDataMut.setObject(NewDictUserData, forKey: profile as NSCopying)
                                             
-                                            let dictRes = self?.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
+                                            
+                                            let data: Data = NSKeyedArchiver.archivedData(withRootObject: dictUserOriginalDataMut)
+                                            
+                                            self?.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: profile)
+                                            
+                                            let dictRes = self?.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
                                             
                                             self?.setArrayForSliderPhotos(dict: dictRes!)
                                             
                                             self?.imgCollectionView.reloadData()
+                                            
+                                            if imageRemove == kONE
+                                            {
+                                                let button = UIButton.init()
+                                                button.tag = 0
+                                                
+                                                self?.clickedOnStarIcon(sender: button)
+                                                
+                                                self?.imgCollectionView.reloadData()
+
+                                            }
+                                            
                                         }
                                         
                                     }
@@ -954,6 +1101,26 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         {
             btnRemove.isHidden = false
             btnAddPhoto.isHidden = true
+            
+            if self.checkDeleteButtonHideOrNot()
+            {
+                btnRemove.isHidden = false
+            }
+            else
+            {
+                btnRemove.isHidden = true
+                btnAddPhoto.isHidden = true
+            }
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView)
+    {
+        if scrollView == scrollViewObj
+        {
+            let verticalIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
+            
+            verticalIndicator.backgroundColor = UIColor.init(hexString: "37AAC8")
         }
     }
   

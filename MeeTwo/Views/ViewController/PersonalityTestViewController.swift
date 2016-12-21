@@ -52,6 +52,13 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
     
     var otherUserId = ""
     
+    
+    @IBOutlet var txtQuestionViewObj: UITextView!
+    
+    @IBOutlet var heightConstraintOfTextviewObj: NSLayoutConstraint!
+    
+    
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -197,7 +204,21 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
         let optionNo = (options[0] as! NSDictionary)[koptionText] as! String
         let optionYes = (options[1] as! NSDictionary)[koptionText] as! String
         
-        lblQuestion.text = questionText
+//        lblQuestion.text = questionText
+        
+        txtQuestionViewObj.text = questionText
+        heightConstraintOfTextviewObj.constant = self.calculateHeight(textView: txtQuestionViewObj, data: questionText).height
+        
+        let propotionalHeightOfTextview = UIScreen.main.bounds.size.height / 568 * 92
+        
+        if heightConstraintOfTextviewObj.constant > propotionalHeightOfTextview
+        {
+            heightConstraintOfTextviewObj.constant = propotionalHeightOfTextview
+        }
+        
+        self.view.layoutIfNeeded()
+        
+        
         btnNo.setTitle(optionNo, for: UIControlState.normal)
         btnYes.setTitle(optionYes, for: UIControlState.normal)
         
@@ -469,6 +490,20 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
             }
         }
 
+    }
+    
+    //MARK: Return Height Of Textview( Question )
+    
+    func calculateHeight(textView:UITextView, data:String) -> CGRect
+    {
+        
+        var newFrame:CGRect!
+        let fixedWidth = textView.frame.size.width
+        textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        let newSize = textView.sizeThatFits(CGSize(width: fixedWidth, height: CGFloat.greatestFiniteMagnitude))
+        newFrame = textView.frame
+        newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
+        return newFrame
     }
 
     override func didReceiveMemoryWarning() {

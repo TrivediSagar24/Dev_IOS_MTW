@@ -56,6 +56,9 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         
         imgCollectionView.contentSize.width = imgCollectionView.bounds.size.width * 5
         
+        globalMethodObj.setScrollViewIndicatorColor(scrollView: scrollViewObj)
+        
+        
         //  imgCollectionView.backgroundColor = UIColor.red
         
     }
@@ -101,19 +104,31 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         
         btnEditProfile.layer.cornerRadius = 20
 
-        self.callGetProfileService()
-
+        let dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
+        
+        let dict = dictUserData?[profile] as! NSDictionary
+        
+        self.arrImagesProfile =  dict[kprofile_picture] as! NSArray
+        self.pageControl.numberOfPages = self.arrImagesProfile.count
+        
+        self.setUpView()
+        
+//        self.callGetProfileService()
 //        self.setUpView()
     }
 
     func setUpView()
     {
        
-        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
+        let dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
+        
+        let dict = dictUserData?[profile] as! NSDictionary
+//        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
     
-        let firstName = dict?.object(forKey: kfirst_name) as! String
-        let age_obj = dict?.object(forKey: kage) as! String
-        let distenceAway  = dict?.object(forKey: kdistance_away) as! Int
+        let firstName = dict.object(forKey: kfirst_name) as! String
+        let age_obj = dict.object(forKey:
+            kage) as! String
+        let distenceAway  = dict.object(forKey: kdistance_away) as! Int
         
         if  distenceAway == 0
         {
@@ -133,13 +148,13 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         self.lblName.adjustsFontSizeToFitWidth = true
         self.lblRightHere.adjustsFontSizeToFitWidth = true
         
-        let descText = dict?.object(forKey: kdescription) as?String
+        let descText = dict.object(forKey: kdescription) as?String
         lblDesc.text = descText
         
-        let schoolText = dict?.object(forKey: kschool) as?String
+        let schoolText = dict.object(forKey: kschool) as?String
         lblSchool.text = schoolText
         
-        let currentWork = dict?.object(forKey: kwork) as?String
+        let currentWork = dict.object(forKey: kwork) as?String
         lblCurrentwork.text = currentWork
         
         viewDescriptionObj.isHidden = false
@@ -191,7 +206,7 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
                 self.view.layoutIfNeeded()
             }
         
-        self.arrImagesProfile =  dict?[kprofile_picture] as! NSArray
+        self.arrImagesProfile =  dict[kprofile_picture] as! NSArray
         
         let arrMutuable = self.arrImagesProfile.mutableCopy() as! NSMutableArray
         var dictTrueURLData = NSDictionary()
@@ -209,7 +224,7 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         
         arrMutuable.insert(dictTrueURLData, at: 0)
         
-        let NewDictUserData = NSMutableDictionary(dictionary: dict!)
+        let NewDictUserData = NSMutableDictionary(dictionary: dict)
 
         NewDictUserData.setObject(arrMutuable, forKey: kprofile_picture as NSCopying)
         
@@ -378,28 +393,39 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
                 
                 if status == 1
                 {
-                    let dictData = result.object(forKey: kDATA) as! NSDictionary
-                    let dictResponse = dictData.object(forKey: "profile") as! NSDictionary
+//                    let dictData = result.object(forKey: kDATA) as! NSDictionary
+//                    let dictResponse = dictData.object(forKey: "profile") as! NSDictionary
+//                    
+//                    let data: Data = NSKeyedArchiver.archivedData(withRootObject: dictResponse)
+//                    
+//                    self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: kUserProfileData)
+//                    
+//                    let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
                     
-                    let data: Data = NSKeyedArchiver.archivedData(withRootObject: dictResponse)
+                    let dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
                     
-                    self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: kUserProfileData)
+                    let dict = dictUserData?[profile] as! NSDictionary
                     
-                    let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
-                    
-                    self.arrImagesProfile =  dict?[kprofile_picture] as! NSArray
+                    self.arrImagesProfile =  dict[kprofile_picture] as! NSArray
                     self.pageControl.numberOfPages = self.arrImagesProfile.count
                     
                     self.setUpView()
-
                 }
                 else
                 {
                     self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
-                    
                 }
-                
             }
+        }
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView)
+    {
+        if scrollView == scrollViewObj
+        {
+            let verticalIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
+            
+            verticalIndicator.backgroundColor = UIColor.init(hexString: "37AAC8")
         }
     }
 }

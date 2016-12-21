@@ -2,6 +2,8 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,13 +20,21 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splash" translatesAutoresizingMaskIntoConstraints="NO" id="H7K-Ok-wrV"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon-AppIcon" translatesAutoresizingMaskIntoConstraints="NO" id="vhE-2u-08v">
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="vhE-2u-08v" secondAttribute="height" multiplier="1:1" id="tTL-iY-Y7x"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="H7K-Ok-wrV" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="1Xe-JY-8aO"/>
                             <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="H7K-Ok-wrV" secondAttribute="bottom" id="CVa-1x-dnl"/>
+                            <constraint firstItem="vhE-2u-08v" firstAttribute="centerX" secondItem="H7K-Ok-wrV" secondAttribute="centerX" id="HpS-H3-LUk"/>
                             <constraint firstAttribute="trailing" secondItem="H7K-Ok-wrV" secondAttribute="trailing" id="Hxc-D1-kGx"/>
+                            <constraint firstItem="vhE-2u-08v" firstAttribute="centerY" secondItem="H7K-Ok-wrV" secondAttribute="centerY" id="IGJ-uX-GAZ"/>
                             <constraint firstItem="H7K-Ok-wrV" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="TQP-WL-32w"/>
+                            <constraint firstItem="vhE-2u-08v" firstAttribute="width" secondItem="H7K-Ok-wrV" secondAttribute="width" multiplier="120:375" id="WwJ-K1-GAt"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -34,6 +44,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Icon-AppIcon" width="171" height="171"/>
         <image name="splash" width="360" height="640"/>
     </resources>
 </document>

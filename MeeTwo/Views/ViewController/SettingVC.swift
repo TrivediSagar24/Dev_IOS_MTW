@@ -47,15 +47,23 @@ class SettingVC: UIViewController {
     var dictSetting: NSMutableDictionary!
     var dictSettingTemp: NSDictionary!
     
-    override func viewDidLoad() {
+    @IBOutlet var scrollViewObj: UIScrollView!
+    
+    
+    override func viewDidLoad()
+    {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        globalMethodObj.setScrollViewIndicatorColor(scrollView: scrollViewObj)
+        scrollViewObj.alpha = 0.0
         
         self.setupSettingView()
         
     }
     
-    override func didReceiveMemoryWarning() {
+    override func didReceiveMemoryWarning()
+    {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
@@ -101,7 +109,21 @@ class SettingVC: UIViewController {
     }
     override func viewDidAppear(_ animated: Bool)
     {
-        self.callGetUserSettings()
+        let dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
+        
+        let dictData = dictUserData?[settings] as! NSDictionary
+        
+        self.dictSetting = NSMutableDictionary(dictionary: dictData)
+        
+        self.afterSettingGetResponse()
+        
+        self.dictSettingTemp = dictData
+        
+        UIView.animate(withDuration: 0.2) { 
+            self.scrollViewObj.alpha = 1.0
+        }
+        
+//        self.callGetUserSettings()
     }
     
     func back1()
@@ -227,13 +249,17 @@ class SettingVC: UIViewController {
                 
                 if status == 1
                 {
-                    let dictData = result.object(forKey: kDATA) as! NSDictionary
-                    
-                    self.dictSettingTemp = dictData
-                    
-                    self.dictSetting = NSMutableDictionary(dictionary: dictData)
-                    
-                    self.afterSettingGetResponse()
+//                    let dictData = result.object(forKey: kDATA) as! NSDictionary
+//                    
+//                    self.dictSettingTemp = dictData
+//                    
+//                    let dictUserData = self.globalMethodObj.getUserDefault(KeyToReturnValye: get_user_all_info)
+//                    
+//                    let dictData = dictUserData?[settings] as! NSDictionary
+//                    
+//                    self.dictSetting = NSMutableDictionary(dictionary: dictData)
+//                    
+//                    self.afterSettingGetResponse()
                 }
                 else
                 {
@@ -572,10 +598,27 @@ class SettingVC: UIViewController {
                 
                 if status == 1
                 {
-                   
                     let dictUserData = (self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData))! as NSDictionary
                     
+                    var dictUserDataSaved: NSDictionary!
+                    
+                    dictUserDataSaved = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info) as! NSDictionary!
+                    
+                    let dictSetting = dictUserData[settings]  as! NSDictionary!
+                    
+                    let NewDictUserData = NSMutableDictionary(dictionary: dictUserDataSaved)
+                    
+                    let NewDictSetting = NSMutableDictionary(dictionary: dictSetting!)
+                    
+                    NewDictUserData.setObject(NewDictSetting, forKey: settings as NSCopying)
+                    
+                    let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData)
+                    
+                    self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: get_user_all_info)
+                    
+                    /*
                     let NewDictUserData = NSMutableDictionary(dictionary: dictUserData)
+                    
 
                     NewDictUserData.setObject(active, forKey: kis_active as NSCopying)
 
@@ -600,6 +643,7 @@ class SettingVC: UIViewController {
                      self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: "Settings saved successfully", viewcontrolelr: self)
                     
                     print("DATA TADA : \(NewDictUserData)")
+ */
                    
                 }
                 else
@@ -767,6 +811,13 @@ class SettingVC: UIViewController {
         }
         
         return true
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView)
+    {
+        let verticalIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
+        
+        verticalIndicator.backgroundColor = UIColor.init(hexString: "37AAC8")
     }
     
 }

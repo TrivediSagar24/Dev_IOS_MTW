@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2E2436621DD5F73700190B70 /* QuestionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E2436611DD5F73700190B70 /* QuestionVC.swift */; };
+		2E3428C01E0A920700139769 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3428BF1E0A920700139769 /* LoginViewController.swift */; };
 		2E3A2E251DF56F1A000C617B /* IQNSArray+Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3A2E0F1DF56F1A000C617B /* IQNSArray+Sort.swift */; };
 		2E3A2E261DF56F1A000C617B /* IQUIScrollView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3A2E101DF56F1A000C617B /* IQUIScrollView+Additions.swift */; };
 		2E3A2E271DF56F1A000C617B /* IQUITextFieldView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3A2E111DF56F1A000C617B /* IQUITextFieldView+Additions.swift */; };
@@ -60,6 +61,7 @@
 		2E5972921DDC794700642CE2 /* MeeTwo.sqlite in Resources */ = {isa = PBXBuildFile; fileRef = 2E5972911DDC783D00642CE2 /* MeeTwo.sqlite */; };
 		2E7553CB1DE30E4E00181D1B /* smallgif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 2E7553CA1DE30E4E00181D1B /* smallgif.gif */; };
 		2E7553D11DE3170500181D1B /* UIImage+Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7553CF1DE3170500181D1B /* UIImage+Gif.swift */; };
+		2E7E4F631E07E137004E88CA /* CustomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7E4F621E07E137004E88CA /* CustomScrollView.swift */; };
 		2EBF99361DE809D200107813 /* ToBadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EBF99351DE809D200107813 /* ToBadViewController.swift */; };
 		2ECA979B1DD337A300B75ED0 /* introCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECA979A1DD337A300B75ED0 /* introCell.swift */; };
 		2ECDA84A1DE6BE2C00E70C22 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECDA8491DE6BE2C00E70C22 /* UserProfileViewController.swift */; };
@@ -128,6 +130,7 @@
 		06E0F5C10E24F6E14D726B86 /* Pods-MeeTwo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeeTwo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MeeTwo/Pods-MeeTwo.debug.xcconfig"; sourceTree = "<group>"; };
 		2E2436601DD5E5F100190B70 /* MeeTwo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MeeTwo.entitlements; sourceTree = "<group>"; };
 		2E2436611DD5F73700190B70 /* QuestionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionVC.swift; sourceTree = "<group>"; };
+		2E3428BF1E0A920700139769 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		2E3A2E0F1DF56F1A000C617B /* IQNSArray+Sort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQNSArray+Sort.swift"; sourceTree = "<group>"; };
 		2E3A2E101DF56F1A000C617B /* IQUIScrollView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIScrollView+Additions.swift"; sourceTree = "<group>"; };
 		2E3A2E111DF56F1A000C617B /* IQUITextFieldView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUITextFieldView+Additions.swift"; sourceTree = "<group>"; };
@@ -210,6 +213,7 @@
 		2E7553CA1DE30E4E00181D1B /* smallgif.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = smallgif.gif; sourceTree = "<group>"; };
 		2E7553CE1DE3170500181D1B /* SwiftGif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftGif.h; sourceTree = "<group>"; };
 		2E7553CF1DE3170500181D1B /* UIImage+Gif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Gif.swift"; sourceTree = "<group>"; };
+		2E7E4F621E07E137004E88CA /* CustomScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomScrollView.swift; sourceTree = "<group>"; };
 		2EBF99351DE809D200107813 /* ToBadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToBadViewController.swift; sourceTree = "<group>"; };
 		2ECA979A1DD337A300B75ED0 /* introCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = introCell.swift; sourceTree = "<group>"; };
 		2ECDA8491DE6BE2C00E70C22 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
@@ -467,6 +471,14 @@
 			path = GIFClass;
 			sourceTree = "<group>";
 		};
+		2E7E4F611E07E0B2004E88CA /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				2E7E4F621E07E137004E88CA /* CustomScrollView.swift */,
+			);
+			path = Class;
+			sourceTree = "<group>";
+		};
 		2EF8525F1DE40F8D001B119F /* IntroImages */ = {
 			isa = PBXGroup;
 			children = (
@@ -559,6 +571,7 @@
 		529824211DB6445B00DA1777 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2E7E4F611E07E0B2004E88CA /* Class */,
 				529824221DB6445B00DA1777 /* ViewController */,
 			);
 			path = Views;
@@ -568,6 +581,7 @@
 			isa = PBXGroup;
 			children = (
 				529824231DB6445B00DA1777 /* ViewController.swift */,
+				2E3428BF1E0A920700139769 /* LoginViewController.swift */,
 				2E525A371DD991EF004565F8 /* LetsStartVC.swift */,
 				521680CC1DD1D4AE00E76882 /* HomeVC.swift */,
 				2ECA979A1DD337A300B75ED0 /* introCell.swift */,
@@ -923,12 +937,14 @@
 				2E3E02801DDB41E000099A50 /* UIImage+MultiFormat.m in Sources */,
 				2E3A2E2E1DF56F1A000C617B /* IQKeyboardReturnKeyHandler.swift in Sources */,
 				2E3E027E1DDB41E000099A50 /* UIButton+WebCache.m in Sources */,
+				2E7E4F631E07E137004E88CA /* CustomScrollView.swift in Sources */,
 				2ECA979B1DD337A300B75ED0 /* introCell.swift in Sources */,
 				2E7553D11DE3170500181D1B /* UIImage+Gif.swift in Sources */,
 				2E3E02731DDB41E000099A50 /* MKAnnotationView+WebCache.m in Sources */,
 				2E3E027B1DDB41E000099A50 /* SDWebImageDownloaderOperation.m in Sources */,
 				2E3E022D1DDB17AC00099A50 /* TabController.swift in Sources */,
 				2EBF99361DE809D200107813 /* ToBadViewController.swift in Sources */,
+				2E3428C01E0A920700139769 /* LoginViewController.swift in Sources */,
 				529824241DB6445B00DA1777 /* AppDelegate.swift in Sources */,
 				2E3E02761DDB41E000099A50 /* SDImageCache.m in Sources */,
 				41494E381DFC7C2300ABA81D /* Global.swift in Sources */,
