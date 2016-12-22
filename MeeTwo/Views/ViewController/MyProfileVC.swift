@@ -41,6 +41,9 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
     
     @IBOutlet var scrollViewObj: UIScrollView!
     
+    @IBOutlet var imgShaddow: UIImageView!
+    
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -54,10 +57,12 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         
         self.pageControl.frame = CGRect(x: 0, y: 0, width: pageView.frame.size.width, height: pageView.frame.size.height)
         
-        imgCollectionView.contentSize.width = imgCollectionView.bounds.size.width * 5
+//        imgCollectionView.contentSize.width = imgCollectionView.bounds.size.width * 5
         
         globalMethodObj.setScrollViewIndicatorColor(scrollView: scrollViewObj)
         
+        imgShaddow.backgroundColor = UIColor(patternImage: UIImage(named: "Icon-Shaddow")!)
+               
         
         //  imgCollectionView.backgroundColor = UIColor.red
         
@@ -84,7 +89,7 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         // self.pageControl.currentPageIndicatorColor = UIColor.black
         
         
-        let CurrentPageColor = UIColor(red: 55/255, green: 170/255, blue: 200/255, alpha: 1)
+        let CurrentPageColor = UIColor.init(hexString: shaddow_color)
         
         self.pageControl.currentPageIndicatorColor = CurrentPageColor
         
@@ -119,7 +124,6 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
 
     func setUpView()
     {
-       
         let dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
         
         let dict = dictUserData?[profile] as! NSDictionary
@@ -256,6 +260,9 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         //    NSLog(@"%d", sender.currentPage);
         self.imgCollectionView.setContentOffset(CGPoint(x: CGFloat(Float(self.imgCollectionView.frame.size.width) * (Float(sender.currentPage) + 0)), y: self.imgCollectionView.contentOffset.y), animated: true)
     }
+    
+   
+    
     
     //MARK: CollectionView Delegate & Datasource
     
@@ -425,7 +432,7 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
         {
             let verticalIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
             
-            verticalIndicator.backgroundColor = UIColor.init(hexString: "37AAC8")
+            verticalIndicator.backgroundColor = UIColor.init(hexString: shaddow_color)
         }
     }
 }

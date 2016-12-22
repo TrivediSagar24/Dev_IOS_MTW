@@ -19,7 +19,7 @@ class CustomScrollView: UIScrollView {
             let verticalIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
             
             
-            verticalIndicator.backgroundColor = UIColor.init(hexString: "37AAC8")
+            verticalIndicator.backgroundColor = UIColor.init(hexString: shaddow_color)
             
             //            UIColor(red: 55/255.0, green: 170/255.0, blue: 200/255.0, alpha: 1.0)
             

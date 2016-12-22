@@ -15,6 +15,8 @@ class UserProfileViewController: UIViewController {
     var userDict : NSDictionary!
     
     var arrImages1 = NSArray()
+    var arrImages = NSArray()
+    var arrSliderImages = NSMutableArray()
     
     var globalMethodObj1 = GlobalMethods()
     
@@ -28,17 +30,36 @@ class UserProfileViewController: UIViewController {
     
     @IBOutlet var lblDesc: UILabel!
     @IBOutlet var lblSchool: UILabel!
-    @IBOutlet var lblSchoolCity: UILabel!
     @IBOutlet var lblCurrentWork: UILabel!
     
     var pageControl: LCAnimatedPageControl!
     
+    @IBOutlet var scrollviewObj: UIScrollView!
+    
+    @IBOutlet var viewDescriptionObj: UIView!
+    
+    @IBOutlet var viewSchoolDescObj: UIView!
+    
+    @IBOutlet var viewCurrentWorkObj: UIView!
+    
+    @IBOutlet var heightConstraintOfDescriptionView: NSLayoutConstraint!
+    
+    @IBOutlet var HeightConstraintOfSchoolView: NSLayoutConstraint!
+    
+    @IBOutlet var HeightConstraintOfCurrentView: NSLayoutConstraint!
+
+    @IBOutlet var imgShaddow: UIImageView!
+    
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        imgShaddow.backgroundColor = UIColor(patternImage: UIImage(named: "Icon-Shaddow")!)
 
         // Do any additional setup after loading the view.
         
+        /*
         let flowLayout = UICollectionViewFlowLayout()
         flowLayout.scrollDirection = .horizontal
         flowLayout.minimumInteritemSpacing = 0.0
@@ -47,7 +68,7 @@ class UserProfileViewController: UIViewController {
         imgCollectionView!.collectionViewLayout = flowLayout
         
         self.pageControl = LCAnimatedPageControl(frame: CGRect(x: 0, y: 0, width: pageControllerObj1.frame.size.width, height: pageControllerObj1.frame.size.height))
-        self.pageControl.numberOfPages = 3
+//        self.pageControl.numberOfPages = 3
         self.pageControl.indicatorDiameter = 5.0
         self.pageControl.indicatorMargin = 15.0
         self.pageControl.indicatorMultiple = 1.4
@@ -60,12 +81,39 @@ class UserProfileViewController: UIViewController {
         
          self.pageControl.currentPageIndicatorColor = CurrentPageColor
         
-        self.pageControl.sourceScrollView = self.imgCollectionView
+//        self.pageControl.sourceScrollView = self.imgCollectionView
         self.pageControl.prepareShow()
         
         self.pageControllerObj1.addSubview(pageControl)
         self.pageControl.addTarget(self, action: #selector(self.valueChanged1(_:)), for: .valueChanged)
+       */
         
+        
+        let flowLayout = UICollectionViewFlowLayout()
+        flowLayout.scrollDirection = .horizontal
+        flowLayout.minimumInteritemSpacing = 0.0
+        flowLayout.minimumLineSpacing = 0.0
+        imgCollectionView!.isPagingEnabled = true
+        imgCollectionView!.collectionViewLayout = flowLayout
+        
+        self.pageControl = LCAnimatedPageControl(frame: CGRect(x: 0, y: 0, width: pageControllerObj1.frame.size.width, height: pageControllerObj1.frame.size.height))
+        self.pageControl.indicatorDiameter = 5.0
+        self.pageControl.indicatorMargin = 15.0
+        self.pageControl.indicatorMultiple = 1.4
+        self.pageControl.pageStyle = .LCSquirmPageStyle
+        self.pageControl.pageIndicatorColor = UIColor.white
+        
+        let CurrentPageColor = UIColor.init(hexString: shaddow_color)
+        
+        self.pageControl.currentPageIndicatorColor = CurrentPageColor
+        
+        self.pageControl.sourceScrollView = self.imgCollectionView
+        self.pageControl.prepareShow()
+        
+        self.self.pageControllerObj1.addSubview(pageControl)
+        self.pageControl.addTarget(self, action: #selector(self.self.valueChanged1(_:)), for: .valueChanged)
+        
+        self.pageControl.frame = CGRect(x: 0, y: 0, width: self.pageControllerObj1.frame.size.width, height: pageControllerObj1.frame.size.height)
        
     }
     
@@ -73,9 +121,8 @@ class UserProfileViewController: UIViewController {
     {
         super.viewDidAppear(animated)
         
-        self.pageControl.frame = CGRect(x: 0, y: 0, width: pageControllerObj1.frame.size.width, height: pageControllerObj1.frame.size.height)
         
-        imgCollectionView.contentSize.width = imgCollectionView.bounds.size.width * 5
+//        imgCollectionView.contentSize.width = imgCollectionView.bounds.size.width * 5
         
       //  imgCollectionView.backgroundColor = UIColor.red
         
@@ -110,23 +157,31 @@ class UserProfileViewController: UIViewController {
     }
     func setUpView()
     {
-//        let profilePicStr = userDict.object(forKey: kprofile_pic_url)  as! String
+
+        ////////////////////////////////
         
-        var profilePicStr = ""
-        let profilePicarr = userDict.object(forKey: kprofile_picture)  as! NSArray
         
-        for (_,element) in profilePicarr.enumerated()
+        arrImages =  userDict[kprofile_picture] as! NSArray
+        
+        let arrMutuable = arrImages.mutableCopy() as! NSMutableArray
+        var dictTrueURLData = NSDictionary()
+        
+        for (index,element) in arrImages.enumerated()
         {
-            let dict =  element as! NSDictionary
-            let checkProfile = dict.object(forKey: "is_profile_pic")  as! Bool
+            let dictUrlData = element as! NSDictionary
             
-            if checkProfile == true
+            if dictUrlData.object(forKey: kis_profile_pic) as! Bool == true
             {
-                profilePicStr =  dict.object(forKey: "url")  as! String
+                dictTrueURLData = dictUrlData
+                arrMutuable.removeObject(at: index)
             }
         }
         
-        arrImages1 = [profilePicStr,profilePicStr,profilePicStr]
+        arrMutuable.insert(dictTrueURLData, at: 0)
+        
+        arrSliderImages = arrMutuable
+        
+        ////////////////////////////////
         
         let firstName = userDict.object(forKey: kfirst_name) as! String
         let distance_away = userDict.object(forKey: kdistance_away) as! Int
@@ -142,25 +197,84 @@ class UserProfileViewController: UIViewController {
         self.lblUserName.adjustsFontSizeToFitWidth = true
         self.lblAge.adjustsFontSizeToFitWidth = true
         
+        /*
+        
       //  let descText = userDict.object(forKey: "") as! String
         lblDesc.text = userDict.object(forKey: kdescription) as?String
-        
-        lblSchoolCity.text = userDict.object(forKey: "") as?String
-        
-       
         
         lblSchool.text = userDict.object(forKey: kschool) as?String
         
         lblCurrentWork.text = userDict.object(forKey: kwork) as?String
+         
+        */
         
+        let descText = userDict.object(forKey: kdescription) as?String
+        lblDesc.text = descText
+        
+        let schoolText = userDict.object(forKey: kschool) as?String
+        lblSchool.text = schoolText
+        
+        let currentWork = userDict.object(forKey: kwork) as?String
+        lblCurrentWork.text = currentWork
+        
+        viewDescriptionObj.isHidden = false
+        viewSchoolDescObj.isHidden = false
+        viewCurrentWorkObj.isHidden = false
+        
+        let labelDescHeight = DBOperation.height(for: lblDesc, withText: lblDesc.text)
+        let labelschoolHeight = DBOperation.height(for: lblSchool, withText: lblSchool.text)
+        let labelcurrentWorkHeight =  DBOperation.height(for: lblCurrentWork, withText: lblCurrentWork.text)
+        
+        heightConstraintOfDescriptionView.constant = 400
+        HeightConstraintOfSchoolView.constant = 400
+        HeightConstraintOfCurrentView.constant = 400
+        self.view.layoutIfNeeded()
+
+        if descText?.characters.count == 0
+        {
+            self.heightConstraintOfDescriptionView.constant = 0
+            self.view.layoutIfNeeded()
+        }
+        else
+        {
+            self.heightConstraintOfDescriptionView.constant = self.lblDesc.frame.origin.y + labelDescHeight + 8
+            self.view.layoutIfNeeded()
+        }
+        
+        
+        if schoolText?.characters.count == 0
+        {
+            self.HeightConstraintOfSchoolView.constant = labelschoolHeight
+            self.view.layoutIfNeeded()
+        }
+        else
+        {
+            self.HeightConstraintOfSchoolView.constant = self.lblSchool.frame.origin.y + labelschoolHeight + 8
+            self.view.layoutIfNeeded()
+            
+        }
+        
+        if currentWork?.characters.count == 0
+        {
+            self.HeightConstraintOfCurrentView.constant = labelcurrentWorkHeight
+            self.view.layoutIfNeeded()
+        }
+        else
+        {
+            self.HeightConstraintOfCurrentView.constant = self.lblCurrentWork.frame.origin.y + labelcurrentWorkHeight + 8
+            self.view.layoutIfNeeded()
+        }
+
+        self.pageControl.numberOfPages = arrSliderImages.count
+        imgCollectionView.reloadData()
         
     }
+    
     func back()
     {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -175,21 +289,20 @@ class UserProfileViewController: UIViewController {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        return 3
+        return arrSliderImages.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAtIndexPath indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = imgCollectionView.dequeueReusableCell(withReuseIdentifier: "introCell", for: indexPath) as! introCell
         
+        let PicDict = arrSliderImages.object(at: indexPath.row)  as! NSDictionary
+
+        let url = PicDict.object(forKey: kurl)
         
-        let PicStr = arrImages1.object(at: indexPath.row)  as! String
-        
-        let urlString : NSURL = NSURL.init(string: PicStr)!
-        
+        let urlString : NSURL = NSURL.init(string: url as! String)!
         
         let imgPlaceHolder = UIImage.init(named: kimgUserLogo)
-        
         
         cell.imgSlideObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
         
@@ -206,9 +319,12 @@ class UserProfileViewController: UIViewController {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView)
     {
-        let verticalIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
-        
-        verticalIndicator.backgroundColor = UIColor.init(hexString: "37AAC8")
+        if scrollView == scrollviewObj
+        {
+            let verticalIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
+            
+            verticalIndicator.backgroundColor = UIColor.init(hexString: shaddow_color)
+        }
     }
 
     /*

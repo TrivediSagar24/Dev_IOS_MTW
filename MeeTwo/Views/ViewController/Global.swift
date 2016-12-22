@@ -114,7 +114,6 @@ let kpic_id = "pic_id"
 let kimage_id = "image_id"
 let kimage_url = "image_url"
 
-let kis_active = "is_active"
 
 let get_user_all_info = "get_user_all_info"
 
@@ -124,3 +123,16 @@ let settings = "settings"
 
 let profile = "profile"
 
+
+let kis_active = "is_active"
+let kage_range = "age_range"
+let kdistance = "distance"
+let klooking_for = "looking_for"
+let knoti_acceptance = "noti_acceptance"
+let knoti_compatibility = "noti_compatibility"
+let knoti_new_chat = "noti_new_chat"
+
+let kswitch_sel = "switch-sel"
+let kswitch_unsel = "switch-unsel"
+
+let shaddow_color = "0EBEE8"

@@ -130,6 +130,10 @@ class SettingVC: UIViewController {
     {
         if self.checkUserSettingDataChanged() == false
         {
+            JTProgressHUD.show()
+            
+            Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.closeTimeAndBack), userInfo: nil, repeats: false)
+            
             self.saveSetting()
         }
         else
@@ -274,7 +278,7 @@ class SettingVC: UIViewController {
     
     func afterSettingGetResponse()
     {
-        let myString: String = self.dictSetting.object(forKey: "age_range")as!String;
+        let myString: String = self.dictSetting.object(forKey: kage_range)as!String;
         
         var myStrigArray = myString.components(separatedBy: ",")
         
@@ -293,42 +297,43 @@ class SettingVC: UIViewController {
         distanceSliderObj.upperValue = Float((strDistance as NSString).integerValue)
         
         
-        let active = self.dictSetting.object(forKey: "is_active")as!String
+        let active = self.dictSetting.object(forKey: kis_active)as!String
+        
         if active == "1"
         {
-            btnProfile.setImage(UIImage(named: "switch-sel")!, for: .normal)
+            btnProfile.setImage(UIImage(named: kswitch_sel)!, for: .normal)
         }
         
-        let compability = self.dictSetting.object(forKey: "noti_compatibility")as!String
+        let compability = self.dictSetting.object(forKey: knoti_compatibility)as!String
         if compability == "1"
         {
-            btnCompability.setImage(UIImage(named: "switch-sel")!, for: .normal)
+            btnCompability.setImage(UIImage(named: kswitch_sel)!, for: .normal)
         }
         
-        let chat = self.dictSetting.object(forKey: "noti_new_chat")as!String
+        let chat = self.dictSetting.object(forKey: knoti_new_chat)as!String
         if chat == "1"
         {
-            btnChat.setImage(UIImage(named: "switch-sel")!, for: .normal)
+            btnChat.setImage(UIImage(named: kswitch_sel)!, for: .normal)
         }
         
-        let acceptance = self.dictSetting.object(forKey: "noti_acceptance")as!String
+        let acceptance = self.dictSetting.object(forKey: knoti_acceptance)as!String
         if acceptance == "1"
         {
-            btnAcceptance.setImage(UIImage(named: "switch-sel")!, for: .normal)
+            btnAcceptance.setImage(UIImage(named: kswitch_sel)!, for: .normal)
         }
         
-        let looking = self.dictSetting.object(forKey: "noti_acceptance")as!String
+        let looking = self.dictSetting.object(forKey: knoti_acceptance)as!String
         if looking == "1"
         {
-            btnMen.setImage(UIImage(named: "switch-sel")!, for: .normal)
+            btnMen.setImage(UIImage(named: kswitch_sel)!, for: .normal)
         }
         else if looking == "2"
         {
-             btnWomen.setImage(UIImage(named: "switch-sel")!, for: .normal)
+             btnWomen.setImage(UIImage(named: kswitch_sel)!, for: .normal)
         }
         else
         {
-             btnBoth.setImage(UIImage(named: "switch-sel")!, for: .normal)
+             btnBoth.setImage(UIImage(named: kswitch_sel)!, for: .normal)
         }
         
         self.changeDistanceSlider()
@@ -373,26 +378,26 @@ class SettingVC: UIViewController {
     @IBAction func lookingAct(_ sender: AnyObject)
     {
     
-        btnMen.setImage(UIImage(named: "switch-unsel")!, for: .normal)
-        btnWomen.setImage(UIImage(named: "switch-unsel")!, for: .normal)
-        btnBoth.setImage(UIImage(named: "switch-unsel")!, for: .normal)
+        btnMen.setImage(UIImage(named: kswitch_unsel)!, for: .normal)
+        btnWomen.setImage(UIImage(named: kswitch_unsel)!, for: .normal)
+        btnBoth.setImage(UIImage(named: kswitch_unsel)!, for: .normal)
         
-         var looking = self.dictSetting.object(forKey: "looking_for")as!String
+         var looking = self.dictSetting.object(forKey: klooking_for)as!String
         
         if sender.tag == 1
         {
             looking = "1"
-            btnMen.setImage(UIImage(named: "switch-sel")!, for: .normal)
+            btnMen.setImage(UIImage(named: kswitch_sel)!, for: .normal)
         }
         else if sender.tag == 2
         {
             looking = "2"
-            btnWomen.setImage(UIImage(named: "switch-sel")!, for: .normal)
+            btnWomen.setImage(UIImage(named: kswitch_sel)!, for: .normal)
         }
         else if sender.tag == 3
         {
             looking = "3"
-             btnBoth.setImage(UIImage(named: "switch-sel")!, for: .normal)
+             btnBoth.setImage(UIImage(named: kswitch_sel)!, for: .normal)
         }
         else
         {
@@ -443,22 +448,22 @@ class SettingVC: UIViewController {
     {
       //  print(self.dictSetting.object(forKey: "looking_for")as!String)
         
-        var active = self.dictSetting.object(forKey: "is_active")as!String
+        var active = self.dictSetting.object(forKey: kis_active)as!String
         
         if active == "1"
         {
             active = "0"
-            btnProfile.setImage(UIImage(named: "switch-unsel")!, for: .normal)
+            btnProfile.setImage(UIImage(named: kswitch_unsel)!, for: .normal)
            
         }
         else
         {
             active = "1"
-            btnProfile.setImage(UIImage(named: "switch-sel")!, for: .normal)
+            btnProfile.setImage(UIImage(named: kswitch_sel)!, for: .normal)
         }
         
         let mutableDict = self.dictSetting
-        mutableDict?["is_active"] = active
+        mutableDict?[kis_active] = active
         self.dictSetting = mutableDict
         
     }
@@ -469,32 +474,32 @@ class SettingVC: UIViewController {
         
         if sender.tag == 1
         {
-            keyPass = "noti_compatibility"
+            keyPass = knoti_compatibility as NSString!
             
-           ValuePass = self.dictSetting.object(forKey: "noti_compatibility")as!String as NSString!
+           ValuePass = self.dictSetting.object(forKey: knoti_compatibility)as!String as NSString!
         }
         else if sender.tag == 2
         {
-            keyPass = "noti_new_chat"
-            ValuePass = self.dictSetting.object(forKey: "noti_new_chat")as!String as NSString!
+            keyPass = knoti_new_chat as NSString!
+            ValuePass = self.dictSetting.object(forKey: knoti_new_chat)as!String as NSString!
         }
         else
         {
-            keyPass = "noti_acceptance"
-            ValuePass = self.dictSetting.object(forKey: "noti_acceptance")as!String as NSString!
+            keyPass = knoti_acceptance as NSString!
+            ValuePass = self.dictSetting.object(forKey: knoti_acceptance)as!String as NSString!
         }
         
 
         if ValuePass == "1"
         {
             ValuePass = "0"
-            sender.setImage(UIImage(named: "switch-unsel")!, for: .normal)
+            sender.setImage(UIImage(named: kswitch_unsel)!, for: .normal)
             
         }
         else
         {
             ValuePass = "1"
-            sender.setImage(UIImage(named: "switch-sel")!, for: .normal)
+            sender.setImage(UIImage(named: kswitch_sel)!, for: .normal)
         }
         
         let mutableDict = self.dictSetting
@@ -550,7 +555,7 @@ class SettingVC: UIViewController {
     {
         //  scrollViewObj.alpha = 0.0
         
-        JTProgressHUD.show()
+//        JTProgressHUD.show()
         
         let getUserId = globalMethodObj.getUserId()
         
@@ -569,24 +574,24 @@ class SettingVC: UIViewController {
         }
 
         
-        let active = self.dictSetting.object(forKey: "is_active")as!String
+        let active = self.dictSetting.object(forKey: kis_active)as!String
         
-        let compability = self.dictSetting.object(forKey: "noti_compatibility")as!String
+        let compability = self.dictSetting.object(forKey: knoti_compatibility)as!String
         
-        let chat = self.dictSetting.object(forKey: "noti_new_chat")as!String
+        let chat = self.dictSetting.object(forKey: knoti_new_chat)as!String
         
-        let acceptance = self.dictSetting.object(forKey: "noti_acceptance")as!String
+        let acceptance = self.dictSetting.object(forKey: knoti_acceptance)as!String
         
         
         let parameters =
             [
                 GlobalMethods.METHOD_NAME: "user_save_settings",
-                "user_id": getUserId,"looking_for":looking,"distance":dist, "age_range":age, "is_active":active, "noti_compatibility":compability, "noti_new_chat":chat, "noti_acceptance":acceptance
+                kuser_id: getUserId,klooking_for:looking,kdistance:dist, kage_range:age, kis_active:active, knoti_compatibility:compability, knoti_new_chat:chat, knoti_acceptance:acceptance
                 ] as [String : Any]
         
         globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
             
-            JTProgressHUD.hide()
+//            JTProgressHUD.hide()
             
             if error != nil
             {
@@ -598,13 +603,13 @@ class SettingVC: UIViewController {
                 
                 if status == 1
                 {
-                    let dictUserData = (self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData))! as NSDictionary
+//                    let dictUserData = (self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData))! as NSDictionary
                     
                     var dictUserDataSaved: NSDictionary!
                     
-                    dictUserDataSaved = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info) as! NSDictionary!
+                    dictUserDataSaved = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info) as NSDictionary!
                     
-                    let dictSetting = dictUserData[settings]  as! NSDictionary!
+                    let dictSetting = dictUserDataSaved[settings]  as! NSDictionary!
                     
                     let NewDictUserData = NSMutableDictionary(dictionary: dictUserDataSaved)
                     
@@ -615,6 +620,10 @@ class SettingVC: UIViewController {
                     let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData)
                     
                     self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: get_user_all_info)
+                    
+                    GlobalMethods.checkUser_active = active
+                    
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: "Settings saved successfully", viewcontrolelr: self)
                     
                     /*
                     let NewDictUserData = NSMutableDictionary(dictionary: dictUserData)
@@ -729,13 +738,13 @@ class SettingVC: UIViewController {
         "noti_new_chat" = 1;
         */
         
-        let AgeRange = self.dictSettingTemp.object(forKey: "age_range") as! String
-        let distance = self.dictSettingTemp.object(forKey: "distance") as! String
-        let is_active = self.dictSettingTemp.object(forKey: "is_active") as! String
-        let looking_for = self.dictSettingTemp.object(forKey: "looking_for") as! String
-        let noti_acceptance = self.dictSettingTemp.object(forKey: "noti_acceptance") as! String
-        let noti_compatibility = self.dictSettingTemp.object(forKey: "noti_compatibility") as! String
-        let noti_new_chat = self.dictSettingTemp.object(forKey: "noti_new_chat") as! String
+        let AgeRange = self.dictSettingTemp.object(forKey: kage_range) as! String
+        let distance = self.dictSettingTemp.object(forKey: kdistance) as! String
+        let is_active = self.dictSettingTemp.object(forKey: kis_active) as! String
+        let looking_for = self.dictSettingTemp.object(forKey: klooking_for) as! String
+        let noti_acceptance = self.dictSettingTemp.object(forKey: knoti_acceptance) as! String
+        let noti_compatibility = self.dictSettingTemp.object(forKey: knoti_compatibility) as! String
+        let noti_new_chat = self.dictSettingTemp.object(forKey: knoti_new_chat) as! String
         
         
         ///////// age_Range ////////////
@@ -813,11 +822,19 @@ class SettingVC: UIViewController {
         return true
     }
     
+    func closeTimeAndBack()
+    {
+        JTProgressHUD.hide()
+        
+        self.navigationController?.isNavigationBarHidden = true
+        _ = self.navigationController?.popViewController(animated: true)
+    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView)
     {
         let verticalIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
         
-        verticalIndicator.backgroundColor = UIColor.init(hexString: "37AAC8")
+        verticalIndicator.backgroundColor = UIColor.init(hexString: shaddow_color)
     }
     
 }

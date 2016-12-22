@@ -53,6 +53,9 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     var ChemistryViewControllerObj = ChemistrySuccessViewController()
     var ToBadViewControllerObj = ToBadViewController()
     
+    @IBOutlet var lblSearchingPeopleObj: UILabel!
+    
+    
     let manager = CLLocationManager()
     
     override func viewDidLoad()
@@ -89,6 +92,10 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
 //        self.visibilitySetupView()
         self.visibilitySetup()
         
+        
+        let tapGestureObj = UITapGestureRecognizer.init(target: self, action: #selector(self.ClickedOnProfileView))
+        tapGestureObj.numberOfTapsRequired = 1
+        viewDisplayProfileObj.addGestureRecognizer(tapGestureObj)
     }
     
     override func viewWillAppear(_ animated: Bool)
@@ -125,6 +132,11 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     {
         super.viewDidAppear(animated)
         
+    }
+    
+    func ClickedOnProfileView()
+    {
+        self.btnProfileClicked(btnNo)
     }
     
     //MARK: Check Current Location
@@ -412,8 +424,8 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         btnNo.layer.cornerRadius = 10.0
         btnYes.layer.cornerRadius = 10.0
         
-        imgGifDisplayObj.isHidden = false
         imgGifDisplayObj.image = UIImage.gif(name: "smallgif")
+        lblSearchingPeopleObj.isHidden = false
         
         viewDisplayProfileObj.isHidden = true
         viewYesNoObj.isHidden = true
@@ -594,8 +606,8 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             
             PersonalityVCObj.delegate = self
             
-            let navigationController = UINavigationController(rootViewController: PersonalityVCObj)
-            navigationController.isNavigationBarHidden = true
+//            let navigationController = UINavigationController(rootViewController: PersonalityVCObj)
+//            navigationController.isNavigationBarHidden = true
             
 
             let dictProfile = self.arrProfiles.object(at: self.indexOfProfile) as! NSDictionary
@@ -603,7 +615,9 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             
             self.setLikeDislikeTextRandomaly()
             
-            self.present(navigationController, animated: true, completion: nil)
+            self.navigationController?.pushViewController(PersonalityVCObj, animated: true)
+            
+//            self.present(navigationController, animated: true, completion: nil)
             
             UIView.animate(withDuration: 0.4, animations: {
                 self.viewDisplayProfileObj.alpha = 0.0
@@ -970,9 +984,11 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                         UIView.animate(withDuration: 0.3, animations: {
                             self.viewDisplayProfileObj.alpha = 1.0
                             self.imgGifDisplayObj.alpha = 0.0
+                            self.lblSearchingPeopleObj.alpha = 0.0
                             self.viewYesNoObj.alpha = 1.0
                             }, completion: { (true) in
                                 self.imgGifDisplayObj.isHidden = true
+                                self.lblSearchingPeopleObj.isHidden = true
                         })
                     }
                     else
@@ -980,11 +996,13 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                         
                         UIView.animate(withDuration: 0.3, animations: {
                             self.imgGifDisplayObj.alpha = 0.0
+                            self.lblSearchingPeopleObj.alpha = 0.0
                             self.viewDisplayProfileObj.alpha = 0.0
                             self.viewYesNoObj.alpha = 0.0
                             
                             }, completion: { (true) in
                                 self.imgGifDisplayObj.isHidden = true
+                                self.lblSearchingPeopleObj.isHidden = true
                                 self.lblNoDataFound.isHidden = false
                                 self.viewDisplayProfileObj.isHidden = true
                                 self.viewYesNoObj.isHidden = true
@@ -994,7 +1012,6 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 else
                 {
                     self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
- 
                 }
                 
                 self.userintractionTrueFalse(sender: true)
@@ -1044,7 +1061,6 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 ChemistryViewControllerObj.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
                 ChemistryViewControllerObj.view.alpha = 0.0
                 ChemistryViewControllerObj.delegate = self
-                
                UIApplication.shared.delegate?.window??.addSubview(ChemistryViewControllerObj.view)
             
                 UIView.animate(withDuration: 0.3, animations:
@@ -1167,7 +1183,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     
     @IBAction func btnActiveVisibilityClicked(_ sender: AnyObject)
     {
-        JTProgressHUD.show()
+//        JTProgressHUD.show()
         
         let getUserId = globalMethodObj.getUserId()
         
@@ -1180,7 +1196,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         
         globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
             
-            JTProgressHUD.hide()
+//            JTProgressHUD.hide()
             
             if error != nil
             {

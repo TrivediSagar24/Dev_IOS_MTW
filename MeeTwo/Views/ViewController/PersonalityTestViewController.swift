@@ -41,7 +41,6 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
     
     @IBOutlet var viewDisplayQuestionObj: UIView!
     
-    
     var globalMethodObj = GlobalMethods()
     
     var indexOfProfile:Int = 0
@@ -218,7 +217,6 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
         
         self.view.layoutIfNeeded()
         
-        
         btnNo.setTitle(optionNo, for: UIControlState.normal)
         btnYes.setTitle(optionYes, for: UIControlState.normal)
         
@@ -321,7 +319,8 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
     
     @IBAction func btnBackClicked(_ sender: AnyObject) {
         
-        self.navigationController?.dismiss(animated: true, completion: nil)
+       _ = self.navigationController?.popViewController(animated: true)
+//        self.navigationController?.dismiss(animated: true, completion: nil)
     }
     
     
@@ -505,6 +504,22 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
         newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
         return newFrame
     }
+    
+    @IBAction func btnClickedProfile(_ sender: AnyObject)
+    {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "UserProfileViewController") as! UserProfileViewController
+        
+        let navigationController = UINavigationController(rootViewController: vc)
+        navigationController.isNavigationBarHidden = false
+        
+        let firstName = dictionaryProfile.object(forKey: kfirst_name) as! String
+        vc.StringNavigationTitle = firstName
+
+        vc.userDict = dictionaryProfile
+        
+        self.present(navigationController, animated: true, completion: nil)
+    }
+    
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

@@ -232,7 +232,7 @@ class GlobalMethods: NSObject {
     {
         let verticalIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
         
-        verticalIndicator.backgroundColor = UIColor.init(hexString: "37AAC8")
+        verticalIndicator.backgroundColor = UIColor.init(hexString: shaddow_color)
 
 //        verticalIndicator.backgroundColor = UIColor.green
         

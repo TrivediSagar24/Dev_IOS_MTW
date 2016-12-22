@@ -51,15 +51,15 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     
     @IBOutlet var viewBlurEffect: FXBlurView!
     
-    
     @IBOutlet var btnCemeraOBj: UIButton!
     
     @IBOutlet var btnFacebook: UIButton!
     
     @IBOutlet var btnGalleryObj: UIButton!
     
-    
     @IBOutlet var scrollViewObj: UIScrollView!
+    
+    @IBOutlet var imageShaddow: UIImageView!
     
     override func viewDidLoad()
     {
@@ -92,7 +92,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         // self.pageControl.currentPageIndicatorColor = UIColor.black
         
         
-        let CurrentPageColor = UIColor(red: 55/255, green: 170/255, blue: 200/255, alpha: 1)
+        let CurrentPageColor = UIColor.init(hexString: shaddow_color)
         
         self.pageControl.currentPageIndicatorColor = CurrentPageColor
         
@@ -119,6 +119,8 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
             btnAddPhoto.isHidden = true
         }
         
+        imageShaddow.backgroundColor = UIColor(patternImage: UIImage(named: "Icon-Shaddow")!)
+
 //        scrollViewObj.delegate = self
 //      globalMethodObj.setScrollViewIndicatorColor(scrollView: scrollViewObj)
 
@@ -1120,7 +1122,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         {
             let verticalIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
             
-            verticalIndicator.backgroundColor = UIColor.init(hexString: "37AAC8")
+            verticalIndicator.backgroundColor = UIColor.init(hexString: shaddow_color)
         }
     }
   

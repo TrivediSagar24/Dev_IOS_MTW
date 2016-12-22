@@ -68,6 +68,8 @@
 		2ECDA84C1DE6BE3C00E70C22 /* PersonalityTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECDA84B1DE6BE3C00E70C22 /* PersonalityTestViewController.swift */; };
 		2ECDA84E1DE71FB700E70C22 /* ChemistrySuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECDA84D1DE71FB700E70C22 /* ChemistrySuccessViewController.swift */; };
 		2EE2C5A41DD5991500CC43E6 /* GlobalMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE2C5A31DD5991500CC43E6 /* GlobalMethods.swift */; };
+		2EEA01191E0C0BDC00F01FE5 /* AttemptedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EEA01181E0C0BDB00F01FE5 /* AttemptedViewController.swift */; };
+		2EEA011B1E0C0F7600F01FE5 /* QuestionAnswersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EEA011A1E0C0F7600F01FE5 /* QuestionAnswersCell.swift */; };
 		2EF852661DE40F8D001B119F /* intro-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 2EF852601DE40F8D001B119F /* intro-0.png */; };
 		2EF852671DE40F8D001B119F /* intro-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 2EF852611DE40F8D001B119F /* intro-1.png */; };
 		2EF852681DE40F8D001B119F /* intro-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 2EF852621DE40F8D001B119F /* intro-2.png */; };
@@ -220,6 +222,8 @@
 		2ECDA84B1DE6BE3C00E70C22 /* PersonalityTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalityTestViewController.swift; sourceTree = "<group>"; };
 		2ECDA84D1DE71FB700E70C22 /* ChemistrySuccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChemistrySuccessViewController.swift; sourceTree = "<group>"; };
 		2EE2C5A31DD5991500CC43E6 /* GlobalMethods.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GlobalMethods.swift; sourceTree = "<group>"; };
+		2EEA01181E0C0BDB00F01FE5 /* AttemptedViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttemptedViewController.swift; sourceTree = "<group>"; };
+		2EEA011A1E0C0F7600F01FE5 /* QuestionAnswersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionAnswersCell.swift; sourceTree = "<group>"; };
 		2EF852601DE40F8D001B119F /* intro-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "intro-0.png"; sourceTree = "<group>"; };
 		2EF852611DE40F8D001B119F /* intro-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "intro-1.png"; sourceTree = "<group>"; };
 		2EF852621DE40F8D001B119F /* intro-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "intro-2.png"; sourceTree = "<group>"; };
@@ -585,6 +589,7 @@
 				2E525A371DD991EF004565F8 /* LetsStartVC.swift */,
 				521680CC1DD1D4AE00E76882 /* HomeVC.swift */,
 				2ECA979A1DD337A300B75ED0 /* introCell.swift */,
+				2EEA011A1E0C0F7600F01FE5 /* QuestionAnswersCell.swift */,
 				2EE2C5A31DD5991500CC43E6 /* GlobalMethods.swift */,
 				2E2436611DD5F73700190B70 /* QuestionVC.swift */,
 				2E3E022A1DDB17AC00099A50 /* DashHomeVC.swift */,
@@ -600,6 +605,7 @@
 				52850A361DF18E1100646BCD /* EditProfileVC.swift */,
 				41494E371DFC7C2300ABA81D /* Global.swift */,
 				52DF85D41E027C06003538EF /* SettingVC.swift */,
+				2EEA01181E0C0BDB00F01FE5 /* AttemptedViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -899,6 +905,7 @@
 				2E3A2E261DF56F1A000C617B /* IQUIScrollView+Additions.swift in Sources */,
 				521680CD1DD1D4AE00E76882 /* HomeVC.swift in Sources */,
 				2E3E02841DDB41E000099A50 /* UIView+WebCache.m in Sources */,
+				2EEA01191E0C0BDC00F01FE5 /* AttemptedViewController.swift in Sources */,
 				2E3A2E341DF56F1A000C617B /* IQUIView+IQKeyboardToolbar.swift in Sources */,
 				2E59728E1DDC41AE00642CE2 /* DBOperation.m in Sources */,
 				2E3A2E2A1DF56F1A000C617B /* IQUIWindow+Hierarchy.swift in Sources */,
@@ -936,6 +943,7 @@
 				2E3A2E291DF56F1A000C617B /* IQUIViewController+Additions.swift in Sources */,
 				2E3E02801DDB41E000099A50 /* UIImage+MultiFormat.m in Sources */,
 				2E3A2E2E1DF56F1A000C617B /* IQKeyboardReturnKeyHandler.swift in Sources */,
+				2EEA011B1E0C0F7600F01FE5 /* QuestionAnswersCell.swift in Sources */,
 				2E3E027E1DDB41E000099A50 /* UIButton+WebCache.m in Sources */,
 				2E7E4F631E07E137004E88CA /* CustomScrollView.swift in Sources */,
 				2ECA979B1DD337A300B75ED0 /* introCell.swift in Sources */,
