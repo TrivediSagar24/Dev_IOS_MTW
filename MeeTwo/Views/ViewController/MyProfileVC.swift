@@ -47,6 +47,10 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        scrollViewObj.alpha = 0.0
+        UIView.animate(withDuration: 0.5) { 
+            self.scrollViewObj.alpha = 1.0
+        }
         
 //        self.setUpView()
         
@@ -328,6 +332,18 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
     */
     @IBAction func selPersonalityAct(_ sender: AnyObject)
     {
+        
+        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        
+        let vc = storyboard.instantiateViewController(withIdentifier: "AttemptedViewController") as! AttemptedViewController
+      
+         let navigationController = UINavigationController(rootViewController: vc)
+        navigationController.modalPresentationStyle = .overCurrentContext
+        vc.modalPresentationStyle = .overCurrentContext
+
+ 
+//        self.navigationController?.pushViewController(vc, animated: true)
+        self.present(navigationController, animated: true, completion: nil)
     }
     
     @IBAction func selEditProfileAct(_ sender: AnyObject)

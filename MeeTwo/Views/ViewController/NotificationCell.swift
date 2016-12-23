@@ -29,13 +29,8 @@ class NotificationCell: UITableViewCell {
         self.imgUser.clipsToBounds = true
         self.imgUser.layer.borderWidth = 1
         
-       
-        
-        UIView.animate(withDuration: 0.3)
-        {
-            self.imgUser.alpha = 1.0
-        }
-
+       btnAccept.layer.cornerRadius = 4
+       btnDecline.layer.cornerRadius = 4
         
     }
 

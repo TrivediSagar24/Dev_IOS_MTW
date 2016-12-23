@@ -49,15 +49,17 @@ class TabController: UITabBarController,UITabBarControllerDelegate {
         self.view.addGestureRecognizer(rightToLeftGesture)
     }
     
-        override func viewWillLayoutSubviews() {
-            
+        override func viewWillLayoutSubviews()
+        {
             super.viewWillLayoutSubviews()
             let orientation = UIApplication.shared.statusBarOrientation;
             
-            if (UIInterfaceOrientationIsLandscape(orientation)){
+            if (UIInterfaceOrientationIsLandscape(orientation))
+            {
                 TabBar.frame = CGRect(x: 0, y: -20, width: self.view.frame.size.width, height: 52.0)
             }
-            else{
+            else
+            {
                 TabBar.frame = CGRect(x: 0, y: 00, width: self.view.frame.size.width, height: 64.0)
             }
     }

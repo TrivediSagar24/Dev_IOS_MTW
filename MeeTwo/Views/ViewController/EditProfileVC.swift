@@ -21,7 +21,6 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     var arrImages3 = NSMutableArray()
     var arrImagesTemp = NSArray()
 
-    
     var pageControl: LCAnimatedPageControl!
     var globalMethodObj = GlobalMethods()
     
@@ -47,7 +46,6 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     @IBOutlet var txtWork: UITextField!
     
     @IBOutlet var txtDesc: UITextField!
-    
     
     @IBOutlet var viewBlurEffect: FXBlurView!
     
