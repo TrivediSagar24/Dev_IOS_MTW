@@ -17,6 +17,11 @@ import UIKit
 */
 
 
+let kIPHONE_5       = 568
+let kIPHONE_6       = 667
+let kIPHONE_6PLUS   = 736
+
+
 let kINTRO_IMG_0          = "intro-0.png"
 let kINTRO_IMG_1          = "intro-1.png"
 let kINTRO_IMG_2          = "intro-2.png"
@@ -134,5 +139,8 @@ let knoti_new_chat = "noti_new_chat"
 
 let kswitch_sel = "switch-sel"
 let kswitch_unsel = "switch-unsel"
+
+let kpink_color = "FC5A7D"
+let kblue_color = "0EBEE8"
 
 let shaddow_color = "0EBEE8"

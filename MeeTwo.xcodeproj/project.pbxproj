@@ -62,6 +62,8 @@
 		2E7553CB1DE30E4E00181D1B /* smallgif.gif in Resources */ = {isa = PBXBuildFile; fileRef = 2E7553CA1DE30E4E00181D1B /* smallgif.gif */; };
 		2E7553D11DE3170500181D1B /* UIImage+Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7553CF1DE3170500181D1B /* UIImage+Gif.swift */; };
 		2E7E4F631E07E137004E88CA /* CustomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7E4F621E07E137004E88CA /* CustomScrollView.swift */; };
+		2E89A44A1E10F466008F9062 /* YesButtonClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E89A4491E10F466008F9062 /* YesButtonClass.swift */; };
+		2E89A44C1E10F485008F9062 /* NoButtonClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E89A44B1E10F485008F9062 /* NoButtonClass.swift */; };
 		2EBF99361DE809D200107813 /* ToBadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EBF99351DE809D200107813 /* ToBadViewController.swift */; };
 		2ECA979B1DD337A300B75ED0 /* introCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECA979A1DD337A300B75ED0 /* introCell.swift */; };
 		2ECDA84A1DE6BE2C00E70C22 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECDA8491DE6BE2C00E70C22 /* UserProfileViewController.swift */; };
@@ -216,6 +218,8 @@
 		2E7553CE1DE3170500181D1B /* SwiftGif.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SwiftGif.h; sourceTree = "<group>"; };
 		2E7553CF1DE3170500181D1B /* UIImage+Gif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImage+Gif.swift"; sourceTree = "<group>"; };
 		2E7E4F621E07E137004E88CA /* CustomScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomScrollView.swift; sourceTree = "<group>"; };
+		2E89A4491E10F466008F9062 /* YesButtonClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YesButtonClass.swift; sourceTree = "<group>"; };
+		2E89A44B1E10F485008F9062 /* NoButtonClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoButtonClass.swift; sourceTree = "<group>"; };
 		2EBF99351DE809D200107813 /* ToBadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToBadViewController.swift; sourceTree = "<group>"; };
 		2ECA979A1DD337A300B75ED0 /* introCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = introCell.swift; sourceTree = "<group>"; };
 		2ECDA8491DE6BE2C00E70C22 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
@@ -479,6 +483,8 @@
 			isa = PBXGroup;
 			children = (
 				2E7E4F621E07E137004E88CA /* CustomScrollView.swift */,
+				2E89A4491E10F466008F9062 /* YesButtonClass.swift */,
+				2E89A44B1E10F485008F9062 /* NoButtonClass.swift */,
 			);
 			path = Class;
 			sourceTree = "<group>";
@@ -900,6 +906,7 @@
 				2E3E02351DDB18BC00099A50 /* CardView.m in Sources */,
 				2E3A2E2B1DF56F1A000C617B /* IQKeyboardManagerConstants.swift in Sources */,
 				2E3A2E2C1DF56F1A000C617B /* IQKeyboardManagerConstantsInternal.swift in Sources */,
+				2E89A44A1E10F466008F9062 /* YesButtonClass.swift in Sources */,
 				52850A371DF18E1100646BCD /* EditProfileVC.swift in Sources */,
 				2E3A88D61DF6831B00488BB7 /* FXBlurView.m in Sources */,
 				2E3A2E261DF56F1A000C617B /* IQUIScrollView+Additions.swift in Sources */,
@@ -930,6 +937,7 @@
 				2E3E02781DDB41E000099A50 /* SDWebImageCompat.m in Sources */,
 				2E3A2E251DF56F1A000C617B /* IQNSArray+Sort.swift in Sources */,
 				52BDE0B61DEEDAB000A89D04 /* MyProfileVC.swift in Sources */,
+				2E89A44C1E10F485008F9062 /* NoButtonClass.swift in Sources */,
 				2E2436621DD5F73700190B70 /* QuestionVC.swift in Sources */,
 				2E3E02751DDB41E000099A50 /* NSImage+WebCache.m in Sources */,
 				2ECDA84C1DE6BE3C00E70C22 /* PersonalityTestViewController.swift in Sources */,
@@ -1021,7 +1029,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PROVISIONING_PROFILE = "22276d7f-5b23-4794-bcd9-ae14f197f07f";
@@ -1064,7 +1072,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PROVISIONING_PROFILE = "22276d7f-5b23-4794-bcd9-ae14f197f07f";
 				SDKROOT = iphoneos;
@@ -1090,6 +1098,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = MeeTwo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.generalinexture.meetwo;
 				PRODUCT_NAME = MeeTwo;
@@ -1118,6 +1127,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = MeeTwo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.generalinexture.meetwo;
 				PRODUCT_NAME = MeeTwo;

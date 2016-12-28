@@ -24,6 +24,7 @@ class ViewController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool)
     {
+        
     }
     
     func callget_user_all_infoService()

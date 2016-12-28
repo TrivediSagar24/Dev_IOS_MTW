@@ -708,7 +708,7 @@ class SettingVC: UIViewController {
                     
                     for aViewController in viewControllers
                     {
-                        if(aViewController is ViewController)
+                        if(aViewController is LoginViewController)
                         {
                             self.navigationController!.popToViewController(aViewController, animated: true);
                         }

@@ -488,8 +488,14 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                     
                     if heightConstraintOfTextviewObj.constant > propotionalHeightOfTextview
                     {
-                       heightConstraintOfTextviewObj.constant = propotionalHeightOfTextview
+                        txtQuetionViewObj.isScrollEnabled = true
+                        heightConstraintOfTextviewObj.constant = propotionalHeightOfTextview
                     }
+                    else
+                    {
+                        txtQuetionViewObj.isScrollEnabled = false
+                    }
+                    
                     
                     self.view.layoutIfNeeded()
                     
@@ -668,18 +674,10 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
             if error != nil
             {
                 self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: error.debugDescription, viewcontrolelr: self)
-
                 JTProgressHUD.hide()
-
-//                MBProgressHUD.hide(for: self.view, animated: true)
-                print("Error")
             }
             else
             {
-                JTProgressHUD.hide()
-
-//                MBProgressHUD.hide(for: self.view, animated: true)
-                
                 let status = result[kstatus] as! Int
                 
                 if status == 1
@@ -691,7 +689,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
 
                     DBOperation.executeSQL("delete from mee_two_question")
                     
-                    self.MoveToDashboardHomeVC()
+                    self.callget_user_all_infoService()
                 }
                 else
                 {
@@ -748,6 +746,51 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
         newFrame.size = CGSize(width: max(newSize.width, fixedWidth), height: newSize.height)
         return newFrame
     }
+    
+    //MARK: - Call Get_all_user_info
+    
+    func callget_user_all_infoService()
+    {
+        let userid = globalMethodObj.getUserId()
+        
+          let parameters =
+                [
+                    GlobalMethods.METHOD_NAME: "get_user_all_info",
+                    kuser_id: userid,
+                    ] as [String : Any]
+            
+            globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
+                
+                JTProgressHUD.hide()
+                
+                if error != nil
+                {
+                    
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error?.localizedDescription)!, viewcontrolelr: self)
+                }
+                else
+                {
+                    let status = result[kstatus] as! Int
+                    
+                    if status == 1
+                    {
+                        let dictData = result.object(forKey: kDATA) as! NSDictionary
+                        
+                        let data: Data = NSKeyedArchiver.archivedData(withRootObject: dictData)
+                        
+                        self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: get_user_all_info)
+                        
+                        self.MoveToDashboardHomeVC()
+                        
+                    }
+                    else
+                    {
+                        self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
+                    }
+                }
+            }
+    }
+
     
     /*
     // MARK: - Navigation

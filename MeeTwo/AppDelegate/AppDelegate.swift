@@ -12,19 +12,19 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    
+    var globalMethodObj = GlobalMethods()
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
     {
         DBOperation.checkCreateDB()
         
         IQKeyboardManager.sharedManager().enable = true
-
         
         // For Push Notification check
         let settings = UIUserNotificationSettings.init(types: [.alert, .badge, .sound], categories: nil)
         application.registerUserNotificationSettings(settings)
         application.registerForRemoteNotifications()
-        
         
         // Override point for customization after application launch.
         return FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
@@ -39,15 +39,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     // MARK:For Push Notification
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data)
-    {
-        var token: String = ""
-        for i in 0..<deviceToken.count {
-            token += String(format: "%02.2hhx", deviceToken[i] as CVarArg)
-        }
-        GlobalMethods.deviceToken = token
+    private func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        
+        print("DEVICE_TOKEN_DATA :: \(deviceToken.description)") // (SWIFT = 3):TOKEN PARSING
+        let characterSet = CharacterSet(charactersIn: "<>")
+        let deviceTokenString = deviceToken.description.trimmingCharacters(in: characterSet).replacingOccurrences(of: " ", with: "");
+        print(deviceTokenString)
     }
-
+    
     func applicationWillResignActive(_ application: UIApplication)
     {
         // Sent when the application is about to move fro.m active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

@@ -293,7 +293,7 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int
     {
-        return 3
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAtIndexPath indexPath: IndexPath) -> UICollectionViewCell
@@ -534,8 +534,6 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate
             email = ""
         }
         
-        
-        
         // Get School Name
         var school = ""
         if globalMethodObj.checkDictionaryKeyExits(key: keducation, response: dictionary)
@@ -619,6 +617,7 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate
                 }}, to: GlobalMethods.WEB_SERVICE_URL, method: .post, headers: ["Authorization": "auth_token"],
                     encodingCompletion: { encodingResult in
                         
+                        JTProgressHUD.hide()
                         
                         switch encodingResult
                         {
@@ -723,17 +722,14 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate
             
             GlobalMethods.checkUser_active = dictResponse.object(forKey: kis_active) as! String
             
-            self.callget_user_all_infoService(dict: dictResponse)
-        
-            /*
             if dictResponse[kIS_QUESTION_ATTEMPTED] as! String == kONE
             {
-                self.MoveToDashboardHomeVC(sender:true)
+                self.callget_user_all_infoService(dict: dictResponse)
             }
             else
             {
                 self.pushViewController(sender: true)
-            }*/
+            }
             
             // self.callTokenService()
             
@@ -799,16 +795,12 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate
                     {
                         let dictData = result.object(forKey: kDATA) as! NSDictionary
                         
-                        print(dictData)
+                        let data: Data = NSKeyedArchiver.archivedData(withRootObject: dictData)
                         
-                        if dict[kIS_QUESTION_ATTEMPTED] as! String == kONE
-                        {
-                            self.MoveToDashboardHomeVC(sender:true)
-                        }
-                        else
-                        {
-                            self.pushViewController(sender: true)
-                        }
+                        self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: get_user_all_info)
+                        
+                        self.MoveToDashboardHomeVC(sender:true)
+                      
                     }
                     else
                     {

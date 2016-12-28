@@ -39,6 +39,7 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
         // Dispose of any resources that can be recreated.
     }
     
+    //MARK:- Tableview Datasource And Delegate Method
 
     // Number of Row in Section
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
@@ -55,6 +56,7 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
         let dicNotification = self.arrNotification.object(at: indexPath.row) as! NSDictionary
         let profilePic = dicNotification.object(forKey: "user_profile_url") as! String
         let notification_text = dicNotification.object(forKey: "notification_text") as! String
+        let status = dicNotification.object(forKey: "status") as! String
         
         var gender = ""
         var user_first_name = ""
@@ -103,21 +105,89 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         cell.imgUser.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
         
+        cell.btnAccept.addTarget(self, action: #selector(self.callAcceptDeclineWebservice(sender:)), for: UIControlEvents.touchUpInside)
+        
+        cell.btnDecline.addTarget(self, action: #selector(self.callAcceptDeclineWebservice(sender:)), for: UIControlEvents.touchUpInside)
+        
+        cell.btnAccept.tag = indexPath.row
+        cell.btnDecline.tag = indexPath.row
+        
+        cell.btnAccept.accessibilityIdentifier = "1"
+        cell.btnDecline.accessibilityIdentifier = "2"
+        
+        if status == "0"
+        {
+            cell.btnDecline.isHidden = false
+            cell.btnAccept.isHidden = false
+        }
+        else
+        {
+            cell.btnDecline.isHidden = true
+            cell.btnAccept.isHidden = true
+        }
+        
         return cell
 
     }
+    
+    
+    func callAcceptDeclineWebservice(sender:UIButton)
+    {
+        
+        let dicNotification = self.arrNotification.object(at: sender.tag) as! NSDictionary
+        let strnotification_id = dicNotification.object(forKey: "notification_id")
+        let strother_user_id = dicNotification.object(forKey: "other_user_id")
+
+        
+        let getUserId = globalMethodObj.getUserId()
+        
+        let parameters =
+            [
+                GlobalMethods.METHOD_NAME: "user_accept_decline",
+                kuser_id: getUserId,
+                kother_user_id:strother_user_id,
+                "accepted":sender.accessibilityIdentifier,
+                "notification_id":strnotification_id,
+                ] as [String : Any]
+
+        globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
+            
+            
+            if error != nil
+            {
+                self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error?.localizedDescription)!, viewcontrolelr: self)
+            }
+            else
+            {
+                let status = result[kstatus] as! Int
+                
+                if status == 1
+                {
+                    
+                }
+                else
+                {
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
+                }
+            }
+        }
+
+        
+        
+    }
+    
+    //MARK: - Call Get User Notification Service
     
     func callGetUserNotification()
     {
         JTProgressHUD.show()
         
-//        let getUserId = globalMethodObj.getUserId()
-//        getUserId
+        let getUserId = globalMethodObj.getUserId()
         
         let parameters =
             [
                 GlobalMethods.METHOD_NAME: "user_get_notification",
-                kuser_id: "59",
+                kuser_id: getUserId,
                 "page_no": "0"
                 ] as [String : Any]
         
@@ -164,6 +234,8 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
         }
     }
     
+    //MARK: - ScrollView delegate Method
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView)
     {
         
@@ -173,12 +245,5 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
         
     }
     
-    func reloadTableView(_ tableView: UITableView) {
-//        let contentOffset = tableView.contentOffset
-        tableView.reloadData()
-//        tableView.layoutIfNeeded()
-//        tableView.setContentOffset(contentOffset, animated: false)
-    }
-    
-    
+   
 }

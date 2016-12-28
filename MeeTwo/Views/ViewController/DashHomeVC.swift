@@ -435,7 +435,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         imgUserProfileObj.clipsToBounds = true
         viewDisplayProfileObj.layer.cornerRadius = 10
         viewDisplayProfileObj.layer.borderWidth = 1
-        viewDisplayProfileObj.layer.borderColor = btnYes.backgroundColor?.cgColor
+        viewDisplayProfileObj.layer.borderColor = UIColor.init(hexString: kblue_color).cgColor
         
         lblDistance.clipsToBounds = true
         viewDisplayProfileObj.clipsToBounds = true
@@ -458,7 +458,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         self.setLableFunctionality(lbl: lblDislike)
         
         btnEnableLoc.layer.borderWidth = 1
-        btnEnableLoc.layer.borderColor = btnNo.backgroundColor?.cgColor
+        btnEnableLoc.layer.borderColor = UIColor.init(hexString: kblue_color).cgColor
         btnEnableLoc.layer.cornerRadius = 10
         btnEnableLoc.layer.masksToBounds = true
         
