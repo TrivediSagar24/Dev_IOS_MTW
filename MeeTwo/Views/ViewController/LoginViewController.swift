@@ -209,12 +209,13 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate
                 JTProgressHUD.show()
                 //                MBProgressHUD.showAdded(to: self.view, animated: true)
                 
-                fbLoginManager .logIn(withReadPermissions: ["public_profile", kemail, "user_friends","user_education_history","user_about_me","user_birthday","user_work_history"], handler: { (result, error) -> Void in
+                fbLoginManager .logIn(withReadPermissions: ["public_profile", kemail, "user_friends","user_education_history","user_about_me","user_birthday","user_work_history","user_photos"], handler: { (result, error) -> Void in
                     
                     if (result?.isCancelled)!
                     {
                         JTProgressHUD.hide()
-                        //                        MBProgressHUD.hide(for: (self.view)!, animated: true)
+                        
+                        // MBProgressHUD.hide(for: (self.view)!, animated: true)
                         
                         return
                     }

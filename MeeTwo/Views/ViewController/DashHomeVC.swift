@@ -10,7 +10,7 @@ import UIKit
 import CoreLocation
 
 
-class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayChecmistry,delegateRemoveChecmistry,delegateRemoveToBad,CLLocationManagerDelegate {
+class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayChecmistry,delegateRemoveChecmistry,delegateRemoveToBad,CLLocationManagerDelegate,delegateCallUpdateProfile {
 
     @IBOutlet var btnNo: UIButton!
     @IBOutlet var btnYes: UIButton!
@@ -1013,9 +1013,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 {
                     self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
                 }
-                
                 self.userintractionTrueFalse(sender: true)
-     
             }
         }
     }
@@ -1032,8 +1030,9 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         let dictProfile = self.arrProfiles.object(at: indexOfProfile) as! NSDictionary
         let firstName = dictProfile.object(forKey: kfirst_name) as! String
         vc.StringNavigationTitle = firstName
-        
+        vc.checktrueFalseButton = false
         vc.userDict = dictProfile
+        vc.delegate = self
         
         self.present(navigationController, animated: true, completion: nil)
     }
@@ -1274,6 +1273,24 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
 
     }
     
+    //MARK: Delegate - Apear back from User profile screen
+    
+    func UpdateProfileData(sender:Bool)
+    {
+        UIView.animate(withDuration: 0.5, animations: { 
+            
+            }) { (true) in
+                if sender
+                {
+                    self.btnYesNoclick(self.btnYes)
+                }
+                else
+                {
+                    self.btnYesNoclick(self.btnNo)
+                }
+        }
+    }
+
     override func viewWillLayoutSubviews()
     {
 //        self.visibilitySetupView()

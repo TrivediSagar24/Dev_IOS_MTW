@@ -57,11 +57,9 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
     @IBOutlet var heightConstraintOfTextviewObj: NSLayoutConstraint!
     
     
-    
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        
         self.SetupScreen()
         
         // Do any additional setup after loading the view.
@@ -70,7 +68,7 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
     override func viewDidAppear(_ animated: Bool)
     {
         imgUserProfile.layer.cornerRadius = imgUserProfile.frame.size.width/2
-        imgUserProfile.layer.borderColor = btnYes.backgroundColor?.cgColor
+        imgUserProfile.layer.borderColor = btnNo.backgroundColor?.cgColor
         imgUserProfile.clipsToBounds = true
         imgUserProfile.layer.borderWidth = 1
         
@@ -514,7 +512,7 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
         
         let firstName = dictionaryProfile.object(forKey: kfirst_name) as! String
         vc.StringNavigationTitle = firstName
-
+        vc.checktrueFalseButton = true
         vc.userDict = dictionaryProfile
         
         self.present(navigationController, animated: true, completion: nil)

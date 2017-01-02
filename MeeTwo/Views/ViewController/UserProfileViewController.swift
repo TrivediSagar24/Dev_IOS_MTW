@@ -9,7 +9,14 @@
 import UIKit
 import Alamofire
 
-class UserProfileViewController: UIViewController {
+protocol delegateCallUpdateProfile
+{
+    func UpdateProfileData(sender:Bool)
+}
+
+class UserProfileViewController: UIViewController
+{
+    var delegate: delegateCallUpdateProfile?
 
     var StringNavigationTitle : String!
     var userDict : NSDictionary!
@@ -50,6 +57,11 @@ class UserProfileViewController: UIViewController {
 
     @IBOutlet var imgShaddow: UIImageView!
     
+    @IBOutlet var btnNoObj: NoButtonClass!
+    
+    @IBOutlet var btnYesObj: YesButtonClass!
+    
+    var checktrueFalseButton = false
     
     override func viewDidLoad()
     {
@@ -115,6 +127,11 @@ class UserProfileViewController: UIViewController {
         
         self.pageControl.frame = CGRect(x: 0, y: 0, width: self.pageControllerObj1.frame.size.width, height: pageControllerObj1.frame.size.height)
        
+        btnYesObj.isHidden = checktrueFalseButton
+        btnNoObj.isHidden = checktrueFalseButton
+        
+        btnNoObj.alpha = 0.5
+        btnYesObj.alpha = 0.5
     }
     
     override func viewDidAppear(_ animated: Bool)
@@ -324,6 +341,23 @@ class UserProfileViewController: UIViewController {
             let verticalIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
             
             verticalIndicator.backgroundColor = UIColor.init(hexString: shaddow_color)
+        }
+    }
+    
+    //MARK: - Button Yes/No Button Action
+    
+    
+    @IBAction func btnYesNoClicked(_ sender: UIButton)
+    {
+        self.dismiss(animated: true, completion: nil)
+        
+        if sender.tag == 1
+        {
+            delegate?.UpdateProfileData(sender: false)
+        }
+        else
+        {
+            delegate?.UpdateProfileData(sender: true)
         }
     }
 

@@ -41,7 +41,8 @@ class YesButtonClass: UIButton
         
         self.backgroundColor = UIColor.init(hexString: kpink_color)
         self .setTitle("YES!", for: UIControlState.normal)
-        
+        self.layer.cornerRadius = 10.0
+
     }
     
     

@@ -11,7 +11,6 @@ import UIKit
 class NoButtonClass: UIButton
 {
 
-    
     override init(frame: CGRect)
     {
         super.init(frame: frame)
@@ -42,8 +41,8 @@ class NoButtonClass: UIButton
         
         self.backgroundColor = UIColor.init(hexString: kblue_color)
         self .setTitle("NO!", for: UIControlState.normal)
-        
-        
+        self.layer.cornerRadius = 10.0
+
     }
     
     /*

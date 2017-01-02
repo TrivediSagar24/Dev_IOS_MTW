@@ -525,7 +525,6 @@ class SettingVC: UIViewController {
         }))
         
         self.present(alertObj, animated: true, completion: nil)
-        
     }
     
     @IBAction func selDeleteAccountAct(_ sender: AnyObject)

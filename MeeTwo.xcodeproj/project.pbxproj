@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E0D45681E1A939C00D889C4 /* collectionViewPhotosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0D45671E1A939C00D889C4 /* collectionViewPhotosCell.swift */; };
+		2E0D456A1E1A970F00D889C4 /* facebookAlbumPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0D45691E1A970F00D889C4 /* facebookAlbumPhotosViewController.swift */; };
 		2E2436621DD5F73700190B70 /* QuestionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E2436611DD5F73700190B70 /* QuestionVC.swift */; };
 		2E3428C01E0A920700139769 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3428BF1E0A920700139769 /* LoginViewController.swift */; };
 		2E3A2E251DF56F1A000C617B /* IQNSArray+Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3A2E0F1DF56F1A000C617B /* IQNSArray+Sort.swift */; };
@@ -64,6 +66,8 @@
 		2E7E4F631E07E137004E88CA /* CustomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7E4F621E07E137004E88CA /* CustomScrollView.swift */; };
 		2E89A44A1E10F466008F9062 /* YesButtonClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E89A4491E10F466008F9062 /* YesButtonClass.swift */; };
 		2E89A44C1E10F485008F9062 /* NoButtonClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E89A44B1E10F485008F9062 /* NoButtonClass.swift */; };
+		2EB3F6831E1A6D8500F26C1C /* facebookAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB3F6821E1A6D8500F26C1C /* facebookAlbumViewController.swift */; };
+		2EB3F6851E1A6E0D00F26C1C /* facebookAlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB3F6841E1A6E0D00F26C1C /* facebookAlbumCell.swift */; };
 		2EBF99361DE809D200107813 /* ToBadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EBF99351DE809D200107813 /* ToBadViewController.swift */; };
 		2ECA979B1DD337A300B75ED0 /* introCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECA979A1DD337A300B75ED0 /* introCell.swift */; };
 		2ECDA84A1DE6BE2C00E70C22 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECDA8491DE6BE2C00E70C22 /* UserProfileViewController.swift */; };
@@ -132,6 +136,8 @@
 
 /* Begin PBXFileReference section */
 		06E0F5C10E24F6E14D726B86 /* Pods-MeeTwo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeeTwo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MeeTwo/Pods-MeeTwo.debug.xcconfig"; sourceTree = "<group>"; };
+		2E0D45671E1A939C00D889C4 /* collectionViewPhotosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = collectionViewPhotosCell.swift; sourceTree = "<group>"; };
+		2E0D45691E1A970F00D889C4 /* facebookAlbumPhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = facebookAlbumPhotosViewController.swift; sourceTree = "<group>"; };
 		2E2436601DD5E5F100190B70 /* MeeTwo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MeeTwo.entitlements; sourceTree = "<group>"; };
 		2E2436611DD5F73700190B70 /* QuestionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionVC.swift; sourceTree = "<group>"; };
 		2E3428BF1E0A920700139769 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -220,6 +226,8 @@
 		2E7E4F621E07E137004E88CA /* CustomScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomScrollView.swift; sourceTree = "<group>"; };
 		2E89A4491E10F466008F9062 /* YesButtonClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YesButtonClass.swift; sourceTree = "<group>"; };
 		2E89A44B1E10F485008F9062 /* NoButtonClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoButtonClass.swift; sourceTree = "<group>"; };
+		2EB3F6821E1A6D8500F26C1C /* facebookAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = facebookAlbumViewController.swift; sourceTree = "<group>"; };
+		2EB3F6841E1A6E0D00F26C1C /* facebookAlbumCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = facebookAlbumCell.swift; sourceTree = "<group>"; };
 		2EBF99351DE809D200107813 /* ToBadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToBadViewController.swift; sourceTree = "<group>"; };
 		2ECA979A1DD337A300B75ED0 /* introCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = introCell.swift; sourceTree = "<group>"; };
 		2ECDA8491DE6BE2C00E70C22 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
@@ -609,6 +617,10 @@
 				52BDE0B51DEEDAB000A89D04 /* MyProfileVC.swift */,
 				52BDE0B71DEEDAF700A89D04 /* ChatVC.swift */,
 				52850A361DF18E1100646BCD /* EditProfileVC.swift */,
+				2EB3F6821E1A6D8500F26C1C /* facebookAlbumViewController.swift */,
+				2E0D45691E1A970F00D889C4 /* facebookAlbumPhotosViewController.swift */,
+				2EB3F6841E1A6E0D00F26C1C /* facebookAlbumCell.swift */,
+				2E0D45671E1A939C00D889C4 /* collectionViewPhotosCell.swift */,
 				41494E371DFC7C2300ABA81D /* Global.swift */,
 				52DF85D41E027C06003538EF /* SettingVC.swift */,
 				2EEA01181E0C0BDB00F01FE5 /* AttemptedViewController.swift */,
@@ -904,7 +916,9 @@
 				2ECDA84E1DE71FB700E70C22 /* ChemistrySuccessViewController.swift in Sources */,
 				2E3E02791DDB41E000099A50 /* SDWebImageDecoder.m in Sources */,
 				2E3E02351DDB18BC00099A50 /* CardView.m in Sources */,
+				2E0D45681E1A939C00D889C4 /* collectionViewPhotosCell.swift in Sources */,
 				2E3A2E2B1DF56F1A000C617B /* IQKeyboardManagerConstants.swift in Sources */,
+				2EB3F6851E1A6E0D00F26C1C /* facebookAlbumCell.swift in Sources */,
 				2E3A2E2C1DF56F1A000C617B /* IQKeyboardManagerConstantsInternal.swift in Sources */,
 				2E89A44A1E10F466008F9062 /* YesButtonClass.swift in Sources */,
 				52850A371DF18E1100646BCD /* EditProfileVC.swift in Sources */,
@@ -917,6 +931,7 @@
 				2E59728E1DDC41AE00642CE2 /* DBOperation.m in Sources */,
 				2E3A2E2A1DF56F1A000C617B /* IQUIWindow+Hierarchy.swift in Sources */,
 				2E3E027D1DDB41E000099A50 /* SDWebImagePrefetcher.m in Sources */,
+				2EB3F6831E1A6D8500F26C1C /* facebookAlbumViewController.swift in Sources */,
 				2E3A2E281DF56F1A000C617B /* IQUIView+Hierarchy.swift in Sources */,
 				2E3E02831DDB41E000099A50 /* UIImageView+WebCache.m in Sources */,
 				2E3A2E271DF56F1A000C617B /* IQUITextFieldView+Additions.swift in Sources */,
@@ -954,6 +969,7 @@
 				2EEA011B1E0C0F7600F01FE5 /* QuestionAnswersCell.swift in Sources */,
 				2E3E027E1DDB41E000099A50 /* UIButton+WebCache.m in Sources */,
 				2E7E4F631E07E137004E88CA /* CustomScrollView.swift in Sources */,
+				2E0D456A1E1A970F00D889C4 /* facebookAlbumPhotosViewController.swift in Sources */,
 				2ECA979B1DD337A300B75ED0 /* introCell.swift in Sources */,
 				2E7553D11DE3170500181D1B /* UIImage+Gif.swift in Sources */,
 				2E3E02731DDB41E000099A50 /* MKAnnotationView+WebCache.m in Sources */,

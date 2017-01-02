@@ -488,7 +488,8 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     @IBAction func selAddPhoto(_ sender: AnyObject)
     {
         viewBlurEffect.isHidden = false
-        UIView.animate(withDuration: 0.5, animations: {
+        UIView.animate(withDuration: 0.5, animations:
+            {
             self.viewBlurEffect.alpha = 1.0
             }) { (true) in
         }
@@ -641,6 +642,12 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     
     @IBAction func btnFacebookclicked(_ sender: AnyObject)
     {
+        let vc = self.storyboard?.instantiateViewController(withIdentifier: "facebookAlbumViewController") as! facebookAlbumViewController
+        
+        self.navigationController?.pushViewController(vc, animated: true)
+        
+    // facebookAlbumViewController
+
     }
     
     @IBAction func btnGalleryclicked(_ sender: AnyObject)
@@ -651,7 +658,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     }
     
     
-    //MARK: Image PickerController Delegate 
+    //MARK: Image PickerController Delegate
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any])
     {
