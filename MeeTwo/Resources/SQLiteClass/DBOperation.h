@@ -16,4 +16,6 @@
 +(NSMutableArray *)SortArray : (NSMutableArray *)arrOriginal;
 +(CGFloat)heightForLabel:(UILabel *)label withText:(NSString *)text;
 +(NSString *)returnRemoveMoreSpace : (NSString *)str;
++(NSMutableArray *)SortArrayToWidth : (NSMutableArray *)arrOriginal;
+
 @end

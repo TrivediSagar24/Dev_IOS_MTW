@@ -8,11 +8,15 @@
 
 import UIKit
 
-class facebookAlbumPhotosViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource {
-    
+class facebookAlbumPhotosViewController: UIViewController,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout
+{
+    var globalMethodObj = GlobalMethods()
+
     @IBOutlet var collectionviewObj: UICollectionView!
     
     var arrDisplayAlbumPhotos = NSArray()
+    var arrAlbumPhotosLarge = NSArray()
+    
     var albumId : String = ""
     
     override func viewDidLoad()
@@ -27,11 +31,11 @@ class facebookAlbumPhotosViewController: UIViewController,UICollectionViewDelega
             if(error == nil)
             {
                 
-                print(result)
+              //  print(result)
                 
                 let dictionary = result as! [String : AnyObject]
-                let albumDict = dictionary["photos"] as! NSDictionary
-                self.arrDisplayAlbumPhotos = albumDict["data"] as! NSArray
+                let albumDict = dictionary[kPHOTOS] as! NSDictionary
+                self.arrDisplayAlbumPhotos = albumDict[kDATA] as! NSArray
                 
                 self.navigationController?.navigationBar.topItem?.title = "Select picture"
                 
@@ -72,7 +76,25 @@ class facebookAlbumPhotosViewController: UIViewController,UICollectionViewDelega
             }
         })
         
-
+        FBSDKGraphRequest(graphPath: "/\(albumId)", parameters: ["fields":"photos{images}"]).start(completionHandler: { (connection, result, error) -> Void in
+            if(error == nil)
+            {
+                //print(result)
+                
+                let dictionary = result as! [String : AnyObject]
+                let albumDict = dictionary[kPHOTOS] as! NSDictionary
+                self.arrAlbumPhotosLarge = albumDict[kDATA] as! NSArray
+                
+            }
+            else
+            {
+                print("error \(error)")
+            }
+        })
+        
+        
+        
+        
         // Do any additional setup after loading the view.
     }
     
@@ -123,13 +145,76 @@ class facebookAlbumPhotosViewController: UIViewController,UICollectionViewDelega
         return cell
     }
     
-    private func collectionView(collectionView: UICollectionView,
+    /*
+    func collectionView(_collectionView: UICollectionView,
                                 layout collectionViewLayout: UICollectionViewLayout,
                                 sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize
     {
         return CGSize(width: (self.collectionviewObj.frame.size.width-20)/3, height: (self.collectionviewObj.frame.size.width-20)/3)
     }
+ */
 
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        // Adjust cell size for orientation
+        
+            return CGSize(width: (self.collectionviewObj.frame.size.width-20)/3, height: (self.collectionviewObj.frame.size.width-20)/3)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath)
+    {
+        
+        let dictionaryImage = self.arrAlbumPhotosLarge.object(at: indexPath.row) as! NSDictionary
+        let ArrImage = dictionaryImage["images"] as! NSArray
+        var mutableArr = NSMutableArray(array: ArrImage)
+        let ArrSortedImages = DBOperation.sortArray(toWidth: mutableArr)
+        
+        print(ArrSortedImages)
+        //SortArrayToWidth
+        
+        var strSourceUrl = ""
+        
+        for (index,element) in (ArrSortedImages?.enumerated())!
+        {
+            let dictelememt = element as! NSDictionary
+            let width = dictelememt["width"] as! Int
+            
+            if width >= 900
+            {
+                strSourceUrl = dictelememt["source"] as! String
+                break
+            }
+        }
+        
+        print("After For Loop Image : \(strSourceUrl)")
+        
+        if strSourceUrl == ""
+        {
+            strSourceUrl = (ArrSortedImages?.lastObject as! NSDictionary).object(forKey: "source") as! String
+            print("If not available Images : \(strSourceUrl)")
+        }
+        
+        globalMethodObj.setUserDefault(ObjectToSave: strSourceUrl as AnyObject?, KeyToSave: "FacebookURL")
+        
+        let viewControllers: [UIViewController] = self.navigationController!.viewControllers ;
+        for aViewController in viewControllers
+        {
+            if(aViewController is EditProfileVC)
+            {
+                self.navigationController!.popToViewController(aViewController, animated: true);
+            }
+        }
+        
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView)
+    {
+        
+        let verticalIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
+        
+        verticalIndicator.backgroundColor = UIColor.init(hexString: shaddow_color)
+    }
+    
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

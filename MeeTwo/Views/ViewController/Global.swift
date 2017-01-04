@@ -34,6 +34,7 @@ let kINTRO_DESC_2         = "Create your personality in Meetwo"
 
 let kUSERDATA         = "userdata"
 let kDATA             = "data"
+let kPHOTOS             = "photos"
 
 let kIS_QUESTION_ATTEMPTED  = "is_question_attempted"
 let kONE             = "1"

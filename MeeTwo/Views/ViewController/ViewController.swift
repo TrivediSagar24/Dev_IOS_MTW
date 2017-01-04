@@ -24,7 +24,8 @@ class ViewController: UIViewController{
     
     override func viewWillAppear(_ animated: Bool)
     {
-        
+        self.globalMethodObj.removeuserDefaultKey(string: "FacebookURL")
+
     }
     
     func callget_user_all_infoService()

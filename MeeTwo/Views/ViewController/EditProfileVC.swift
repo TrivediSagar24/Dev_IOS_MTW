@@ -59,6 +59,9 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     
     @IBOutlet var imageShaddow: UIImageView!
     
+    var fbImage: UIImageView!
+
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
@@ -119,6 +122,9 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         
         imageShaddow.backgroundColor = UIColor(patternImage: UIImage(named: "Icon-Shaddow")!)
 
+        print("Comminnnnnnnnnnnggggg11111")
+
+        
 //        scrollViewObj.delegate = self
 //      globalMethodObj.setScrollViewIndicatorColor(scrollView: scrollViewObj)
 
@@ -167,7 +173,28 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         self.navigationItem.leftBarButtonItem = item1;
         
         self.pageControl.frame = CGRect(x: 0, y: 0, width: pageView.frame.size.width, height: pageView.frame.size.height)
+        
+        
+        if  globalMethodObj.getUserDefault(KeyToReturnValye: "FacebookURL") != nil
+        {
+            
+            let str =  globalMethodObj.getUserDefault(KeyToReturnValye: "FacebookURL") as! String
+            let url = NSURL(string: str) as! URL
+            
+            self.globalMethodObj.removeuserDefaultKey(string: "FacebookURL")
+            self.btnCloseClicked(self.btnFacebook)
+
+            JTProgressHUD.show()
+            
+            DispatchQueue.main.async {
+                let data = NSData(contentsOf: url)
+                
+                //        let data = UIImagePNGRepresentation(imageName)! as Data
+                self.UploadPhotoWebservice(imageData: data as! Data)
+            }
+        }
     }
+    
     
     override func viewWillDisappear(_ animated: Bool)
     {
@@ -283,12 +310,18 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         
         let PicStr = dict[kurl] as! String
         
+        print(indexPath.row)
+        print(PicStr)
+        
         if PicStr.characters.count == 0
         {
             cell.imgSlideObj.isHidden = true
             cell.btnStarIcon.isHidden = true
             cell.lblAddphotoObj.isHidden = false
             cell.imgPlaceholder.isHidden = false
+            
+            btnRemove.isHidden = true
+            btnAddPhoto.isHidden = false
         }
         else
         {
@@ -296,8 +329,8 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
             let imgPlaceHolderObj = UIImage.init(named: kGallaryPlaceholder)
             
             cell.imgPlaceholder.image = imgPlaceHolderObj
-            cell.imgSlideObj.sd_setImage(with: urlString as URL)
-//            cell.imgSlideObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
+           // cell.imgSlideObj.sd_setImage(with: urlString as URL)
+            cell.imgSlideObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolderObj)
             
             cell.lblAddphotoObj.isHidden = true
             cell.imgSlideObj.isHidden = false
@@ -324,6 +357,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
             if self.checkDeleteButtonHideOrNot()
             {
                 btnRemove.isHidden = false
+                btnAddPhoto.isHidden = true
             }
             else
             {
@@ -365,11 +399,29 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         let user_id = globalMethodObj.getUserId()
         let checkProfile = dict[kis_profile_pic]  as! Bool
         
-         let dictResponse = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)! as NSDictionary
+         //let dictResponse = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)! as NSDictionary
         
-        let NewDictUserData = NSMutableDictionary(dictionary: dictResponse)
+        let dictResponse = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)! as NSDictionary
         
-         let arrImagesArray =  dictResponse[kprofile_picture] as! NSArray
+        let NewDictUserDataObj = NSMutableDictionary(dictionary: dictResponse)
+
+        
+        /*
+        
+         let dict2 = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
+         
+         let profileData = dict2?.object(forKey: profile) as! NSDictionary
+         
+         let NewDictUserData2 = NSMutableDictionary(dictionary: profileData)
+         
+         let NewDictUserData = NSMutableDictionary(dictionary: dict2!)
+         
+ */
+        let dictObj = dictResponse[profile] as! NSDictionary
+        
+        let NewDictUserData = NSMutableDictionary(dictionary: dictObj)
+        
+        let arrImagesArray =  dictObj[kprofile_picture] as! NSArray
         
         let arrMutuable = arrImagesArray.mutableCopy() as! NSMutableArray
         
@@ -418,13 +470,17 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                         
                         NewDictUserData.setObject(arrMutuable, forKey: kprofile_picture as NSCopying)
                         
-                        let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData)
+                        NewDictUserDataObj.setObject(NewDictUserData, forKey: profile as NSCopying)
                         
-                        self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: kUserProfileData)
+                        let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserDataObj)
                         
-                        let dictRes = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
+                        self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: get_user_all_info)
                         
-                        self.setArrayForSliderPhotos(dict: dictRes!)
+                        let dictRes = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
+                        
+                        let dictProfile = dictRes?[profile] as! NSDictionary
+                        
+                        self.setArrayForSliderPhotos(dict: dictProfile)
                         
                         self.imgCollectionView.reloadData()
                         
@@ -456,7 +512,6 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
             {
                 checkWebserviceCallOrnot = checkWebserviceCallOrnot + 1
             }
-            
         }
 
         if checkWebserviceCallOrnot > 1
@@ -883,6 +938,9 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     
     func setArrayForSliderPhotos(dict:NSDictionary)
     {
+        
+       // let dictObj = dict["profile"] as! NSDictionary
+        
         arrImagesTemp =  dict[kprofile_picture] as! NSArray
         
         if arrImages3.count > 0
@@ -897,8 +955,8 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         
         for _ in arrImagesTemp.count..<6
         {
-            let dict = [ kurl : "", "pic_id" : "", "is_profile_pic" : ""]  as NSDictionary
-            arrImages3.add(dict)
+            let dictObj = [ kurl : "", "pic_id" : "", "is_profile_pic" : ""]  as NSDictionary
+            arrImages3.add(dictObj)
         }
 
     }
@@ -1043,17 +1101,19 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                                             
                                             NewDictUserData.setObject(arrMutuable, forKey: kprofile_picture as NSCopying)
                                             
-                                            
                                             dictUserOriginalDataMut.setObject(NewDictUserData, forKey: profile as NSCopying)
-                                            
                                             
                                             let data: Data = NSKeyedArchiver.archivedData(withRootObject: dictUserOriginalDataMut)
                                             
-                                            self?.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: profile)
+                                            self?.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: get_user_all_info)
+                                            
+                                            //let dictRes = self?.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
                                             
                                             let dictRes = self?.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
                                             
-                                            self?.setArrayForSliderPhotos(dict: dictRes!)
+                                            let dictObj = dictRes?[profile]
+                                            
+                                            self?.setArrayForSliderPhotos(dict: dictObj! as! NSDictionary)
                                             
                                             self?.imgCollectionView.reloadData()
                                             

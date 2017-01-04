@@ -633,7 +633,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="Mfa-hP-sFj" sceneMemberID="viewController">
                     <toolbarItems/>
                     <nil key="simulatedTopBarMetrics"/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="31b-Mv-tBd">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="31b-Mv-tBd">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1288,7 +1288,7 @@
                                                     <action selector="selEditDesc:" destination="wnA-dZ-N4S" eventType="touchUpInside" id="fOv-eZ-yiQ"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nmF-gF-bD1">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nmF-gF-bD1">
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="nUL-T9-yj9"/>
                                                 </constraints>
@@ -1629,7 +1629,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="DC0640AA-B67C-4C4F-B3A8-391EB692DCD1" translatesAutoresizingMaskIntoConstraints="NO" id="6mV-3f-gmJ">
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="3636E4A2-308E-40A7-8FB8-4DF1CD78B6DA" translatesAutoresizingMaskIntoConstraints="NO" id="6mV-3f-gmJ">
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="6mV-3f-gmJ" secondAttribute="height" multiplier="1:1" id="iWY-SR-pCm"/>
                                 </constraints>
@@ -2110,7 +2110,7 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Description" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bK2-w7-XZ7">
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About me" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bK2-w7-XZ7">
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="112" id="TgQ-Kg-0eo"/>
                                                         </constraints>
@@ -3577,7 +3577,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="DC0640AA-B67C-4C4F-B3A8-391EB692DCD1" width="345" height="391">
+        <image name="3636E4A2-308E-40A7-8FB8-4DF1CD78B6DA" width="345" height="391">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA

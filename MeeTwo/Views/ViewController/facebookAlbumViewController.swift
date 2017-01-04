@@ -31,7 +31,7 @@ class facebookAlbumViewController: UIViewController,UITableViewDelegate,UITableV
                 // print("result \(result)")
                 let dictionary = result as! [String : AnyObject]
                 let albumDict = dictionary["albums"] as! NSDictionary
-                self.arrDisplayAlbum = albumDict["data"] as! NSArray
+                self.arrDisplayAlbum = albumDict[kDATA] as! NSArray
                 
            //     self.tblViewDisplayAlbumObj.register(facebookAlbumCell.self, forCellReuseIdentifier: "facebookAlbumCell")
 
@@ -103,7 +103,7 @@ class facebookAlbumViewController: UIViewController,UITableViewDelegate,UITableV
     {
         let cell = tblViewDisplayAlbumObj.dequeueReusableCell(withIdentifier: "facebookAlbumCell", for: indexPath) as! facebookAlbumCell
         
-        let dictData = ((self.arrDisplayAlbum.object(at: indexPath.row) as! NSDictionary).object(forKey: "picture") as! NSDictionary).object(forKey: "data") as! NSDictionary
+        let dictData = ((self.arrDisplayAlbum.object(at: indexPath.row) as! NSDictionary).object(forKey: "picture") as! NSDictionary).object(forKey: kDATA) as! NSDictionary
         
         let dict = self.arrDisplayAlbum.object(at: indexPath.row) as! NSDictionary
         let strurl = dictData["url"] as! String
@@ -143,6 +143,14 @@ class facebookAlbumViewController: UIViewController,UITableViewDelegate,UITableV
         }
     }
 
+    func scrollViewDidScroll(_ scrollView: UIScrollView)
+    {
+        
+            let verticalIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
+            
+            verticalIndicator.backgroundColor = UIColor.init(hexString: shaddow_color)
+        
+    }
     
     
     override func didReceiveMemoryWarning()

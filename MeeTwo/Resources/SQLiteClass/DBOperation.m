@@ -201,4 +201,24 @@ static int conn;
 }
 
 
++(NSMutableArray *)SortArrayToWidth : (NSMutableArray *)arrOriginal
+{
+    NSSortDescriptor *sortDescriptor;
+    sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:@"width"
+                                                   ascending:YES
+                                                  comparator:^(id obj1, id obj2) {
+                                                      return [obj1 compare:obj2];
+                                                  }];
+    
+    
+    NSArray *sortDescriptors = [NSArray arrayWithObject:sortDescriptor];
+    NSArray *sortedArray;
+    sortedArray = [arrOriginal
+                   sortedArrayUsingDescriptors:sortDescriptors];
+    [arrOriginal removeAllObjects];
+    [arrOriginal addObjectsFromArray:sortedArray];
+    return arrOriginal;
+}
+
+
 @end
