@@ -287,7 +287,6 @@ class SettingVC: UIViewController {
         
        // var myStringArr = myString.componentsSeparatedByString(" ")
         
-        
         self.ageSliderObj.lowerValue = Float((firstName as NSString).integerValue)
         self.ageSliderObj.upperValue = Float((lastName as NSString).integerValue)
 
@@ -336,8 +335,28 @@ class SettingVC: UIViewController {
              btnBoth.setImage(UIImage(named: kswitch_sel)!, for: .normal)
         }
         
-        self.changeDistanceSlider()
+        lblAgeLow.alpha = 0.0
+        lblAgeHigh.alpha = 0.0
+        lblDistanceDisplay.alpha = 0.0
+        
+        //self.changeDistanceSlider()
+         Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.changeDistanceSlider), userInfo: nil, repeats: false)
+        Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.changeAgeSlider), userInfo: nil, repeats: false)
+        
+        UIView.animate(withDuration: 0.6, animations: {
+            self.lblAgeLow.alpha = 1.0
+            self.lblAgeHigh.alpha = 1.0
+            self.lblDistanceDisplay.alpha = 1.0
+            }) { (true) in
+        }
+        
         self.changeAgeSlider()
+        
+        //self.lblAgeHigh.frame = CGRect(x: self.ageSliderObj.upperCenter.x, y: self.lblAgeHigh.frame.origin.y, width: self.lblAgeHigh.frame.size.width, height:  self.lblAgeHigh.frame.size.height)
+        
+        //self.lblAgeLow.frame = CGRect(x: self.ageSliderObj.lowerCenter.x, y: self.lblAgeLow.frame.origin.y, width: self.lblAgeLow.frame.size.width, height:  self.lblAgeLow.frame.size.height)
+        
+       // self.lblDistanceDisplay.frame = CGRect(x: self.distanceSliderObj.upperCenter.x, y: self.lblDistanceDisplay.frame.origin.y, width: self.lblDistanceDisplay.frame.size.width, height: self.lblDistanceDisplay.frame.size.height)
      
     }
     @IBAction func ageSliderChangedAct(_ sender: AnyObject)
@@ -357,12 +376,16 @@ class SettingVC: UIViewController {
         upperCenter.y = (self.ageSliderObj.center.y - 20.0)
         self.lblAgeHigh.center = upperCenter
         self.lblAgeHigh.text! = "\(Int(self.ageSliderObj.upperValue))"
-        
     }
     
-    @IBAction func distanceSliderChange(_ sender: AnyObject)
+    @IBAction func distanceSliderChange(_ sender: NMRangeSlider)
     {
+        
+      //  self.lblDistanceDisplay.frame = CGRect(x: sender.upperCenter.x, y: self.lblDistanceDisplay.frame.origin.y, width: self.lblDistanceDisplay.frame.size.width, height: self.lblDistanceDisplay.frame.size.height)
+
         self.changeDistanceSlider()
+        
+        //self.lblDistanceDisplay.frame = CGRect(x: sender.upperCenter.x, y: self.lblDistanceDisplay.frame.origin.y, width: self.lblDistanceDisplay.frame.size.width, height: self.lblDistanceDisplay.frame.size.height)
     }
     
     func changeDistanceSlider()
@@ -373,6 +396,8 @@ class SettingVC: UIViewController {
         self.lblDistanceDisplay.center = upperCenter
         self.lblDistanceDisplay.text! = "\(Int(self.distanceSliderObj.upperValue))"
         
+        
+     //   self.lblDistanceDisplay.frame = CGRect(x: self.distanceSliderObj.upperCenter.x, y: self.lblDistanceDisplay.frame.origin.y, width: self.lblDistanceDisplay.frame.size.width, height: self.lblDistanceDisplay.frame.size.height)
     }
 
     @IBAction func lookingAct(_ sender: AnyObject)
@@ -529,7 +554,7 @@ class SettingVC: UIViewController {
     
     @IBAction func selDeleteAccountAct(_ sender: AnyObject)
     {
-        let alertObj = UIAlertController.init(title: "", message: "Are you sure you want to delete this account?", preferredStyle: UIAlertControllerStyle.alert)
+        let alertObj = UIAlertController.init(title: "", message: "Are you sure you want to delete your account? Deleting your account is permanent and you will not be able to recover your profile and matches.", preferredStyle: UIAlertControllerStyle.alert)
         
         alertObj.addAction(UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: { (nil) in
             
@@ -697,7 +722,7 @@ class SettingVC: UIViewController {
                     let viewControllers: [UIViewController] = self.navigationController!.viewControllers
                     
                     self.globalMethodObj.removeuserDefaultKey(string: kUSERDATA)
-                    self.globalMethodObj.removeuserDefaultKey(string: kUserProfileData)
+                    self.globalMethodObj.removeuserDefaultKey(string: get_user_all_info)
                     self.globalMethodObj.removeuserDefaultKey(string: kDisplayLetsStart)
                     self.globalMethodObj.removeuserDefaultKey(string: kdisplayChemistry)
                     self.globalMethodObj.removeuserDefaultKey(string: kotherProfilePic)

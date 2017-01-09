@@ -130,6 +130,8 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
     {
         let dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
         
+        let NewDictUserData2 = NSMutableDictionary(dictionary: dictUserData!)
+
         let dict = dictUserData?[profile] as! NSDictionary
 //        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
     
@@ -236,13 +238,18 @@ class MyProfileVC: UIViewController,delegateCallUpdateData
 
         NewDictUserData.setObject(arrMutuable, forKey: kprofile_picture as NSCopying)
         
-        let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData)
+        NewDictUserData2.setObject(NewDictUserData, forKey: profile as NSCopying)
         
-        self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: kUserProfileData)
+        let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData2)
         
-        let dictRes = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
+        self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: get_user_all_info)
         
-        self.arrImagesProfile =  dictRes?[kprofile_picture] as! NSArray
+        
+        let dictRes = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
+        
+        let dictObj = dictRes?[profile] as! NSDictionary
+        
+        self.arrImagesProfile =  dictObj[kprofile_picture] as! NSArray
 
         self.pageControl.numberOfPages = self.arrImagesProfile.count
 

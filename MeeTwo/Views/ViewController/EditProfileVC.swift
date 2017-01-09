@@ -61,6 +61,10 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     
     var fbImage: UIImageView!
 
+    var checkImagesCount = false
+    
+    @IBOutlet var txtDescriptionObj: UITextView!
+
     
     override func viewDidLoad()
     {
@@ -122,7 +126,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         
         imageShaddow.backgroundColor = UIColor(patternImage: UIImage(named: "Icon-Shaddow")!)
 
-        print("Comminnnnnnnnnnnggggg11111")
+        //print("Comminnnnnnnnnnnggggg11111")
 
         
 //        scrollViewObj.delegate = self
@@ -146,6 +150,8 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         btnCemeraOBj.layer.cornerRadius = 10
         btnGalleryObj.layer.cornerRadius = 10
         btnFacebook.layer.cornerRadius = 12
+        
+        txtDescriptionObj.isScrollEnabled = true
     }
     
     func BlueViewSetup()
@@ -156,6 +162,10 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     
     override func viewWillAppear(_ animated: Bool)
     {
+        
+        txtDescriptionObj.isScrollEnabled = false
+
+        
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.topItem?.title = "Edit my profile"
         self.navigationController?.navigationBar.titleTextAttributes =
@@ -193,6 +203,9 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                 self.UploadPhotoWebservice(imageData: data as! Data)
             }
         }
+        
+        txtDescriptionObj.isEditable = false
+        txtDescriptionObj.isSelectable = false
     }
     
     
@@ -205,7 +218,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     {
         self.view.endEditing(true)
         
-        if (strStoreDesc != txtDesc.text) || (strStoreWork != txtWork.text) || (strStoreSchool != txtSchool.text)
+        if (strStoreDesc != txtDescriptionObj.text) || (strStoreWork != txtWork.text) || (strStoreSchool != txtSchool.text)
         {
             self.callUpdateProfileWithouField()
         }
@@ -217,16 +230,18 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
     
     func setUpView()
     {
-    
-        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
         
-        let firstName = dict?.object(forKey: kfirst_name) as! String
+        let dictObj = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
         
-        let age_obj = dict?.object(forKey: kage) as! String
+        let dict = dictObj?[profile] as! NSDictionary
+        
+        let firstName = dict.object(forKey: kfirst_name) as! String
+        
+        let age_obj = dict.object(forKey: kage) as! String
         
         self.lblName.text = "\(firstName), \(age_obj)"
         
-        let distenceAway  = dict?.object(forKey: kdistance_away) as! Int
+        let distenceAway  = dict.object(forKey: kdistance_away) as! Int
         
         if  distenceAway == 0
         {
@@ -244,9 +259,9 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         self.lblName.adjustsFontSizeToFitWidth = true
         self.lblRightHere.adjustsFontSizeToFitWidth = true
         
-        let descText = dict?.object(forKey: kdescription) as?String
-        let schoolText = dict?.object(forKey: kschool) as?String
-        let currentWork = dict?.object(forKey: kwork) as?String
+        let descText = dict.object(forKey: kdescription) as?String
+        let schoolText = dict.object(forKey: kschool) as?String
+        let currentWork = dict.object(forKey: kwork) as?String
         strStoreDesc = descText!
         strStoreSchool = schoolText!
         strStoreWork = currentWork!
@@ -254,11 +269,15 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
 
         if descText?.characters.count != 0
         {
-            txtDesc.text = descText
+            txtDescriptionObj.text = descText
         }
         
-        txtDesc.sizeToFit()
-        txtDesc.contentVerticalAlignment = UIControlContentVerticalAlignment.top
+        
+        let desiredOffset = CGPoint(x: 0, y: -txtDescriptionObj.contentInset.top)
+        txtDescriptionObj.setContentOffset(desiredOffset, animated: false)
+        
+    //    txtDescriptionObj.sizeToFit()
+        //txtDescriptionObj.contentVerticalAlignment = UIControlContentVerticalAlignment.top
         
         
         if schoolText?.characters.count != 0
@@ -271,7 +290,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
             txtWork.text = currentWork
         }
       
-        self.setArrayForSliderPhotos(dict: dict!)
+        self.setArrayForSliderPhotos(dict: dict)
         
         imgCollectionView.reloadData()
         
@@ -288,6 +307,9 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
             btnRemove.isHidden = true
             btnAddPhoto.isHidden = true
         }
+        
+      //  txtDescriptionObj.contentOffset = CGPoint.zero
+
     }
     
     func valueChanged2(_ sender: LCAnimatedPageControl) {
@@ -310,8 +332,8 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         
         let PicStr = dict[kurl] as! String
         
-        print(indexPath.row)
-        print(PicStr)
+        //print(indexPath.row)
+        //print(PicStr)
         
         if PicStr.characters.count == 0
         {
@@ -329,13 +351,14 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
             let imgPlaceHolderObj = UIImage.init(named: kGallaryPlaceholder)
             
             cell.imgPlaceholder.image = imgPlaceHolderObj
-           // cell.imgSlideObj.sd_setImage(with: urlString as URL)
-            cell.imgSlideObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolderObj)
+            cell.imgSlideObj.sd_setImage(with: urlString as URL)
+           // cell.imgSlideObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolderObj)
             
             cell.lblAddphotoObj.isHidden = true
             cell.imgSlideObj.isHidden = false
             cell.btnStarIcon.isHidden = false
-            cell.imgPlaceholder.isHidden = true
+         // cell.imgPlaceholder.isHidden = true
+            
             let checkProfile = dict.object(forKey: kis_profile_pic)  as! Bool
             
             if checkProfile
@@ -364,6 +387,12 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                 btnRemove.isHidden = true
                 btnAddPhoto.isHidden = true
             }
+        }
+        
+        if checkImagesCount && indexPath.row == 0
+        {
+            btnRemove.isHidden = true
+            btnAddPhoto.isHidden = true
         }
         
         return cell
@@ -609,19 +638,26 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         if sender.isSelected
         {
             sender.isSelected = false
-            self.stopUserIntractionOfTextfield(textview: txtDesc)
+            //self.stopUserIntractionOfTextfield(textview: txtDesc)
             
-            if strStoreDesc != txtDesc.text
+            txtDescriptionObj.resignFirstResponder()
+            txtDescriptionObj.isEditable = false
+            txtDescriptionObj.isSelectable = false
+
+            if strStoreDesc != txtDescriptionObj.text
             {
-                let str = DBOperation.returnRemoveMoreSpace(txtDesc.text)
+                let str = DBOperation.returnRemoveMoreSpace(txtDescriptionObj.text)
                 self.CallProfileUpdateData(fieldId: kONE, text: str!)
             }
-            
         }
         else
         {
-            self.openUserIntractionOfTextfield(textview: txtDesc)
+            //self.openUserIntractionOfTextfield(textview: txtDesc)
             sender.isSelected = true
+            
+            txtDescriptionObj.isEditable = true
+            txtDescriptionObj.isSelectable = true
+            txtDescriptionObj.becomeFirstResponder()
         }
     }
     
@@ -798,6 +834,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                         NewDictUserData2.setObject(text, forKey: kdescription as NSCopying)
                         self.strStoreDesc = text
 //                        dict.setValue(self.txtDescriptionObj.text, forKey: kdescription)
+                        self.txtDescriptionObj.contentOffset = CGPoint(x: 0, y: 0)
                     }
                     else if fieldId == "2"
                     {
@@ -816,17 +853,13 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                     
                     NewDictUserData.setObject(NewDictUserData2, forKey: profile as NSCopying)
                     
+                    
+                    
                     let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData)
                     
                     self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: get_user_all_info)
                     
-                  print(self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info))
-                    
-                    let dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
-                    
-                    let dict = dictUserData?[profile] as! NSDictionary
-
-                    
+                
                 }
                 else
                 {
@@ -845,7 +878,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         JTProgressHUD.show()
         
         let getUserId = globalMethodObj.getUserId()
-        let Desc = txtDesc.text! as String
+        let Desc = txtDescriptionObj.text! as String
         let Work = txtWork.text! as String
         let School = txtSchool.text! as String
         
@@ -858,7 +891,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                 "text_work":Work,
                 ]
         
-        print(parameters)
+       // print(parameters)
         
         globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
             
@@ -892,7 +925,7 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                     
                     NewDictUserData2.setObject(NewDictUserData, forKey: profile as NSCopying)
                     
-                    let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData)
+                    let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData2)
                     
                     self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: get_user_all_info)
                     
@@ -951,6 +984,15 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         for (_, element) in arrImagesTemp.enumerated()
         {
             arrImages3.add(element)
+        }
+        
+        if arrImages3.count == 1
+        {
+            checkImagesCount = true
+        }
+        else
+        {
+            checkImagesCount = false
         }
         
         for _ in arrImagesTemp.count..<6

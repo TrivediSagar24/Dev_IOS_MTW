@@ -19,7 +19,7 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     var globalMethodObj = GlobalMethods()
     
-    var arrNotification = NSArray()
+    var arrNotification = NSMutableArray()
     
     @IBOutlet var tblNotification: UITableView!
     override func viewDidLoad()
@@ -57,6 +57,7 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
         let profilePic = dicNotification.object(forKey: "user_profile_url") as! String
         let notification_text = dicNotification.object(forKey: "notification_text") as! String
         let status = dicNotification.object(forKey: "status") as! String
+        let notification_type = dicNotification.object(forKey: "notification_type") as! String
         
         var gender = ""
         var user_first_name = ""
@@ -100,7 +101,6 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
             imgPlaceHolder = UIImage.init(named: kFemalePlaceholder)
         }
         
-        
         let urlString : NSURL = NSURL.init(string: profilePic)!
         
         cell.imgUser.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
@@ -115,6 +115,17 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
         cell.btnAccept.accessibilityIdentifier = "1"
         cell.btnDecline.accessibilityIdentifier = "2"
         
+        if notification_type == "0" || notification_type == "1"
+        {
+            cell.btnDecline.isHidden = false
+            cell.btnAccept.isHidden = false
+        }
+        else
+        {
+            cell.btnDecline.isHidden = true
+            cell.btnAccept.isHidden = true
+        }
+        
         if status == "0"
         {
             cell.btnDecline.isHidden = false
@@ -127,31 +138,47 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
         }
         
         return cell
-
-    }
-    
+     }
     
     func callAcceptDeclineWebservice(sender:UIButton)
     {
+        let indexpath = tblNotification.indexPath(for: sender.superview?.superview as! NotificationCell)
         
         let dicNotification = self.arrNotification.object(at: sender.tag) as! NSDictionary
-        let strnotification_id = dicNotification.object(forKey: "notification_id")
-        let strother_user_id = dicNotification.object(forKey: "other_user_id")
-
         
+        let strnotification_id = dicNotification.object(forKey: "notification_id") as! String
+        let strother_user_id = dicNotification.object(forKey: "other_user_id") as! String
         let getUserId = globalMethodObj.getUserId()
         
+        let notificationMutDic = NSMutableDictionary(dictionary: dicNotification)
+        
+        if sender.accessibilityIdentifier == "2"
+        {
+            self.arrNotification.removeObject(at: sender.tag)
+            let range = NSMakeRange(0, tblNotification.numberOfSections)
+            let sections = NSIndexSet(indexesIn: range)
+            
+        }
+        else
+        {
+            notificationMutDic.setObject("1", forKey: "status" as NSCopying)
+            self.arrNotification.removeObject(at: sender.tag)
+            self.arrNotification.insert(notificationMutDic, at: sender.tag)
+           
+        }
+        
+        self.afterNotificationGetResponse()
+
         let parameters =
             [
                 GlobalMethods.METHOD_NAME: "user_accept_decline",
                 kuser_id: getUserId,
                 kother_user_id:strother_user_id,
-                "accepted":sender.accessibilityIdentifier,
+                "accepted":"\(sender.accessibilityIdentifier!)",
                 "notification_id":strnotification_id,
                 ] as [String : Any]
 
         globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
-            
             
             if error != nil
             {
@@ -160,6 +187,8 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
             else
             {
                 let status = result[kstatus] as! Int
+                
+                print(result)
                 
                 if status == 1
                 {
@@ -183,7 +212,7 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
         JTProgressHUD.show()
         
         let getUserId = globalMethodObj.getUserId()
-        
+
         let parameters =
             [
                 GlobalMethods.METHOD_NAME: "user_get_notification",
@@ -203,12 +232,26 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
             {
                 let status = result[kstatus] as! Int
                 
+                print(result)
+                
                 if status == 1
                 {
                     let dictData = result.object(forKey: kDATA) as! NSDictionary
                     
-                    self.arrNotification = dictData.object(forKey: "notifications") as! NSArray
+                    let arr = dictData.object(forKey: "notifications") as! NSArray
+                   // self.arrNotification = arr.mutableCopy() as! NSMutableArray
                     
+                    for (index, element) in arr.enumerated()
+                    {
+                        let dict = element as! NSDictionary
+                        let statusData = dict["status"] as! String
+                        
+                        if statusData != "2"
+                        {
+                            self.arrNotification.add(element)
+                        }
+                        
+                    }
                     self.afterNotificationGetResponse()
                 }
                 else
@@ -224,13 +267,22 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.tblNotification.dataSource = self
             self.tblNotification.delegate = self
+            
+            let range = NSMakeRange(0, self.tblNotification.numberOfSections)
+            let sections = NSIndexSet(indexesIn: range)
+            self.tblNotification.reloadSections(sections as IndexSet, with: .fade)
+            
             self.tblNotification.reloadData()
-        }
-        
-        DispatchQueue.main.async {
-            self.tblNotification.dataSource = self
-            self.tblNotification.delegate = self
-            self.tblNotification.reloadData()
+            DispatchQueue.main.async {
+                
+                let range = NSMakeRange(0, self.tblNotification.numberOfSections)
+                let sections = NSIndexSet(indexesIn: range)
+                self.tblNotification.reloadSections(sections as IndexSet, with: .fade)
+                
+                self.tblNotification.dataSource = self
+                self.tblNotification.delegate = self
+                self.tblNotification.reloadData()
+            }
         }
     }
     

@@ -186,8 +186,9 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         
         lblVisibilityDescObj.text = "Your profile is invisible. Turn on visibility to find people nearby."
         
-        var dict: NSDictionary!
+        //var dict: NSDictionary!
         
+        /*
         if globalMethodObj.checkUserDefaultKey(kUsernameKey: kUserProfileData)
         {
             dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUserProfileData)
@@ -196,18 +197,22 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         {
             dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)
         }
+ */
         
-        if dict?.object(forKey: kis_active) == nil
+        let dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
+        let dict = dictUserData?[profile] as! NSDictionary
+        
+        if dict.object(forKey: kis_active) == nil
         {
             GlobalMethods.checkUser_active = "1"
         }
         else
         {
-            GlobalMethods.checkUser_active = dict?.object(forKey: kis_active) as! String
+            GlobalMethods.checkUser_active = dict.object(forKey: kis_active) as! String
         }
         
         
-        let gender = dict?.object(forKey: kgender) as! String
+        let gender = dict.object(forKey: kgender) as! String
         
         var imgPlaceHolder = UIImage.init(named: kimgUserLogo)
 
