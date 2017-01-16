@@ -16,3 +16,4 @@
 #import "FXBlurView.h"
 #import "JTProgressHUD.h"
 #import "NMRangeSlider.h"
+#import "UIScrollView+APParallaxHeader.h"

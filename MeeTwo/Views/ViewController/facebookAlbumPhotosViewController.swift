@@ -27,15 +27,29 @@ class facebookAlbumPhotosViewController: UIViewController,UICollectionViewDelega
         
         JTProgressHUD.show()
         
-        FBSDKGraphRequest(graphPath: "/\(albumId)", parameters: ["fields":"photos{picture}"]).start(completionHandler: { (connection, result, error) -> Void in
+        FBSDKGraphRequest(graphPath: "/\(albumId)", parameters: ["fields":"photos.limit(1000){picture}"]).start(completionHandler: { (connection, result, error) -> Void in
             if(error == nil)
             {
+                
+                /*
+ 
+                 FBSDKGraphRequest *request = [[FBSDKGraphRequest alloc]
+                 initWithGraphPath:@"/me"
+                 parameters:@{ @"fields": @"id,name,albums{photos.limit(100){picture}}",}
+                 HTTPMethod:@"GET"];
+                 [request startWithCompletionHandler:^(FBSDKGraphRequestConnection *connection, id result, NSError *error) {
+                 // Insert your code here
+                 }];
+ */
+                
+                
                 
               //  print(result)
                 
                 let dictionary = result as! [String : AnyObject]
                 let albumDict = dictionary[kPHOTOS] as! NSDictionary
                 self.arrDisplayAlbumPhotos = albumDict[kDATA] as! NSArray
+                print("Full Album Array : \(self.arrDisplayAlbumPhotos.count)")
                 
                 self.navigationController?.navigationBar.topItem?.title = "Select picture"
                 

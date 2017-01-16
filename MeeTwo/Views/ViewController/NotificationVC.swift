@@ -142,8 +142,7 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
     
     func callAcceptDeclineWebservice(sender:UIButton)
     {
-        let indexpath = tblNotification.indexPath(for: sender.superview?.superview as! NotificationCell)
-        
+
         let dicNotification = self.arrNotification.object(at: sender.tag) as! NSDictionary
         
         let strnotification_id = dicNotification.object(forKey: "notification_id") as! String
@@ -155,9 +154,7 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
         if sender.accessibilityIdentifier == "2"
         {
             self.arrNotification.removeObject(at: sender.tag)
-            let range = NSMakeRange(0, tblNotification.numberOfSections)
-            let sections = NSIndexSet(indexesIn: range)
-            
+       
         }
         else
         {

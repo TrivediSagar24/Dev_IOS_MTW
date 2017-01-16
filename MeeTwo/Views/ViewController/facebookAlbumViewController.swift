@@ -84,7 +84,7 @@ class facebookAlbumViewController: UIViewController,UITableViewDelegate,UITableV
         let item1 = UIBarButtonItem()
         item1.customView = btn1
         self.navigationItem.leftBarButtonItem = item1;
-
+        
     }
     
     func back()

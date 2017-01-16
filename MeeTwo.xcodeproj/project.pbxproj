@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2E07C3831E2C8EFE00FA3DE4 /* profileBottomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E07C3821E2C8EFE00FA3DE4 /* profileBottomCell.swift */; };
 		2E0D45681E1A939C00D889C4 /* collectionViewPhotosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0D45671E1A939C00D889C4 /* collectionViewPhotosCell.swift */; };
 		2E0D456A1E1A970F00D889C4 /* facebookAlbumPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0D45691E1A970F00D889C4 /* facebookAlbumPhotosViewController.swift */; };
 		2E2436621DD5F73700190B70 /* QuestionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E2436611DD5F73700190B70 /* QuestionVC.swift */; };
+		2E30C1D01E28D88600747E5D /* UIScrollView+APParallaxHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 2E30C1CF1E28D88600747E5D /* UIScrollView+APParallaxHeader.m */; };
 		2E3428C01E0A920700139769 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3428BF1E0A920700139769 /* LoginViewController.swift */; };
 		2E3A2E251DF56F1A000C617B /* IQNSArray+Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3A2E0F1DF56F1A000C617B /* IQNSArray+Sort.swift */; };
 		2E3A2E261DF56F1A000C617B /* IQUIScrollView+Additions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E3A2E101DF56F1A000C617B /* IQUIScrollView+Additions.swift */; };
@@ -136,10 +138,13 @@
 
 /* Begin PBXFileReference section */
 		06E0F5C10E24F6E14D726B86 /* Pods-MeeTwo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeeTwo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MeeTwo/Pods-MeeTwo.debug.xcconfig"; sourceTree = "<group>"; };
+		2E07C3821E2C8EFE00FA3DE4 /* profileBottomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = profileBottomCell.swift; sourceTree = "<group>"; };
 		2E0D45671E1A939C00D889C4 /* collectionViewPhotosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = collectionViewPhotosCell.swift; sourceTree = "<group>"; };
 		2E0D45691E1A970F00D889C4 /* facebookAlbumPhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = facebookAlbumPhotosViewController.swift; sourceTree = "<group>"; };
 		2E2436601DD5E5F100190B70 /* MeeTwo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MeeTwo.entitlements; sourceTree = "<group>"; };
 		2E2436611DD5F73700190B70 /* QuestionVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuestionVC.swift; sourceTree = "<group>"; };
+		2E30C1CE1E28D88600747E5D /* UIScrollView+APParallaxHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+APParallaxHeader.h"; sourceTree = "<group>"; };
+		2E30C1CF1E28D88600747E5D /* UIScrollView+APParallaxHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+APParallaxHeader.m"; sourceTree = "<group>"; };
 		2E3428BF1E0A920700139769 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		2E3A2E0F1DF56F1A000C617B /* IQNSArray+Sort.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQNSArray+Sort.swift"; sourceTree = "<group>"; };
 		2E3A2E101DF56F1A000C617B /* IQUIScrollView+Additions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "IQUIScrollView+Additions.swift"; sourceTree = "<group>"; };
@@ -316,6 +321,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2E30C1CD1E28D88600747E5D /* ParallaxView */ = {
+			isa = PBXGroup;
+			children = (
+				2E30C1CE1E28D88600747E5D /* UIScrollView+APParallaxHeader.h */,
+				2E30C1CF1E28D88600747E5D /* UIScrollView+APParallaxHeader.m */,
+			);
+			path = ParallaxView;
+			sourceTree = "<group>";
+		};
 		2E3A2E0D1DF56F1A000C617B /* IQKeyboardManagerSwift */ = {
 			isa = PBXGroup;
 			children = (
@@ -567,6 +581,7 @@
 		5298241F1DB6445B00DA1777 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				2E30C1CD1E28D88600747E5D /* ParallaxView */,
 				52DF85D81E027C33003538EF /* NMRangeSlider */,
 				41253A451DFB4CCA00214CDA /* JTProgressHUD */,
 				2E3A88D31DF6831B00488BB7 /* FXBlurView */,
@@ -600,8 +615,8 @@
 			children = (
 				529824231DB6445B00DA1777 /* ViewController.swift */,
 				2E3428BF1E0A920700139769 /* LoginViewController.swift */,
-				2E525A371DD991EF004565F8 /* LetsStartVC.swift */,
 				521680CC1DD1D4AE00E76882 /* HomeVC.swift */,
+				2E525A371DD991EF004565F8 /* LetsStartVC.swift */,
 				2ECA979A1DD337A300B75ED0 /* introCell.swift */,
 				2EEA011A1E0C0F7600F01FE5 /* QuestionAnswersCell.swift */,
 				2EE2C5A31DD5991500CC43E6 /* GlobalMethods.swift */,
@@ -624,6 +639,7 @@
 				41494E371DFC7C2300ABA81D /* Global.swift */,
 				52DF85D41E027C06003538EF /* SettingVC.swift */,
 				2EEA01181E0C0BDB00F01FE5 /* AttemptedViewController.swift */,
+				2E07C3821E2C8EFE00FA3DE4 /* profileBottomCell.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -929,6 +945,7 @@
 				2EEA01191E0C0BDC00F01FE5 /* AttemptedViewController.swift in Sources */,
 				2E3A2E341DF56F1A000C617B /* IQUIView+IQKeyboardToolbar.swift in Sources */,
 				2E59728E1DDC41AE00642CE2 /* DBOperation.m in Sources */,
+				2E30C1D01E28D88600747E5D /* UIScrollView+APParallaxHeader.m in Sources */,
 				2E3A2E2A1DF56F1A000C617B /* IQUIWindow+Hierarchy.swift in Sources */,
 				2E3E027D1DDB41E000099A50 /* SDWebImagePrefetcher.m in Sources */,
 				2EB3F6831E1A6D8500F26C1C /* facebookAlbumViewController.swift in Sources */,
@@ -971,6 +988,7 @@
 				2E7E4F631E07E137004E88CA /* CustomScrollView.swift in Sources */,
 				2E0D456A1E1A970F00D889C4 /* facebookAlbumPhotosViewController.swift in Sources */,
 				2ECA979B1DD337A300B75ED0 /* introCell.swift in Sources */,
+				2E07C3831E2C8EFE00FA3DE4 /* profileBottomCell.swift in Sources */,
 				2E7553D11DE3170500181D1B /* UIImage+Gif.swift in Sources */,
 				2E3E02731DDB41E000099A50 /* MKAnnotationView+WebCache.m in Sources */,
 				2E3E027B1DDB41E000099A50 /* SDWebImageDownloaderOperation.m in Sources */,
