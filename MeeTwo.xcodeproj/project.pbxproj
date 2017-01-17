@@ -68,6 +68,7 @@
 		2E7E4F631E07E137004E88CA /* CustomScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E7E4F621E07E137004E88CA /* CustomScrollView.swift */; };
 		2E89A44A1E10F466008F9062 /* YesButtonClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E89A4491E10F466008F9062 /* YesButtonClass.swift */; };
 		2E89A44C1E10F485008F9062 /* NoButtonClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E89A44B1E10F485008F9062 /* NoButtonClass.swift */; };
+		2E9FEBE01E2D04B600387960 /* otherUserProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E9FEBDF1E2D04B600387960 /* otherUserProfileCell.swift */; };
 		2EB3F6831E1A6D8500F26C1C /* facebookAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB3F6821E1A6D8500F26C1C /* facebookAlbumViewController.swift */; };
 		2EB3F6851E1A6E0D00F26C1C /* facebookAlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB3F6841E1A6E0D00F26C1C /* facebookAlbumCell.swift */; };
 		2EBF99361DE809D200107813 /* ToBadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EBF99351DE809D200107813 /* ToBadViewController.swift */; };
@@ -231,6 +232,7 @@
 		2E7E4F621E07E137004E88CA /* CustomScrollView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomScrollView.swift; sourceTree = "<group>"; };
 		2E89A4491E10F466008F9062 /* YesButtonClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = YesButtonClass.swift; sourceTree = "<group>"; };
 		2E89A44B1E10F485008F9062 /* NoButtonClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoButtonClass.swift; sourceTree = "<group>"; };
+		2E9FEBDF1E2D04B600387960 /* otherUserProfileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = otherUserProfileCell.swift; sourceTree = "<group>"; };
 		2EB3F6821E1A6D8500F26C1C /* facebookAlbumViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = facebookAlbumViewController.swift; sourceTree = "<group>"; };
 		2EB3F6841E1A6E0D00F26C1C /* facebookAlbumCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = facebookAlbumCell.swift; sourceTree = "<group>"; };
 		2EBF99351DE809D200107813 /* ToBadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToBadViewController.swift; sourceTree = "<group>"; };
@@ -624,6 +626,7 @@
 				2E3E022A1DDB17AC00099A50 /* DashHomeVC.swift */,
 				2E3E022B1DDB17AC00099A50 /* TabController.swift */,
 				2ECDA8491DE6BE2C00E70C22 /* UserProfileViewController.swift */,
+				2E9FEBDF1E2D04B600387960 /* otherUserProfileCell.swift */,
 				2ECDA84B1DE6BE3C00E70C22 /* PersonalityTestViewController.swift */,
 				2ECDA84D1DE71FB700E70C22 /* ChemistrySuccessViewController.swift */,
 				2EBF99351DE809D200107813 /* ToBadViewController.swift */,
@@ -940,6 +943,7 @@
 				52850A371DF18E1100646BCD /* EditProfileVC.swift in Sources */,
 				2E3A88D61DF6831B00488BB7 /* FXBlurView.m in Sources */,
 				2E3A2E261DF56F1A000C617B /* IQUIScrollView+Additions.swift in Sources */,
+				2E9FEBE01E2D04B600387960 /* otherUserProfileCell.swift in Sources */,
 				521680CD1DD1D4AE00E76882 /* HomeVC.swift in Sources */,
 				2E3E02841DDB41E000099A50 /* UIView+WebCache.m in Sources */,
 				2EEA01191E0C0BDC00F01FE5 /* AttemptedViewController.swift in Sources */,

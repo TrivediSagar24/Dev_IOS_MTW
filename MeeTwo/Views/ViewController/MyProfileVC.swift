@@ -717,7 +717,7 @@ class MyProfileVC: UIViewController,delegateCallUpdateData,APParallaxViewDelegat
          let dictObj = dictRes?[profile] as! NSDictionary
          
          self.arrImagesProfile =  dictObj[kprofile_picture] as! NSArray
-         
+        
          self.pageControl.numberOfPages = self.arrImagesProfile.count
          
          imgCollectionView.reloadData()

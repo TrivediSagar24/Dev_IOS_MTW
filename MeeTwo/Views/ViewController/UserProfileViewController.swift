@@ -14,7 +14,7 @@ protocol delegateCallUpdateProfile
     func UpdateProfileData(sender:Bool)
 }
 
-class UserProfileViewController: UIViewController
+class UserProfileViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,APParallaxViewDelegate
 {
     var delegate: delegateCallUpdateProfile?
 
@@ -63,11 +63,31 @@ class UserProfileViewController: UIViewController
     
     var checktrueFalseButton = false
     
+    ///////////////////////////////////
+    
+    @IBOutlet var tblViewUserProfile: UITableView!
+    
+    @IBOutlet var viewParalaxObj: UIView!
+    
+    @IBOutlet var widthConstraintOfCollectionView: NSLayoutConstraint!
+    
+    @IBOutlet var heightConstraintOfCollectionView: NSLayoutConstraint!
+
+    
+    
     override func viewDidLoad()
     {
         super.viewDidLoad()
         
         imgShaddow.backgroundColor = UIColor(patternImage: UIImage(named: "Icon-Shaddow")!)
+        
+        widthConstraintOfCollectionView.constant = self.view.bounds.size.width
+        heightConstraintOfCollectionView.constant = 300
+        self.view.layoutIfNeeded()
+        
+        tblViewUserProfile.addParallax(with: viewParalaxObj, andHeight: 300, andShadow: true)
+        tblViewUserProfile.parallaxView.delegate = self
+
 
         // Do any additional setup after loading the view.
         
@@ -165,6 +185,16 @@ class UserProfileViewController: UIViewController
         item1.customView = btn1
         self.navigationItem.leftBarButtonItem = item1;
         
+        
+        if tblViewUserProfile.delegate == nil
+        {
+            tblViewUserProfile.delegate = self
+            tblViewUserProfile.dataSource = self
+        }
+        
+        tblViewUserProfile.rowHeight = UITableViewAutomaticDimension
+        tblViewUserProfile.estimatedRowHeight = 290
+        
         self.setUpView()
         
         self.pageControl.frame = CGRect(x: 0, y: 0, width: pageControllerObj1.frame.size.width, height: pageControllerObj1.frame.size.height)
@@ -174,10 +204,11 @@ class UserProfileViewController: UIViewController
     }
     func setUpView()
     {
-
+        tblViewUserProfile.reloadData()
+        
         ////////////////////////////////
         
-        
+        /*
         arrImages =  userDict[kprofile_picture] as! NSArray
         
         let arrMutuable = arrImages.mutableCopy() as! NSMutableArray
@@ -284,7 +315,7 @@ class UserProfileViewController: UIViewController
 
         self.pageControl.numberOfPages = arrSliderImages.count
         imgCollectionView.reloadData()
-        
+        */
     }
     
     func back()
@@ -360,6 +391,107 @@ class UserProfileViewController: UIViewController
             delegate?.UpdateProfileData(sender: true)
         }
     }
+    
+    //MARK: - Tableview delegate & data source
+    
+    //MARK: - Tableview Delegate & Datasource
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    {
+        let cell = tblViewUserProfile.dequeueReusableCell(withIdentifier: "otherUserProfileCell", for: indexPath) as! otherUserProfileCell
+        
+        arrImages =  userDict[kprofile_picture] as! NSArray
+        
+        let arrMutuable = arrImages.mutableCopy() as! NSMutableArray
+        var dictTrueURLData = NSDictionary()
+        
+        for (index,element) in arrImages.enumerated()
+        {
+            let dictUrlData = element as! NSDictionary
+            
+            if dictUrlData.object(forKey: kis_profile_pic) as! Bool == true
+            {
+                dictTrueURLData = dictUrlData
+                arrMutuable.removeObject(at: index)
+            }
+        }
+        
+        arrMutuable.insert(dictTrueURLData, at: 0)
+        arrSliderImages = arrMutuable
+        
+        ////////////////////////////////
+        
+        let firstName = userDict.object(forKey: kfirst_name) as! String
+        let distance_away = userDict.object(forKey: kdistance_away) as! Int
+        let age_obj = userDict.object(forKey: kage) as! String
+        
+        cell.lblUserName.text = "\(firstName), \(age_obj)"
+        cell.lblAge.text = "\(distance_away) km away"
+        
+        let normalFont = UIFont(name: kinglobal, size: 25)
+        let boldSearchFont = UIFont(name: kinglobal_Bold, size: 25)
+        cell.lblUserName.attributedText = self.globalMethodObj1.addBoldText(fullString: "\(firstName), \(age_obj)" as NSString, boldPartsOfString: ["\(firstName)" as NSString], font: normalFont!, boldFont: boldSearchFont!)
+        
+        cell.lblUserName.adjustsFontSizeToFitWidth = true
+        cell.lblAge.adjustsFontSizeToFitWidth = true
+        
+        let descText = userDict.object(forKey: kdescription) as?String
+        cell.lblDesc.text = descText
+        
+        let schoolText = userDict.object(forKey: kschool) as?String
+        cell.lblSchool.text = schoolText
+        
+        let currentWork = userDict.object(forKey: kwork) as?String
+        cell.lblCurrentWork.text = currentWork
+        
+        cell.viewDescriptionObj.isHidden = false
+        cell.viewSchoolDescObj.isHidden = false
+        cell.viewCurrentWorkObj.isHidden = false
+        
+        self.pageControl.numberOfPages = arrSliderImages.count
+        
+        imgCollectionView.reloadData()
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        return UITableViewAutomaticDimension
+    }
+
+    
+    func parallaxView(_ view: APParallaxView!, didChangeFrame frame: CGRect)
+    {
+        //print("didChangeFrame",frame)
+        heightConstraintOfCollectionView.constant = frame.size.height
+        self.view.layoutIfNeeded()
+        
+        let page = imgCollectionView.contentOffset.x / imgCollectionView.frame.size.width;
+        for cell in imgCollectionView.visibleCells {
+            let indexPath = imgCollectionView.indexPath(for: cell)
+            
+            if indexPath?.row == Int(page)
+            {
+                cell.frame = CGRect(x: cell.frame.origin.x, y:0, width: cell.frame.size.width, height: heightConstraintOfCollectionView.constant)
+                break
+            }
+        }
+        
+    }
+    func parallaxView(_ view: APParallaxView!, willChangeFrame frame: CGRect)
+    {
+        //print("willChangeFrame",frame)
+        heightConstraintOfCollectionView.constant = frame.size.height
+        self.view.layoutIfNeeded()
+    }
+
+    
 
     /*
     // MARK: - Navigation
