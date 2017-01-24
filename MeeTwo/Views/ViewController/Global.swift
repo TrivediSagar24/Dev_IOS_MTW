@@ -145,3 +145,6 @@ let kpink_color = "FC5A7D"
 let kblue_color = "0EBEE8"
 
 let shaddow_color = "0EBEE8"
+
+
+let Other_User_Profile = "OtherUserProfile"

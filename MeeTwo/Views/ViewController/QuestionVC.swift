@@ -297,7 +297,6 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
         }
     }
     
-    
     //MARK: Call Question Service
     
     func QuestionServiceCall()
@@ -333,7 +332,17 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
             
             if error != nil
             {
-                print("Error")
+                let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                
+                if errorObj
+                {
+                    self.QuestionServiceCall()
+                }
+                else
+                {
+                    JTProgressHUD.hide()
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                }
             }
             else
             {
@@ -360,7 +369,11 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                             
                             let questionId = questionDict.object(forKey: kquestion_id) as! String
                             let question = questionDict.object(forKey: kquestion) as! String
-                            
+
+                            let encoded_string: String = question
+                            let ch = encoded_string.cString(using: String.Encoding.isoLatin1)
+                            let decode_string = String(cString: ch!, encoding: String.Encoding.utf8)
+
                             let arrOptions = questionDict.object(forKey: koptions) as! NSArray
                             
                             let dictOptionsA = arrOptions.object(at: 0) as! NSDictionary
@@ -372,7 +385,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                             let dictOptionsBID = dictOptionsB.object(forKey: koptionId) as! String
                             let dictOptionsBtext = dictOptionsB.object(forKey: koptionText) as! String
                             
-                            DBOperation.executeSQL("INSERT INTO mee_two_question (user_id,question_no,question_id,question_text,answer_id,question_is_answered,option_a_id,option_a_text,option_b_id,option_b_text,is_skipped) VALUES ('\(getUserId)','\(String(questionNumber))','\(questionId)','\(question)','','0','\(dictOptionsAID)','\(dictOptionsAtext)','\(dictOptionsBID)','\(dictOptionsBtext)','0')")
+                            DBOperation.executeSQL("INSERT INTO mee_two_question (user_id,question_no,question_id,question_text,answer_id,question_is_answered,option_a_id,option_a_text,option_b_id,option_b_text,is_skipped) VALUES ('\(getUserId)','\(String(questionNumber))','\(questionId)','\(decode_string!)','','0','\(dictOptionsAID)','\(dictOptionsAtext)','\(dictOptionsBID)','\(dictOptionsBtext)','0')")
                         }
                         
                         self.getOriginalArray()
@@ -481,7 +494,9 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                     }
 
                     
-                    txtQuetionViewObj.text = questionText
+                    //String(data, encoding: String.Encoding.utf8)
+                    
+                    txtQuetionViewObj.text = questionText.replacingOccurrences(of: "/", with: "")
                     heightConstraintOfTextviewObj.constant = self.calculateHeight(textView: txtQuetionViewObj, data: questionText).height
                     
                     let propotionalHeightOfTextview = UIScreen.main.bounds.size.height / 568 * 92
@@ -560,6 +575,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
             }
         }
     }
+    
     
     func setProgressBarCode()
     {
@@ -673,8 +689,17 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
             
             if error != nil
             {
-                self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: error.debugDescription, viewcontrolelr: self)
-                JTProgressHUD.hide()
+                let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                
+                if errorObj
+                {
+                    self.calllogin_save_answerService()
+                }
+                else
+                {
+                    JTProgressHUD.hide()
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                }
             }
             else
             {
@@ -765,8 +790,18 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                 
                 if error != nil
                 {
+                    self.btnSkip.isUserInteractionEnabled = true
+                    let errorObj = self.globalMethodObj.checkErrorType(error: error!)
                     
-                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error?.localizedDescription)!, viewcontrolelr: self)
+                    if errorObj
+                    {
+                        self.QuestionServiceCall()
+                    }
+                    else
+                    {
+                        JTProgressHUD.hide()
+                        self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                    }
                 }
                 else
                 {

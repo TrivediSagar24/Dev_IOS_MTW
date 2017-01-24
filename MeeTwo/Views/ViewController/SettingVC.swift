@@ -34,8 +34,11 @@ class SettingVC: UIViewController {
     @IBOutlet var btnBoth: UIButton!
     @IBOutlet var btnWomen: UIButton!
     @IBOutlet var btnMen: UIButton!
-    var lblDistanceDisplay: UILabel!
     
+    @IBOutlet var lblMaximumDistanceObj: UILabel!
+    
+    
+    var lblDistanceDisplay: UILabel!
     var lblAgeLow: UILabel!
     var lblAgeHigh: UILabel!
     
@@ -132,9 +135,9 @@ class SettingVC: UIViewController {
         {
             JTProgressHUD.show()
             
-            Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.closeTimeAndBack), userInfo: nil, repeats: false)
-            
             self.saveSetting()
+            
+          //  Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(self.closeTimeAndBack), userInfo: nil, repeats: false)
         }
         else
         {
@@ -321,7 +324,8 @@ class SettingVC: UIViewController {
             btnAcceptance.setImage(UIImage(named: kswitch_sel)!, for: .normal)
         }
         
-        let looking = self.dictSetting.object(forKey: knoti_acceptance)as!String
+        let looking = self.dictSetting.object(forKey: klooking_for)as!String
+        
         if looking == "1"
         {
             btnMen.setImage(UIImage(named: kswitch_sel)!, for: .normal)
@@ -339,9 +343,13 @@ class SettingVC: UIViewController {
         lblAgeHigh.alpha = 0.0
         lblDistanceDisplay.alpha = 0.0
         
-        //self.changeDistanceSlider()
-         Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.changeDistanceSlider), userInfo: nil, repeats: false)
-        Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.changeAgeSlider), userInfo: nil, repeats: false)
+        DispatchQueue.main.async {
+            //self.changeDistanceSlider()
+            Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.changeDistanceSlider), userInfo: nil, repeats: false)
+            Timer.scheduledTimer(timeInterval: 0.2, target: self, selector: #selector(self.changeAgeSlider), userInfo: nil, repeats: false)
+        }
+        
+       
         
         UIView.animate(withDuration: 0.6, animations: {
             self.lblAgeLow.alpha = 1.0
@@ -448,10 +456,19 @@ class SettingVC: UIViewController {
             btnMile.setTitleColor(UIColor.black, for: UIControlState.normal)
             if isKm == false
             {
-                self.distanceSliderObj.upperValue = self.distanceSliderObj.upperValue * 1.61
-                self.changeDistanceSlider()
-                isKm = true
+                DispatchQueue.main.async {
+                    self.distanceSliderObj.upperValue = self.distanceSliderObj.upperValue * 1.61
+                    //self.changeDistanceSlider()
+                    self.lblDistanceDisplay.text! = "\(Int(self.distanceSliderObj.upperValue))"
+                    self.isKm = true
+                    self.distanceSliderObj.minimumValue = 1
+                    self.distanceSliderObj.maximumValue = 200
+                }
+               
             }
+            
+            lblMaximumDistanceObj.text = "200"
+
         }
         else
         {
@@ -463,10 +480,17 @@ class SettingVC: UIViewController {
             btnKm.setTitleColor(UIColor.black, for: UIControlState.normal)
             if isKm == true
             {
-                self.distanceSliderObj.upperValue = self.distanceSliderObj.upperValue / 1.61
-                self.changeDistanceSlider()
-                isKm = false
+                DispatchQueue.main.async {
+                    self.distanceSliderObj.upperValue = self.distanceSliderObj.upperValue / 1.61
+                    //self.changeDistanceSlider()
+                    self.lblDistanceDisplay.text! = "\(Int(self.distanceSliderObj.upperValue))"
+                    self.isKm = false
+                    self.distanceSliderObj.minimumValue = 1
+                    self.distanceSliderObj.maximumValue = 124
+                }
             }
+            
+            lblMaximumDistanceObj.text = "124"
         }
     }
     @IBAction func selProfileAct(_ sender: AnyObject)
@@ -575,6 +599,7 @@ class SettingVC: UIViewController {
     {
        self.callSetUserSettings()
     }
+    
     func callSetUserSettings()
     {
         //  scrollViewObj.alpha = 0.0
@@ -596,7 +621,6 @@ class SettingVC: UIViewController {
         {
             dist = String(Int(distanceSliderObj.upperValue * 1.61))
         }
-
         
         let active = self.dictSetting.object(forKey: kis_active)as!String
         
@@ -619,10 +643,22 @@ class SettingVC: UIViewController {
             
             if error != nil
             {
-                self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error?.localizedDescription)!, viewcontrolelr: self)
+                let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                
+                if errorObj
+                {
+                    self.callSetUserSettings()
+                }
+                else
+                {
+                    JTProgressHUD.hide()
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                }
             }
             else
             {
+                JTProgressHUD.hide()
+                
                 let status = result["status"] as! Int
                 
                 if status == 1
@@ -639,6 +675,13 @@ class SettingVC: UIViewController {
                     
                     let NewDictSetting = NSMutableDictionary(dictionary: dictSetting!)
                     
+                    NewDictSetting.setObject(looking, forKey: "looking_for" as NSCopying)
+                    NewDictSetting.setObject(dist, forKey: "distance" as NSCopying)
+                    NewDictSetting.setObject(age, forKey: "age_range" as NSCopying)
+                    NewDictSetting.setObject(compability, forKey: "noti_compatibility" as NSCopying)
+                    NewDictSetting.setObject(acceptance, forKey: "noti_acceptance" as NSCopying)
+                    NewDictSetting.setObject(active, forKey: "is_active" as NSCopying)
+                    
                     NewDictUserData.setObject(NewDictSetting, forKey: settings as NSCopying)
                     
                     let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData)
@@ -647,7 +690,11 @@ class SettingVC: UIViewController {
                     
                     GlobalMethods.checkUser_active = active
                     
+                    self.navigationController?.isNavigationBarHidden = true
+                    _ = self.navigationController?.popViewController(animated: true)
+
                     self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: "Settings saved successfully", viewcontrolelr: self)
+                    
                     
                     /*
                     let NewDictUserData = NSMutableDictionary(dictionary: dictUserData)

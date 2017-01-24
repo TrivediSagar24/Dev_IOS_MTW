@@ -179,7 +179,16 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
             
             if error != nil
             {
-                self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error?.localizedDescription)!, viewcontrolelr: self)
+                let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                
+                if errorObj
+                {
+                    self.callAcceptDeclineWebservice(sender: sender)
+                }
+                else
+                {
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                }
             }
             else
             {
@@ -197,9 +206,6 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
                 }
             }
         }
-
-        
-        
     }
     
     //MARK: - Call Get User Notification Service
@@ -223,7 +229,16 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
             
             if error != nil
             {
-                self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error?.localizedDescription)!, viewcontrolelr: self)
+                let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                
+                if errorObj
+                {
+                    self.callGetUserNotification()
+                }
+                else
+                {
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                }
             }
             else
             {

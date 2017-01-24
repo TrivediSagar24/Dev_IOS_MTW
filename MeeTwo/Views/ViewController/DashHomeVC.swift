@@ -29,7 +29,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     var arrDislikeText = NSMutableArray()
     
     var globalMethodObj = GlobalMethods()
-    var arrProfiles = NSArray()
+    var arrProfiles = NSMutableArray()
     
     var indexOfProfile : Int = 0
     var indexPageCount : Int = 0
@@ -88,7 +88,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
       //  viewLocation.isHidden = true
         
         self.SetupScreen()
-        
+
 //        self.visibilitySetupView()
         self.visibilitySetup()
         
@@ -101,8 +101,33 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     override func viewWillAppear(_ animated: Bool)
     {
         
-        if globalMethodObj.isConnectedToNetwork()
+        self.SetupScreen()
+
+        /*
+        let arrTemp = globalMethodObj.getUserDefault(KeyToReturnValye: Other_User_Profile) as! NSMutableArray
+        
+        if arrTemp.count > 0
         {
+            self.globalMethodObj.setUserDefault(ObjectToSave: arrTemp, KeyToSave: Other_User_Profile)
+            let dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
+            let dict = dictUserData?[profile] as! NSDictionary
+            let gender = dict.object(forKey: kgender) as! String
+            
+            for (index,element) in arrTemp.enumerated()
+            {
+                let dictProfile = element as! NSDictionary
+                let stringGender = dictProfile[kgender] as! String
+                
+                if gender == stringGender
+                {
+                    self.arrProfiles.add(dictProfile)
+                }
+            }
+        }
+        else
+        {
+            if globalMethodObj.isConnectedToNetwork()
+            {
                 viewVisibilityObj.isHidden = true
                 
                 if arrProfiles.count == 0
@@ -116,16 +141,20 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                         self.GetMatchProfileServiceCall()
                     }
                 }
+            }
+            else
+            {
+                globalMethodObj.alertNoInternetConnection()
+                viewYesNoObj.isHidden = true
+                viewDisplayProfileObj.isHidden = true
+            }
         }
-        else
-        {
-            globalMethodObj.alertNoInternetConnection()
-            viewYesNoObj.isHidden = true
-            viewDisplayProfileObj.isHidden = true
-        }
+        */
+       
         self.checkCurrenLocation()
 //        self.visibilitySetupView()
         self.visibilitySetup()
+        
     }
     
     override func viewDidAppear(_ animated: Bool)
@@ -253,9 +282,6 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         {
             viewVisibilityObj.isHidden = true
         }
-        
-        
-        
     }
     
     // MARK: Visibility Setup
@@ -413,9 +439,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         {
             viewVisibilityObj.isHidden = true
         }
-        */
-        
-        
+        */        
     }
 
     
@@ -456,8 +480,84 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         LeftGesture.delegate = self
         imgUserProfileObj.addGestureRecognizer(LeftGesture)
  */
- 
-        self.GetMatchProfileServiceCall()
+        
+        if  self.globalMethodObj.checkUserDefaultKey(kUsernameKey: Other_User_Profile)
+        {
+            let arrObj = globalMethodObj.getUserDefault(KeyToReturnValye: Other_User_Profile) as! NSArray
+            
+            let arrTemp = NSMutableArray(array: arrObj)
+            
+            if arrTemp.count > 0
+            {
+                self.globalMethodObj.setUserDefault(ObjectToSave: arrTemp, KeyToSave: Other_User_Profile)
+                
+                let dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
+                let dict = dictUserData?[settings] as! NSDictionary
+                let gender = dict.object(forKey: "looking_for") as! String
+                let arr = NSMutableArray()
+                
+                for (index,element) in arrTemp.enumerated()
+                {
+                    let dictProfile = element as! NSDictionary
+                    let stringGender = dictProfile[kgender] as! String
+                    
+                    if gender == stringGender
+                    {
+                        arr.add(dictProfile)
+                    }
+                }
+                
+                
+                if arr.count > 0
+                {
+                    if self.arrProfiles.count > 0
+                    {
+                        self.arrProfiles.removeAllObjects()
+                    }
+                    
+                    for(index,element) in arr.enumerated()
+                    {
+                        let dictProfileList = element as! NSDictionary
+                        self.arrProfiles.add(dictProfileList)
+                    }
+                    
+                    self.displayProfileFirstTime()
+                }
+                else
+                {
+                    self.GetMatchProfileServiceCall()
+                }
+            }
+
+        }
+        else
+        {
+            if globalMethodObj.isConnectedToNetwork()
+            {
+                viewVisibilityObj.isHidden = true
+                
+                if arrProfiles.count == 0
+                {
+                    self.GetMatchProfileServiceCall()
+
+                    /*
+                    if viewDisplayProfileObj.isHidden == true
+                    {
+                        self.SetupScreen()
+                    }
+                    else
+                    {
+                    }
+ */
+                }
+            }
+            else
+            {
+                globalMethodObj.alertNoInternetConnection()
+                viewYesNoObj.isHidden = true
+                viewDisplayProfileObj.isHidden = true
+            }
+        }
         
         self.setLableFunctionality(lbl: lblLike)
         self.setLableFunctionality(lbl: lblDislike)
@@ -475,6 +575,72 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         
 //        self.visibilitySetupView()
         self.visibilitySetup()
+
+    }
+    
+    func displayProfileFirstTime()
+    {
+        var profilePicStrObj = ""
+
+        let dictProfile = self.arrProfiles.object(at: self.indexOfProfile) as! NSDictionary
+        
+        let arrProfilePic = dictProfile.object(forKey: kprofile_picture)  as! NSArray
+        
+        for (_,element) in arrProfilePic.enumerated()
+        {
+            let dict =  element as! NSDictionary
+            let checkProfile = dict.object(forKey: "is_profile_pic")  as! Bool
+            
+            if checkProfile == true
+            {
+                profilePicStrObj =  dict.object(forKey: "url")  as! String
+            }
+        }
+        
+        let firstName = dictProfile.object(forKey: kfirst_name) as! String
+        let distance_away = dictProfile.object(forKey: kdistance_away) as! Int
+        let age_obj = dictProfile.object(forKey: kage) as! String
+        let gender = dictProfile.object(forKey: kgender) as! String
+        
+        let urlString : NSURL = NSURL.init(string: profilePicStrObj)!
+        var imgPlaceHolder = UIImage.init(named: kimgUserLogo)
+        
+        if gender == "1"
+        {
+            imgPlaceHolder = UIImage.init(named: kMalePlaceholder)
+        }
+        else if gender == "2"
+        {
+            imgPlaceHolder = UIImage.init(named: kFemalePlaceholder)
+        }
+        
+        self.imgUserProfileObj.sd_setImage(with: urlString as URL, placeholderImage: imgPlaceHolder)
+        //                    self.imgUserProfileObj.sd_setImage(with: urlString as URL)
+        self.lblUserName.text = "\(firstName), \(age_obj)"
+        self.lblDistance.text = "\(distance_away) km away"
+        
+        let normalFont = UIFont(name: kinglobal, size: 30)
+        let boldSearchFont = UIFont(name: kinglobal_Bold, size: 30)
+        self.lblUserName.attributedText = self.globalMethodObj.addBoldText(fullString: "\(firstName), \(age_obj)" as NSString, boldPartsOfString: ["\(firstName)" as NSString], font: normalFont!, boldFont: boldSearchFont!)
+        
+        self.lblUserName.adjustsFontSizeToFitWidth = true
+        self.lblDistance.adjustsFontSizeToFitWidth = true
+        
+        self.viewDisplayProfileObj.alpha = 0.0
+        self.viewYesNoObj.alpha = 0.0
+        
+        self.viewDisplayProfileObj.isHidden = false
+        self.viewYesNoObj.isHidden = false
+        
+        UIView.animate(withDuration: 0.3, animations: {
+            self.viewDisplayProfileObj.alpha = 1.0
+            self.imgGifDisplayObj.alpha = 0.0
+            self.lblSearchingPeopleObj.alpha = 0.0
+            self.viewYesNoObj.alpha = 1.0
+            }, completion: { (true) in
+                self.imgGifDisplayObj.isHidden = true
+                self.lblSearchingPeopleObj.isHidden = true
+        })
 
     }
     
@@ -794,9 +960,6 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {
                     }, completion:  { finished in
                 })
-
-                
-                
             }
             
             self.userintractionTrueFalse(sender: false)
@@ -865,23 +1028,44 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             
             if error != nil
             {
-                print("Error")
+                let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                
+                if errorObj
+                {
+                    self.callLikeDisLikeService()
+                }
+                else
+                {
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                }
             }
             else
             {
-                
                 let status = result[kstatus] as! Int
                 
                 if status == 1
                 {
-                    
                     let responseotherUserIdDict = result.object(forKey: kDATA) as! NSDictionary
                     let responseotherUserId = responseotherUserIdDict.object(forKey: kother_user_id) as! String
                     
                     let words = responseotherUserId.components(separatedBy: ",") as NSArray
                     
+                    let arr = self.globalMethodObj.getUserDefault(KeyToReturnValye: Other_User_Profile) as! NSArray
+                    let arrMut = NSMutableArray(array: arr)
+                    
                     if words.count == 0
                     {
+                        for (index,element) in arr.enumerated()
+                        {
+                            let dictElement = element as! NSDictionary
+                            let userId = dictElement["id"] as! String
+                            
+                            if userId == responseotherUserId
+                            {
+                                arrMut.removeObject(at: index)
+                            }
+                        }
+                        
                         DBOperation.executeSQL("delete from LikeDislikeProfile where user_id = '\(self.globalMethodObj.getUserId())' AND other_user_id = '\(responseotherUserId)'")
                     }
                     else
@@ -889,13 +1073,28 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                         for (_, element) in (words.enumerated())
                         {
                             let OtherId = element as! String
+                            
+                            for (index,element) in arr.enumerated()
+                            {
+                                let dictElement = element as! NSDictionary
+                                let userId = dictElement["id"] as! String
+                                
+                                if userId == OtherId
+                                {
+                                    arrMut.removeObject(at: index)
+                                }
+                            }
+                            
                             DBOperation.executeSQL("delete from LikeDislikeProfile where user_id = '\(self.globalMethodObj.getUserId())' AND other_user_id = '\(OtherId)'")
                         }
                     }
+                    
+                    self.globalMethodObj.setUserDefault(ObjectToSave: arrMut, KeyToSave: Other_User_Profile)
+                    
                 }
                 else
                 {
-                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
+                  //  self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
                 }
             }
         }
@@ -921,7 +1120,16 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             
             if error != nil
             {
-                self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error?.localizedDescription)!, viewcontrolelr: self)
+                let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                
+                if errorObj
+                {
+                    self.GetMatchProfileServiceCall()
+                }
+                else
+                {
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                }
             }
             else
             {
@@ -930,8 +1138,62 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 if status == 1
                 {
                     let dictData = result.object(forKey: kDATA) as! NSDictionary
-                    self.arrProfiles = dictData.object(forKey: "profiles") as! NSArray
-                    print(dictData)
+                    let arrObj =  dictData.object(forKey: "profiles") as! NSArray
+                    var arrTempObj = NSMutableArray()
+                    
+                    if  self.globalMethodObj.checkUserDefaultKey(kUsernameKey: Other_User_Profile)
+                    {
+                        let arrList = self.globalMethodObj.getUserDefault(KeyToReturnValye: Other_User_Profile) as! NSArray
+                        
+                        arrTempObj = NSMutableArray(array: arrList)
+                        
+                        if (arrTempObj.count) > 0
+                        {
+                            for (index,elements) in arrObj.enumerated()
+                            {
+                                let dict = elements as! NSDictionary
+                                arrTempObj.add(dict)
+                            }
+                        }
+                        else
+                        {
+                            
+                        }
+                    }
+                    else
+                    {
+                        for (index,element) in arrObj.enumerated()
+                        {
+                            let dicPro = element as! NSDictionary
+                            arrTempObj.add(dicPro)
+                        }
+                    }
+                    
+                    self.indexOfProfile = 0
+                    
+                    self.globalMethodObj.setUserDefault(ObjectToSave: arrTempObj, KeyToSave: Other_User_Profile)
+                    
+                    let dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
+                    let dict = dictUserData?[settings] as! NSDictionary
+                    let gender = dict.object(forKey: "looking_for") as! String
+                    
+                    if self.arrProfiles.count > 0
+                    {
+                        self.arrProfiles.removeAllObjects()
+                    }
+                    
+                    
+                    for (index,element) in arrTempObj.enumerated()
+                    {
+                        let dictProfile = element as! NSDictionary
+                        let stringGender = dictProfile[kgender] as! String
+                        
+                        if gender == stringGender
+                        {
+                            self.arrProfiles.add(dictProfile)
+                        }
+                    }
+                    
                     var profilePicStr = ""
                     
                     if self.arrProfiles.count != 0
@@ -1016,7 +1278,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 }
                 else
                 {
-                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
+                    //self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result[kmessage] as! String, viewcontrolelr: self)
                 }
                 self.userintractionTrueFalse(sender: true)
             }
@@ -1204,7 +1466,16 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             
             if error != nil
             {
-                self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error?.localizedDescription)!, viewcontrolelr: self)
+                let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                
+                if errorObj
+                {
+                    self.btnActiveVisibilityClicked(sender)
+                }
+                else
+                {
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                }
             }
             else
             {
@@ -1270,7 +1541,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 }
                 else
                 {
-                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result["message"] as! String, viewcontrolelr: self)
+                   // self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: result["message"] as! String, viewcontrolelr: self)
                 }
                 
             }

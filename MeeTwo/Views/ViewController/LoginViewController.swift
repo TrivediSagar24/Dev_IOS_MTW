@@ -459,7 +459,17 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate
         globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
             if error != nil
             {
-                JTProgressHUD.hide()
+                let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                
+                if errorObj
+                {
+                    self.LoginServiceCall(dictionary: dictionary)
+                }
+                else
+                {
+                    JTProgressHUD.hide()
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                }
             }
             else
             {
@@ -653,7 +663,18 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate
                                     
                             }
                         case .failure(let encodingError):
-                            JTProgressHUD.hide()
+                            
+                            let errorObj = self.globalMethodObj.checkErrorType(error: encodingError as NSError)
+                            
+                            if errorObj
+                            {
+                                self.LoginServiceCall(dictionary: dictionary)
+                            }
+                            else
+                            {
+                                JTProgressHUD.hide()
+                                self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (encodingError.localizedDescription), viewcontrolelr: self)
+                            }
                             
                             //                        MBProgressHUD.hide(for: (self.view)!, animated: true)
                             print("error:\(encodingError)")
@@ -786,7 +807,16 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate
                 
                 if error != nil
                 {
-                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error?.localizedDescription)!, viewcontrolelr: self)
+                    let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                    
+                    if errorObj
+                    {
+                        self.callget_user_all_infoService(dict: dict)
+                    }
+                    else
+                    {
+                        self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                    }
                 }
                 else
                 {

@@ -96,7 +96,6 @@ class AttemptedViewController: UIViewController,UITableViewDelegate,UITableViewD
             
         }
         
-        
         if cell.lblYesNoObj.text == "YES!" || cell.lblYesNoObj.text == "Yes!" || cell.lblYesNoObj.text == "yes!"
         {
             cell.lblYesNoObj.backgroundColor = btnGotIt.backgroundColor

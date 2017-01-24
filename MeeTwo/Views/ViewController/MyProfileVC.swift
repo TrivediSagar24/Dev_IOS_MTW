@@ -101,18 +101,11 @@ class MyProfileVC: UIViewController,delegateCallUpdateData,APParallaxViewDelegat
         self.pageView.addSubview(pageControl)
         self.pageControl.addTarget(self, action: #selector(self.valueChanged2(_:)), for: .valueChanged)
         
-        
-        tblViewProfileObj.delegate = self
-        tblViewProfileObj.dataSource = self
-        
-        tblViewProfileObj.rowHeight = UITableViewAutomaticDimension
-        tblViewProfileObj.estimatedRowHeight = 500
-        
-        tblViewProfileObj.reloadData()
+        self.setUpView()
         
         self.view.bringSubview(toFront: btnEdit)
         
-        btnEdit.frame = CGRect(x: btnEdit.frame.origin.x, y: viewParallax.frame.size.height-20, width: btnEdit.frame.size.width, height: btnEdit.frame.size.height)
+        btnEdit.frame = CGRect(x: btnEdit.frame.origin.x, y: viewParallax.frame.size.height-30, width: btnEdit.frame.size.width, height: btnEdit.frame.size.height)
         
 //        self.setUpView()
         
@@ -174,7 +167,7 @@ class MyProfileVC: UIViewController,delegateCallUpdateData,APParallaxViewDelegat
         
         btnEditProfile.layer.cornerRadius = 10
         
-        btnEditProfile.layer.cornerRadius = 20
+        btnEditProfile.layer.cornerRadius = 30
 
         let dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
         
@@ -191,6 +184,12 @@ class MyProfileVC: UIViewController,delegateCallUpdateData,APParallaxViewDelegat
 
     func setUpView()
     {
+        tblViewProfileObj.delegate = self
+        tblViewProfileObj.dataSource = self
+        
+        tblViewProfileObj.rowHeight = UITableViewAutomaticDimension
+        tblViewProfileObj.estimatedRowHeight = 2000
+        
         tblViewProfileObj.reloadData()
         
         /*
@@ -372,7 +371,6 @@ class MyProfileVC: UIViewController,delegateCallUpdateData,APParallaxViewDelegat
             cell.btnStarIcon.setImage(image, for: .normal)
         }
 
-        
         cell.btnStarIcon.isUserInteractionEnabled = false
         let imgPlaceHolderObj = UIImage.init(named: kGallaryPlaceholder)
         
@@ -613,7 +611,7 @@ class MyProfileVC: UIViewController,delegateCallUpdateData,APParallaxViewDelegat
             if indexPath?.row == Int(page)
             {
                 cell.frame = CGRect(x: cell.frame.origin.x, y:0, width: cell.frame.size.width, height: heightConstraintOfCollectionView.constant)
-                btnEdit.frame = CGRect(x: btnEdit.frame.origin.x, y: heightConstraintOfCollectionView.constant-20, width: btnEdit.frame.size.width, height: btnEdit.frame.size.height)
+                btnEdit.frame = CGRect(x: btnEdit.frame.origin.x, y: heightConstraintOfCollectionView.constant-30, width: btnEdit.frame.size.width, height: btnEdit.frame.size.height)
                 break
             }
         }
@@ -650,7 +648,7 @@ class MyProfileVC: UIViewController,delegateCallUpdateData,APParallaxViewDelegat
          
          if  distenceAway == 0
          {
-         cell.lblRightHere.text = "Less than 1 km away"
+            cell.lblRightHere.text = "Less than 1 km away"
          }
          else
          {
@@ -679,7 +677,60 @@ class MyProfileVC: UIViewController,delegateCallUpdateData,APParallaxViewDelegat
          cell.viewSchoolDescObj.isHidden = false
          cell.viewCurrentWorkObj.isHidden = false
         
+         let labelDescHeight = DBOperation.height(for: cell.lblDesc, withText: cell.lblDesc.text)
+         let labelschoolHeight = DBOperation.height(for: cell.lblSchool, withText: cell.lblSchool.text)
+         let labelcurrentWorkHeight =  DBOperation.height(for: cell.lblCurrentwork, withText: cell.lblCurrentwork.text)
         
+        
+        cell.viewSchoolDescObj.layoutIfNeeded()
+        cell.viewCurrentWorkObj.layoutIfNeeded()
+        cell.viewDescriptionObj.layoutIfNeeded()
+        
+        self.view.layoutIfNeeded()
+        
+         if descText?.characters.count == 0
+         {
+            cell.heightConstraintOfDescriptionView.constant = 0
+            cell.contentView.layoutIfNeeded()
+            cell.viewDescriptionObj.isHidden = true
+         }
+         else
+         {
+            cell.heightConstraintOfDescriptionView.constant = 45 + labelDescHeight + 8
+            cell.contentView.layoutIfNeeded()
+            cell.viewDescriptionObj.isHidden = false
+         }
+         
+         if schoolText?.characters.count == 0
+         {
+            cell.HeightConstraintOfSchoolView.constant = labelschoolHeight
+            cell.contentView.layoutIfNeeded()
+            cell.viewSchoolDescObj.isHidden = true
+         }
+         else
+         {
+            cell.HeightConstraintOfSchoolView.constant = 45 + labelschoolHeight + 8
+            cell.contentView.layoutIfNeeded()
+            cell.viewSchoolDescObj.isHidden = false
+         }
+         
+         if currentWork?.characters.count == 0
+         {
+            cell.HeightConstraintOfCurrentView.constant = labelcurrentWorkHeight
+            cell.contentView.layoutIfNeeded()
+            cell.viewCurrentWorkObj.isHidden = true
+         }
+         else
+         {
+            cell.HeightConstraintOfCurrentView.constant = 45 + labelcurrentWorkHeight + 8
+            cell.contentView.layoutIfNeeded()
+            cell.viewCurrentWorkObj.isHidden = false
+        }
+        
+        cell.viewSchoolDescObj.layoutIfNeeded()
+        cell.viewCurrentWorkObj.layoutIfNeeded()
+        cell.viewDescriptionObj.layoutIfNeeded()
+
         cell.btnSetting.addTarget(self, action: #selector(self.selSettingAct), for: UIControlEvents.touchUpInside)
         cell.btnPersonality.addTarget(self, action: #selector(self.selPersonalityAct), for: UIControlEvents.touchUpInside)
         
@@ -719,12 +770,16 @@ class MyProfileVC: UIViewController,delegateCallUpdateData,APParallaxViewDelegat
          self.arrImagesProfile =  dictObj[kprofile_picture] as! NSArray
         
          self.pageControl.numberOfPages = self.arrImagesProfile.count
-         
+        
          imgCollectionView.reloadData()
-         
+        
          imgCollectionView.scrollToItem(at: IndexPath(row: 0, section: 0),
-         at: UICollectionViewScrollPosition.right,
-         animated: true)
+                                           at: UICollectionViewScrollPosition.right,
+                                           animated: true)
+        
+        
+        cell.layoutIfNeeded()
+         self.view.layoutIfNeeded()
         
         return cell
     }

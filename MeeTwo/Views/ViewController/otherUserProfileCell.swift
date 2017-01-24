@@ -17,10 +17,16 @@ class otherUserProfileCell: UITableViewCell
     @IBOutlet var lblDesc: UILabel!
     @IBOutlet var lblSchool: UILabel!
     @IBOutlet var lblCurrentWork: UILabel!
-    @IBOutlet var viewDescriptionObj: UIView!
     
+    @IBOutlet var viewDescriptionObj: UIView!
     @IBOutlet var viewSchoolDescObj: UIView!
     @IBOutlet var viewCurrentWorkObj: UIView!
+    
+    
+    
+    @IBOutlet var heightConstraintOfDescriptionView: NSLayoutConstraint!
+    @IBOutlet var HeightConstraintOfSchoolView: NSLayoutConstraint!
+    @IBOutlet var HeightConstraintOfCurrentView: NSLayoutConstraint!
     
     override func awakeFromNib()
     {

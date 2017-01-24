@@ -106,6 +106,16 @@ class GlobalMethods: NSObject {
         return nil
     }
     
+    func checkErrorType(error:NSError) -> Bool
+    {
+        if error.code == -1005
+        {
+            return true
+        }
+        
+        return false
+    }
+    
     
     func getUserDefault(KeyToReturnValye : String) -> AnyObject?
     {
@@ -299,6 +309,10 @@ extension UIColor {
         }
         self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(a) / 255)
     }
+    
+    
+    
+    
 }
 
 

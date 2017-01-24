@@ -344,7 +344,16 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
             
             if error != nil
             {
-                self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error?.localizedDescription)!, viewcontrolelr: self)
+                let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                
+                if errorObj
+                {
+                    self.GetMatchProfileAndQuestionsServiceCall()
+                }
+                else
+                {
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                }
             }
             else
             {
@@ -431,7 +440,16 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
             
             if error != nil
             {
-                self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error?.localizedDescription)!, viewcontrolelr: self)
+                let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                
+                if errorObj
+                {
+                    self.callsave_four_question()
+                }
+                else
+                {
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                }
             }
             else
             {
@@ -463,15 +481,28 @@ class PersonalityTestViewController: UIViewController,UIGestureRecognizerDelegat
                     }
                     
                     let string = self.dictionaryProfile[kfirst_name] as! String
-                    let stringProfilePic = self.dictionaryProfile[kprofile_pic_url] as! String
+                    
+                    
+                    let arrProfilePic = self.dictionaryProfile.object(forKey: kprofile_picture)  as! NSArray
+                    var profilePicStr = ""
+                    
+                    for (_,element) in arrProfilePic.enumerated()
+                    {
+                        let dict =  element as! NSDictionary
+                        let checkProfile = dict.object(forKey: kis_profile_pic)  as! Bool
+                        
+                        if checkProfile == true
+                        {
+                            profilePicStr =  dict.object(forKey: kurl)  as! String
+                        }
+                    }
                     
                     self.globalMethodObj.setUserDefault(ObjectToSave: string as AnyObject?, KeyToSave: kotherFirstName)
-                    self.globalMethodObj.setUserDefault(ObjectToSave: stringProfilePic as AnyObject?, KeyToSave: kotherProfilePic)
+                    self.globalMethodObj.setUserDefault(ObjectToSave: profilePicStr as AnyObject?, KeyToSave: kotherProfilePic)
                     
                     self.delegate?.DisplayChemistry()
 
-                    self.navigationController?.dismiss(animated: true, completion: {
-                    })
+                    let _ = self.navigationController?.popViewController(animated: false)
                 }
                 else
                 {

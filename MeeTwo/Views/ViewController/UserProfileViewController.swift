@@ -168,12 +168,18 @@ class UserProfileViewController: UIViewController,UITableViewDelegate,UITableVie
     
     override func viewWillAppear(_ animated: Bool)
     {
-        self.navigationController?.navigationBar.topItem?.title = StringNavigationTitle
+       // self.navigationController?.navigationBar.topItem?.title = StringNavigationTitle
         
         self.navigationController?.navigationBar.titleTextAttributes =
             [NSFontAttributeName: UIFont.init(name: kinglobal, size:  20.0)!]
         
         self.navigationController?.navigationItem.hidesBackButton = false
+       // self.navigationController?.navigationBar.barTintColor = UIColor.clear
+        self.navigationController?.navigationBar.backgroundColor = UIColor.clear
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
         
         let btn1 = UIButton()
         btn1.setImage(UIImage(named: "Icon-back"), for: .normal)
@@ -184,7 +190,6 @@ class UserProfileViewController: UIViewController,UITableViewDelegate,UITableVie
         let item1 = UIBarButtonItem()
         item1.customView = btn1
         self.navigationItem.leftBarButtonItem = item1;
-        
         
         if tblViewUserProfile.delegate == nil
         {
@@ -424,7 +429,7 @@ class UserProfileViewController: UIViewController,UITableViewDelegate,UITableVie
         arrMutuable.insert(dictTrueURLData, at: 0)
         arrSliderImages = arrMutuable
         
-        ////////////////////////////////
+         ////////////////////////////////
         
         let firstName = userDict.object(forKey: kfirst_name) as! String
         let distance_away = userDict.object(forKey: kdistance_away) as! Int
@@ -449,6 +454,52 @@ class UserProfileViewController: UIViewController,UITableViewDelegate,UITableVie
         let currentWork = userDict.object(forKey: kwork) as?String
         cell.lblCurrentWork.text = currentWork
         
+        
+        let labelDescHeight = DBOperation.height(for: cell.lblDesc, withText: cell.lblDesc.text)
+        let labelschoolHeight = DBOperation.height(for: cell.lblSchool, withText: cell.lblSchool.text)
+        let labelcurrentWorkHeight =  DBOperation.height(for: cell.lblCurrentWork, withText: cell.lblCurrentWork.text)
+        
+        cell.heightConstraintOfDescriptionView.constant = 400
+        cell.HeightConstraintOfSchoolView.constant = 400
+        cell.HeightConstraintOfCurrentView.constant = 400
+        cell.contentView.layoutIfNeeded()
+        
+        if descText?.characters.count == 0
+        {
+            cell.heightConstraintOfDescriptionView.constant = 0
+            cell.contentView.layoutIfNeeded()
+        }
+        else
+        {
+            cell.heightConstraintOfDescriptionView.constant = cell.lblDesc.frame.origin.y + labelDescHeight + 8
+            cell.contentView.layoutIfNeeded()
+        }
+        
+        
+        if schoolText?.characters.count == 0
+        {
+            cell.HeightConstraintOfSchoolView.constant = labelschoolHeight
+            cell.contentView.layoutIfNeeded()
+        }
+        else
+        {
+            cell.HeightConstraintOfSchoolView.constant = cell.lblSchool.frame.origin.y + labelschoolHeight + 8
+            cell.contentView.layoutIfNeeded()
+            
+        }
+        
+        if currentWork?.characters.count == 0
+        {
+            cell.HeightConstraintOfCurrentView.constant = labelcurrentWorkHeight
+            cell.contentView.layoutIfNeeded()
+        }
+        else
+        {
+            cell.HeightConstraintOfCurrentView.constant = cell.lblCurrentWork.frame.origin.y + labelcurrentWorkHeight + 8
+            cell.contentView.layoutIfNeeded()
+        }
+
+        
         cell.viewDescriptionObj.isHidden = false
         cell.viewSchoolDescObj.isHidden = false
         cell.viewCurrentWorkObj.isHidden = false
@@ -465,6 +516,8 @@ class UserProfileViewController: UIViewController,UITableViewDelegate,UITableVie
         return UITableViewAutomaticDimension
     }
 
+    
+    //MARK :- Parallax view Delegate
     
     func parallaxView(_ view: APParallaxView!, didChangeFrame frame: CGRect)
     {

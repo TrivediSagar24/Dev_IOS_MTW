@@ -159,12 +159,10 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         
     }
     
-    
     override func viewWillAppear(_ animated: Bool)
     {
         
         txtDescriptionObj.isScrollEnabled = false
-
         
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.topItem?.title = "Edit my profile"
@@ -271,7 +269,6 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         {
             txtDescriptionObj.text = descText
         }
-        
         
         let desiredOffset = CGPoint(x: 0, y: -txtDescriptionObj.contentInset.top)
         txtDescriptionObj.setContentOffset(desiredOffset, animated: false)
@@ -471,7 +468,16 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                 
                 if error != nil
                 {
-                    print("Error")
+                    let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                    
+                    if errorObj
+                    {
+                        self.clickedOnStarIcon(sender: sender)
+                    }
+                    else
+                    {
+                        self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                    }
                 }
                 else
                 {
@@ -798,15 +804,24 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
         
         globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
             
-            JTProgressHUD.hide()
             
             if error != nil
             {
-                print("Error")
+                let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                
+                if errorObj
+                {
+                    self.CallProfileUpdateData(fieldId: fieldId, text: text)
+                }
+                else
+                {
+                    JTProgressHUD.hide()
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                }
             }
             else
             {
-                print(result)
+                JTProgressHUD.hide()
                 
                 let dict = result[kDATA] as! NSDictionary
                 let status = result[kstatus] as! Int
@@ -858,7 +873,6 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
                     let data: Data = NSKeyedArchiver.archivedData(withRootObject: NewDictUserData)
                     
                     self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: get_user_all_info)
-                    
                 
                 }
                 else
@@ -899,7 +913,16 @@ class EditProfileVC: UIViewController,UITextViewDelegate,UIImagePickerController
             
             if error != nil
             {
-                print("Error")
+                let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                
+                if errorObj
+                {
+                    self.callUpdateProfileWithouField()
+                }
+                else
+                {
+                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                }
             }
             else
             {

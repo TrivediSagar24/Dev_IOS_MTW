@@ -134,7 +134,7 @@ static int conn;
             sqlite3_stmt *cmp_sqlStmt1;
             int returnValue = sqlite3_prepare_v2(database, sqlStmt, -1, &cmp_sqlStmt1, NULL);
             
-            returnValue == SQLITE_OK ?  NSLog(@"\n Inserted \n") :NSLog(@"\n Not Inserted \n");
+            returnValue == SQLITE_OK ?  NSLog(@"\n Inserted \n") :NSLog(@"\n Not Inserted %s\n",sqlite3_errmsg(database));
             
             sqlite3_step(cmp_sqlStmt1);
             sqlite3_finalize(cmp_sqlStmt1);

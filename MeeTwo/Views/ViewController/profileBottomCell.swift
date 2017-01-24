@@ -34,6 +34,17 @@ class profileBottomCell: UITableViewCell {
     override func awakeFromNib()
     {
         super.awakeFromNib()
+        
+        btnSetting.layer.cornerRadius = 10
+        btnPersonality.layer.cornerRadius = 10
+        
+        heightConstraintOfDescriptionView.constant = 500
+        HeightConstraintOfSchoolView.constant = 500
+        HeightConstraintOfCurrentView.constant = 500
+        
+        self.contentView.layoutIfNeeded()
+        self.layoutIfNeeded()
+        
         // Initialization code
     }
 

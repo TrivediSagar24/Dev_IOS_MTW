@@ -47,8 +47,20 @@ class ChemistrySuccessViewController: UIViewController
         btnLetsWaitObj.layer.shadowOpacity = 0.4
         btnLetsWaitObj.layer.shadowRadius = 10
       
-        let otherFirstName = globalMethodObj.getUserDefault(KeyToReturnValye: kotherFirstName) as! String
-        let otherProfilePic = globalMethodObj.getUserDefault(KeyToReturnValye: kotherProfilePic) as! String
+         var otherFirstName = ""
+         var otherProfilePic = ""
+        
+        if globalMethodObj.checkUserDefaultKey(kUsernameKey: kotherFirstName)
+        {
+            otherFirstName = globalMethodObj.getUserDefault(KeyToReturnValye: kotherFirstName) as! String
+        }
+        
+        
+        if globalMethodObj.checkUserDefaultKey(kUsernameKey: kotherProfilePic)
+        {
+           otherProfilePic = globalMethodObj.getUserDefault(KeyToReturnValye: kotherProfilePic) as! String
+        }
+        
         
         let normalFont = UIFont(name: kinglobal, size: 20)
         let boldSearchFont = UIFont(name: kinglobal_Bold, size: 20)
@@ -59,10 +71,28 @@ class ChemistrySuccessViewController: UIViewController
         imgOtherUserProfile.sd_setImage(with: urlStringOther as URL, placeholderImage: imgPlaceHolder)
         
         
-        let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)
-        let profilePic = dict?.object(forKey: kprofile_pic_url) as! String
-        let name = dict?.object(forKey: kfirst_name) as! String
         
+        
+        
+        let dict = globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info) as NSDictionary!
+        
+        let dictProfile = dict?[profile]  as! NSDictionary!
+        let name = dictProfile?[kfirst_name] as! String
+        
+        var profilePic = ""
+        
+        let arrProfilePic = dictProfile?.object(forKey: kprofile_picture)  as! NSArray
+        
+        for (_,element) in arrProfilePic.enumerated()
+        {
+            let dictArray =  element as! NSDictionary
+            let checkProfile = dictArray.object(forKey: kis_profile_pic)  as! Bool
+            
+            if checkProfile == true
+            {
+                profilePic = dictArray.object(forKey: kurl)  as! String
+            }
+        }
         
         let urlStringUser : NSURL = NSURL.init(string: profilePic)!
         imgUserProfile.sd_setImage(with: urlStringUser as URL, placeholderImage: imgPlaceHolder)

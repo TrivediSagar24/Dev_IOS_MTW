@@ -48,7 +48,16 @@ class ViewController: UIViewController{
                 
                 if error != nil
                 {
-                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error?.localizedDescription)!, viewcontrolelr: self)
+                    let errorObj = self.globalMethodObj.checkErrorType(error: error!)
+                
+                    if errorObj
+                    {
+                        self.callget_user_all_infoService()
+                    }
+                    else
+                    {
+                        self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                    }
                 }
                 else
                 {

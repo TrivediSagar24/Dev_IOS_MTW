@@ -27,10 +27,10 @@ class NotificationCell: UITableViewCell {
         self.imgUser.layer.cornerRadius = self.imgUser.frame.size.width/2
         self.imgUser.layer.borderColor = self.btnAccept.backgroundColor?.cgColor
         self.imgUser.clipsToBounds = true
-        self.imgUser.layer.borderWidth = 1
+        self.imgUser.layer.borderWidth = 2.0
         
-       btnAccept.layer.cornerRadius = 4
-       btnDecline.layer.cornerRadius = 4
+       btnAccept.layer.cornerRadius = 5
+       btnDecline.layer.cornerRadius = 5
         
     }
 
