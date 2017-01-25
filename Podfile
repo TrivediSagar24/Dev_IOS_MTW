@@ -10,6 +10,7 @@ target 'MeeTwo' do
   # Pods for MeeTwo
   pod 'Alamofire', '~> 4.0’
 	pod 'XMPPFramework', :git => "https://github.com/robbiehanson/XMPPFramework.git", :branch => 'master'
+pod 'JSQMessagesViewController'
 
 
 end

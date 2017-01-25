@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2E07C3831E2C8EFE00FA3DE4 /* profileBottomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E07C3821E2C8EFE00FA3DE4 /* profileBottomCell.swift */; };
+		2E0C9D8C1E38794500E32494 /* chatMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0C9D8B1E38794500E32494 /* chatMessageViewController.swift */; };
 		2E0D45681E1A939C00D889C4 /* collectionViewPhotosCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0D45671E1A939C00D889C4 /* collectionViewPhotosCell.swift */; };
 		2E0D456A1E1A970F00D889C4 /* facebookAlbumPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E0D45691E1A970F00D889C4 /* facebookAlbumPhotosViewController.swift */; };
 		2E2436621DD5F73700190B70 /* QuestionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2E2436611DD5F73700190B70 /* QuestionVC.swift */; };
@@ -143,6 +144,7 @@
 
 /* Begin PBXFileReference section */
 		2E07C3821E2C8EFE00FA3DE4 /* profileBottomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = profileBottomCell.swift; sourceTree = "<group>"; };
+		2E0C9D8B1E38794500E32494 /* chatMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = chatMessageViewController.swift; sourceTree = "<group>"; };
 		2E0D45671E1A939C00D889C4 /* collectionViewPhotosCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = collectionViewPhotosCell.swift; sourceTree = "<group>"; };
 		2E0D45691E1A970F00D889C4 /* facebookAlbumPhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = facebookAlbumPhotosViewController.swift; sourceTree = "<group>"; };
 		2E2436601DD5E5F100190B70 /* MeeTwo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MeeTwo.entitlements; sourceTree = "<group>"; };
@@ -673,6 +675,7 @@
 				52BDE0B51DEEDAB000A89D04 /* MyProfileVC.swift */,
 				52BDE0B71DEEDAF700A89D04 /* ChatVC.swift */,
 				2E9936261E3634EE0056B68C /* chatListCell.swift */,
+				2E0C9D8B1E38794500E32494 /* chatMessageViewController.swift */,
 				52850A361DF18E1100646BCD /* EditProfileVC.swift */,
 				2EB3F6821E1A6D8500F26C1C /* facebookAlbumViewController.swift */,
 				2E0D45691E1A970F00D889C4 /* facebookAlbumPhotosViewController.swift */,
@@ -1029,6 +1032,7 @@
 				2E3E022D1DDB17AC00099A50 /* TabController.swift in Sources */,
 				2EBF99361DE809D200107813 /* ToBadViewController.swift in Sources */,
 				2E3428C01E0A920700139769 /* LoginViewController.swift in Sources */,
+				2E0C9D8C1E38794500E32494 /* chatMessageViewController.swift in Sources */,
 				529824241DB6445B00DA1777 /* AppDelegate.swift in Sources */,
 				2E3E02761DDB41E000099A50 /* SDImageCache.m in Sources */,
 				41494E381DFC7C2300ABA81D /* Global.swift in Sources */,

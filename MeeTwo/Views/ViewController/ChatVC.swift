@@ -9,7 +9,7 @@
 import UIKit
 import CocoaLumberjack
 import XMPPFramework
-
+import JSQMessagesViewController
 
 class ChatVC: UIViewController,XMPPStreamDelegate,XMPPPubSubDelegate,UITableViewDelegate,UITableViewDataSource
 {
@@ -23,8 +23,6 @@ class ChatVC: UIViewController,XMPPStreamDelegate,XMPPPubSubDelegate,UITableView
     @IBOutlet var SendButton: UIButton!
     @IBOutlet var messageTextField: UITextField!
 
-    var stream: XMPPStream?
-    var jid: XMPPJID!
     var XmppPubSub :XMPPPubSub!
     
     let xmppRosterStorage = XMPPRosterCoreDataStorage()
@@ -43,35 +41,37 @@ class ChatVC: UIViewController,XMPPStreamDelegate,XMPPPubSubDelegate,UITableView
         
         //////////// /////////////////////////////////////
         
+
+        if (stream?.isConnected())!
+        {
+        }
+        else
+        {
+            self.Login()
+            stream?.addDelegate(self, delegateQueue: DispatchQueue.main)
+            
+            xmppRoster = XMPPRoster(rosterStorage: xmppRosterStorage)
+            xmppRoster.activate(stream)
+        }
+       
         /*
-        stream = XMPPStream()
-        
         XmppPubSub = XMPPPubSub()
-        
-        stream?.addDelegate(self, delegateQueue: DispatchQueue.main)
-        
         
         XmppPubSub?.addDelegate(self, delegateQueue: DispatchQueue.main)
         
         XmppPubSub.activate(stream)
-        
-        Login()
-        
-        xmppRoster = XMPPRoster(rosterStorage: xmppRosterStorage)
-        xmppRoster.activate(stream)
-*/
-
-
+ */
+   
         self.getChatListServiceCall()
 
         // Do any additional setup after loading the view.
         
-        
       //  MBProgressHUD.showAdded(to: self.view, animated: true)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
+    override func viewWillAppear(_ animated: Bool)
+    {
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     //MARK:- Get Chat List Service
@@ -145,9 +145,7 @@ class ChatVC: UIViewController,XMPPStreamDelegate,XMPPPubSubDelegate,UITableView
                 }
             }
         }
-
     }
-    
     
     //MARK:- Tableview Delegate & Datasource Method
     
@@ -165,14 +163,31 @@ class ChatVC: UIViewController,XMPPStreamDelegate,XMPPPubSubDelegate,UITableView
         
         let first_name = dict["first_name"] as! String
         let last_name = dict["last_name"] as! String
-        let favourite = dict["is_favorite"] as! String
+        let favourite = dict["is_favorite"] as! NSNumber
+
+        
+     //   let favourite = dict["is_favorite"] as! String
         
         cell.lblLastChatObj.text = ""
         cell.lblName.text = "\(first_name) \(last_name)"
         //cell.lblTime.text = ""
         
-        let str = dict["profile_picture"] as! String
-        let urlString : NSURL = NSURL.init(string: str)!
+        let arrProfile =  dict[kprofile_picture] as! NSArray
+        var profile_pic = ""
+        
+        for (_,element) in arrProfile.enumerated()
+        {
+            let ProfilePicDict = element as! NSDictionary
+            let profile_pic_is = ProfilePicDict["is_profile_pic"] as! Bool
+            
+            if profile_pic_is == true
+            {
+                profile_pic = ProfilePicDict["url"] as! String
+                break
+            }
+        }
+        
+        let urlString : NSURL = NSURL.init(string: profile_pic)!
         
         cell.imgViewUser.sd_setImage(with: urlString as URL)
         cell.imgViewUser.layer.cornerRadius = cell.imgViewUser.frame.size.width/2
@@ -183,7 +198,8 @@ class ChatVC: UIViewController,XMPPStreamDelegate,XMPPPubSubDelegate,UITableView
         cell.btnFavorite.tag = indexPath.row
         cell.btnFavorite.addTarget(self, action: #selector(AddFavouriteAction(sender:)), for: UIControlEvents.touchUpInside)
         
-        if favourite == "1"
+       
+        if favourite == 1
         {
             cell.btnFavorite.setImage(UIImage(named: "Icon-Yellow-star"), for: UIControlState.normal)
         }
@@ -191,6 +207,7 @@ class ChatVC: UIViewController,XMPPStreamDelegate,XMPPPubSubDelegate,UITableView
         {
             cell.btnFavorite.setImage(UIImage(named: "icon-StarGray"), for: UIControlState.normal)
         }
+        
         
         /*
          address = France;
@@ -209,6 +226,38 @@ class ChatVC: UIViewController,XMPPStreamDelegate,XMPPPubSubDelegate,UITableView
          work = "Co-founder & CEO of Meetwo";
  */
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+        let dict = arrChatListUser[indexPath.row] as! NSDictionary
+        
+        let first_name = dict["first_name"] as! String
+        let jabberId = dict["jabber_id"] as! String
+        
+        let arrProfile =  dict[kprofile_picture] as! NSArray
+        var profile_pic = ""
+        
+        for (_,element) in arrProfile.enumerated()
+        {
+            let ProfilePicDict = element as! NSDictionary
+            let profile_pic_is = ProfilePicDict["is_profile_pic"] as! Bool
+            
+            if profile_pic_is == true
+            {
+                profile_pic = ProfilePicDict["url"] as! String
+                break
+            }
+        }
+        
+
+        
+        
+        let ChatMsgvc = self.storyboard?.instantiateViewController(withIdentifier: "chatMessageViewController") as! chatMessageViewController
+        ChatMsgvc.CallerJabbarId = "\(jabberId)@ip-172-31-53-77.ec2.internal"
+        ChatMsgvc.CallerName = first_name
+        ChatMsgvc.CallerProfilePic = profile_pic
+        self.navigationController?.pushViewController(ChatMsgvc, animated: true)
     }
 
     //MARK:- Call Add Favourite Service
@@ -340,8 +389,6 @@ class ChatVC: UIViewController,XMPPStreamDelegate,XMPPPubSubDelegate,UITableView
     // MARK: - Send Message
     
     @IBAction func SendMessageClicked(_ sender: AnyObject) {
-        
-        print(stream?.isConnected())
         
         let message = messageTextField.text
         
@@ -564,7 +611,8 @@ class ChatVC: UIViewController,XMPPStreamDelegate,XMPPPubSubDelegate,UITableView
     }
     
     
-    func Login()  {
+    func Login()
+    {
         jid = XMPPJID.init(string: "narendra@ip-172-31-53-77.ec2.internal")
         
         stream?.myJID = jid

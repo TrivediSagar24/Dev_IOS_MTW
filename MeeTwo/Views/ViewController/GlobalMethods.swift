@@ -9,7 +9,7 @@
 import UIKit
 import Alamofire
 import SystemConfiguration
-
+import XMPPFramework
 
 class GlobalMethods: NSObject {
 
@@ -57,6 +57,12 @@ class GlobalMethods: NSObject {
            self.alertNoInternetConnection()
         }
     }
+    
+    func streamAllocation()
+    {
+        stream = XMPPStream()
+    }
+    
     
     //MARK: Stop All Services
     
@@ -309,8 +315,6 @@ extension UIColor {
         }
         self.init(red: CGFloat(r) / 255, green: CGFloat(g) / 255, blue: CGFloat(b) / 255, alpha: CGFloat(a) / 255)
     }
-    
-    
     
     
 }

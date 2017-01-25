@@ -9,8 +9,9 @@
 import UIKit
 import Alamofire
 import CoreLocation
+import XMPPFramework
 
-class LoginViewController: UIViewController,CLLocationManagerDelegate
+class LoginViewController: UIViewController,CLLocationManagerDelegate,XMPPStreamDelegate
  {
 
     @IBOutlet var btnFacebook: UIButton!
@@ -34,6 +35,8 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate
     {
         super.viewDidLoad()
         
+        stream?.addDelegate(self, delegateQueue: DispatchQueue.main)
+
         manager.delegate = self
         
         btnFacebook.layer.cornerRadius = 4
@@ -732,7 +735,6 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate
     
     func movieQuestionVC(dictionary:NSDictionary)
     {
-        
         let status = dictionary[kstatus] as! Int
         
         if status == 1
@@ -741,6 +743,14 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate
             
             let data: Data = NSKeyedArchiver.archivedData(withRootObject: dictResponse)
             self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: kUSERDATA)
+            
+            XMPPJabberID = dictResponse["jabber_id"] as! String
+                
+            XMPPJabberID = "\(XMPPJabberID)@ip-172-31-53-77.ec2.internal"
+            XMPPPassword = dictResponse["password"] as! String
+            
+            globalMethodObj.setUserDefault(ObjectToSave: XMPPJabberID as AnyObject?, KeyToSave: kJABBERID)
+            globalMethodObj.setUserDefault(ObjectToSave: XMPPPassword as AnyObject?, KeyToSave: kPASSWORD)
             
             GlobalMethods.checkUser_active = dictResponse.object(forKey: kis_active) as! String
             
@@ -824,6 +834,8 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate
                     
                     if status == 1
                     {
+                        self.Login()
+                        
                         let dictData = result.object(forKey: kDATA) as! NSDictionary
                         
                         let data: Data = NSKeyedArchiver.archivedData(withRootObject: dictData)
@@ -839,9 +851,72 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate
                     }
                 }
             }
-            
+        }
+    }
+
+    //MARK:- XMPP Login
+    
+    func Login()
+    {
+        
+        jid = XMPPJID.init(string: XMPPJabberID)
+        
+        stream?.myJID = jid
+        
+        stream?.hostName = HostName
+        
+        stream?.hostPort = HostPort
+        
+        stream?.enableBackgroundingOnSocket = true
+        
+        do {
+            try stream?.connect(withTimeout: 30)
+        }
+        catch {
+            print("error occured in connecting")
         }
         
+        print(stream?.isConnecting())
+        
+        print(stream?.isConnected())
+        
+    }
+
+    
+    func xmppStreamWillConnect(_ sender: XMPPStream!) {
+        print("will connect")
+    }
+    
+    func xmppStreamConnectDidTimeout(_ sender: XMPPStream!) {
+        print("timeout:")
+    }
+    
+    func xmppStreamDidConnect(_ sender: XMPPStream!) {
+        print("connected")
+        
+        do {
+            try sender.authenticate(withPassword: XMPPPassword)
+        }
+        catch {
+            print("catch")
+        }
+    }
+    
+    func xmppStreamDidAuthenticate(_ sender: XMPPStream!) {
+        print("auth done")
+        print(stream?.isConnected())
+        print(sender.isConnected())
+        sender.send(XMPPPresence())
+        print(sender.isConnected())
+        
+        //messageHistory()
+    }
+    
+    
+    func xmppStream(_ sender: XMPPStream!, didNotAuthenticate error: DDXMLElement!)
+    {
+        print("dint not auth")
+        print(error)
     }
 
 

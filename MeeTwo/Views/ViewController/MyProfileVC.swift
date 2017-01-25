@@ -182,6 +182,8 @@ class MyProfileVC: UIViewController,delegateCallUpdateData,APParallaxViewDelegat
 //        self.setUpView()
     }
 
+    //MARK:- SetupView
+    
     func setUpView()
     {
         tblViewProfileObj.delegate = self

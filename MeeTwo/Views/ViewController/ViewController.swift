@@ -9,14 +9,19 @@
 import UIKit
 import Alamofire
 import CoreLocation
+import XMPPFramework
 
-class ViewController: UIViewController{
+class ViewController: UIViewController,XMPPStreamDelegate{
     
     var globalMethodObj = GlobalMethods()
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
+        
+        stream = XMPPStream()
+        stream?.addDelegate(self, delegateQueue: DispatchQueue.main)
+
         
         self.callget_user_all_infoService()
         
@@ -65,6 +70,8 @@ class ViewController: UIViewController{
                     
                     if status == 1
                     {
+                        self.Login()
+
                         let dictData = result.object(forKey: kDATA) as! NSDictionary
                         
                         print(dictData)
@@ -83,6 +90,84 @@ class ViewController: UIViewController{
             }
           }
     }
+    
+    //MARK:- XMPP Login
+
+    
+    
+    func Login()
+    {
+        
+        XMPPJabberID = globalMethodObj.getUserDefault(KeyToReturnValye: kJABBERID) as! String
+        
+        XMPPPassword = globalMethodObj.getUserDefault(KeyToReturnValye: kPASSWORD) as! String
+        
+        jid = XMPPJID.init(string: XMPPJabberID)
+        
+        print(HostName)
+        
+        print(HostPort)
+
+        stream?.myJID = jid
+        
+        stream?.hostName = HostName
+            
+        stream?.hostPort = HostPort
+        
+        stream?.enableBackgroundingOnSocket = true
+        
+        do {
+            try stream?.connect(withTimeout: 30)
+        }
+        catch {
+            print("error occured in connecting")
+        }
+        
+        print(stream?.isConnecting())
+        
+        print(stream?.isConnected())
+        
+    }
+
+    
+    func xmppStreamWillConnect(_ sender: XMPPStream!) {
+        print("will connect")
+    }
+    
+    func xmppStreamConnectDidTimeout(_ sender: XMPPStream!) {
+        print("timeout:")
+    }
+    
+    func xmppStreamDidConnect(_ sender: XMPPStream!) {
+        print("connected")
+        
+        do {
+            try sender.authenticate(withPassword: XMPPPassword)
+        }
+        catch {
+            print("catch")
+            
+        }
+        
+    }
+    
+    func xmppStreamDidAuthenticate(_ sender: XMPPStream!) {
+        print("auth done")
+        print(stream?.isConnected())
+        print(sender.isConnected())
+        sender.send(XMPPPresence())
+        print(sender.isConnected())
+        
+        //messageHistory()
+    }
+    
+    
+    func xmppStream(_ sender: XMPPStream!, didNotAuthenticate error: DDXMLElement!)
+    {
+        print("dint not auth")
+        print(error)
+    }
+
     
     func pushToLoginViewController()
     {

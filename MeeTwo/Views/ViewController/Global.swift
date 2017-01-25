@@ -2,13 +2,13 @@
 //  Global.swift
 //  MeeTwo
 //
-//  Created by GovindRavaliya on 10/12/16.
+//  Created by NikunjGondaliya on 10/12/16.
 //  Copyright © 2016 TheAppGuruz. All rights reserved.
 //
 
 import Foundation
 import UIKit
-
+import XMPPFramework
 
 
 /*
@@ -146,5 +146,18 @@ let kblue_color = "0EBEE8"
 
 let shaddow_color = "0EBEE8"
 
-
 let Other_User_Profile = "OtherUserProfile"
+
+var XMPPJabberID:String = ""
+var XMPPPassword:String = ""
+
+var HostName:String = "54.205.116.234"
+var HostPort:UInt16 = 5222
+
+var kJABBERID = "JabberID"
+var kPASSWORD = "Password"
+
+
+var stream: XMPPStream?
+var jid: XMPPJID!
+
