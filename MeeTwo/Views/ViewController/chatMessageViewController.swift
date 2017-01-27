@@ -56,6 +56,8 @@ class chatMessageViewController: JSQMessagesViewController,XMPPStreamDelegate
         
         self.reloadMessagesView()
 */
+        
+        self.messageHistory()
 
         // Do any additional setup after loading the view.
     }
@@ -197,10 +199,85 @@ class chatMessageViewController: JSQMessagesViewController,XMPPStreamDelegate
         print("didFailToSend  message Error is ",error.localizedDescription)
         
         print("didFailToSend  message Error is ",error)
-        
-        
     }
     
+    func messageHistory()
+    {
+        let iq1 = DDXMLElement(name: "iq")
+        iq1.addAttribute(withName: "type", stringValue: "get")
+        iq1.addAttribute(withName: "id", stringValue: "0")
+        let retrieve = DDXMLElement(name: "retrieve", xmlns: "urn:xmpp:archive")
+        retrieve?.addAttribute(withName: "with", stringValue: "1234840263264009_203_496216@ip-172-31-53-77.ec2.internal")
+        let set = DDXMLElement(name: "set", xmlns: "http://jabber.org/protocol/rsm")
+        let max = DDXMLElement(name: "max", stringValue: "100")
+        iq1.addChild(retrieve!)
+        retrieve?.addChild(set!)
+        set?.addChild(max)
+        
+        stream?.send(iq1)
+    }
+    
+    func xmppStream(_ sender: XMPPStream!, didReceive iq: XMPPIQ!) -> Bool{
+        
+        print(stream?.isConnected())
+        
+        
+        print("didReceive iq ",iq)
+        print("and the IQ is ",iq.isGet())
+        
+        print("and the IQ is ",iq.isFault())
+        
+        print("and the IQ is ",iq.isSetIQ())
+        
+        print("and the IQ is ",iq.isErrorIQ())
+        
+        print("and the IQ is ",iq.isJabberRPC())
+        
+        print("and the IQ is ",iq.isJabberRPC())
+        
+        print("and the IQ is ",iq.isLastActivityQuery())
+        
+        print("and the IQ is ",iq.isOutOfBandDataRejectResponse())
+        print("and the IQ is ",iq.isOutOfBandDataFailureResponse())
+        
+        
+        let queryElement: DDXMLElement? = iq.childElement()
+        
+        //userChatHistory.update(withItem: queryElement)
+        
+        let items: [Any] = queryElement!.elements(forName: "item")
+        
+        for i: Any in items {
+            
+            let jidString: String = (i as AnyObject).attributeStringValue(forName: "jid")
+            
+            let userName: String = (i as AnyObject).attributeStringValue(forName: "name")
+            
+            let subscription: String = (i as AnyObject).attributeStringValue(forName: "subscription")
+            
+            print("jidString ",jidString)
+            print("userName ",userName)
+            print("subscription ",subscription)
+        }
+        
+        return true
+    }
+    
+    func xmppStream(_ sender: XMPPStream!, didSend iq: XMPPIQ!){
+        
+        print(stream?.isConnected())
+        
+        print("didSend iq")
+        print("and the did Send  iq is ",iq)
+    }
+    
+    func xmppStream(_ sender: XMPPStream!, willSend iq: XMPPIQ!) -> XMPPIQ!{
+        print(stream?.isConnected())
+        
+        print("willSend iq")
+        print("and the Will Send iq is ",iq)
+        return iq
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

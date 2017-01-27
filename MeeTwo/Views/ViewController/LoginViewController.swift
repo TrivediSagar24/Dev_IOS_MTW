@@ -281,7 +281,6 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate,XMPPStream
     
     func MoveToDashboardHomeVC(sender:Bool)
     {
-        
         let TabViewController = self.storyboard?.instantiateViewController(withIdentifier: "TabController") as! TabController
         self.navigationController?.pushViewController(TabViewController, animated: sender)
     }
@@ -658,6 +657,11 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate,XMPPStream
                                         JTProgressHUD.hide()
                                         //                                    MBProgressHUD.hide(for: (self?.view)!, animated: true)
                                         
+                                        if (self?.globalMethodObj.checkErrorType(error: error as NSError))!
+                                        {
+                                            print("Internet Error -1005")
+                                        }
+                                        
                                         self?.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: error.localizedDescription, viewcontrolelr: self!)
                                     }
                                     
@@ -799,6 +803,8 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate,XMPPStream
     
     func callget_user_all_infoService(dict:NSDictionary)
     {
+        JTProgressHUD.show()
+        
         let userid = globalMethodObj.getUserId()
         
         if userid.characters.count == 0
@@ -815,6 +821,8 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate,XMPPStream
             
             globalMethodObj.callWebService(parameter: parameters as AnyObject!) { (result, error) in
                 
+                JTProgressHUD.hide()
+
                 if error != nil
                 {
                     let errorObj = self.globalMethodObj.checkErrorType(error: error!)
@@ -842,8 +850,24 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate,XMPPStream
                         
                         self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: get_user_all_info)
                         
-                        self.MoveToDashboardHomeVC(sender:true)
-                      
+                        if self.globalMethodObj.checkUserDefaultKey(kUsernameKey: kDisplayLetsStart)
+                        {
+                            let displayLestStartObj = self.globalMethodObj.getUserDefault(KeyToReturnValye: kDisplayLetsStart) as! String
+                            
+                            if displayLestStartObj != "no"
+                            {
+                                self.MoveToLetsView()
+                            }
+                            else
+                            {
+                                self.MoveToDashboardHomeVC(sender:true)
+                                //self.MoveToDashboardHomeVC()
+                            }
+                        }
+                        else
+                        {
+                            self.MoveToLetsView()
+                        }
                     }
                     else
                     {

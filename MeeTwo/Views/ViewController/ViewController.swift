@@ -80,6 +80,7 @@ class ViewController: UIViewController,XMPPStreamDelegate{
 
                         self.globalMethodObj.setUserDefaultDictionary(ObjectToSave: data as AnyObject?, KeyToSave: get_user_all_info)
                         
+                        
                         self.pushToLoginViewController()
                     }
                     else

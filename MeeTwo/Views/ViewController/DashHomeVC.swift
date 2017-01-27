@@ -1,4 +1,4 @@
-//
+    //
 //  DashHomeVC.swift
 //  MeeTwo
 //
@@ -55,6 +55,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     
     @IBOutlet var lblSearchingPeopleObj: UILabel!
     
+    var checkCallGetProfileService :Bool = false
     
     let manager = CLLocationManager()
     
@@ -100,7 +101,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     
     override func viewWillAppear(_ animated: Bool)
     {
-        
+
         self.SetupScreen()
 
         /*
@@ -528,35 +529,14 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                     self.GetMatchProfileServiceCall()
                 }
             }
-
+            else
+            {
+                self.callAndCheckGetMatchProfile()
+            }
         }
         else
         {
-            if globalMethodObj.isConnectedToNetwork()
-            {
-                viewVisibilityObj.isHidden = true
-                
-                if arrProfiles.count == 0
-                {
-                    self.GetMatchProfileServiceCall()
-
-                    /*
-                    if viewDisplayProfileObj.isHidden == true
-                    {
-                        self.SetupScreen()
-                    }
-                    else
-                    {
-                    }
- */
-                }
-            }
-            else
-            {
-                globalMethodObj.alertNoInternetConnection()
-                viewYesNoObj.isHidden = true
-                viewDisplayProfileObj.isHidden = true
-            }
+            self.callAndCheckGetMatchProfile()
         }
         
         self.setLableFunctionality(lbl: lblLike)
@@ -576,6 +556,35 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
 //        self.visibilitySetupView()
         self.visibilitySetup()
 
+    }
+    
+    func callAndCheckGetMatchProfile()
+    {
+        if globalMethodObj.isConnectedToNetwork()
+        {
+            viewVisibilityObj.isHidden = true
+            
+            if arrProfiles.count == 0
+            {
+                self.GetMatchProfileServiceCall()
+                
+                /*
+                 if viewDisplayProfileObj.isHidden == true
+                 {
+                 self.SetupScreen()
+                 }
+                 else
+                 {
+                 }
+                 */
+            }
+        }
+        else
+        {
+            globalMethodObj.alertNoInternetConnection()
+            viewYesNoObj.isHidden = true
+            viewDisplayProfileObj.isHidden = true
+        }
     }
     
     func displayProfileFirstTime()
@@ -838,7 +847,6 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     {
         if globalMethodObj.isConnectedToNetwork()
         {
-            
             if indexOfProfile != arrProfiles.count - 1
             {
                 self.setUserNameAlphaOff()
@@ -865,7 +873,10 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             {
                 
                 indexPageCount = indexPageCount + 1
-                self.GetMatchProfileServiceCall()
+               self.StoreProfileLikeDisplineInDb(likeDislike:0)
+                checkCallGetProfileService = true
+              self.callLikeDisLikeService()
+               // self.GetMatchProfileServiceCall()
                 
 //                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {
                 
@@ -946,6 +957,10 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
     
     @IBAction func btnYesNoclick(_ sender: UIButton)
     {
+        
+        let profileArray = DBOperation.selectData("select * from LikeDislikeProfile where user_id = '\(globalMethodObj.getUserId())'") as NSMutableArray
+       print("NikunjNikunj1 : ",profileArray.count)
+        
         if sender.tag == 1 // No Click
         {
             if indexOfProfile != arrProfiles.count - 1
@@ -967,6 +982,10 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         }
         else // Yes Click
         {
+            
+            let profileArray = DBOperation.selectData("select * from LikeDislikeProfile where user_id = '\(globalMethodObj.getUserId())'") as NSMutableArray
+            print("NikunjNikunj2 : ",profileArray.count)
+
             if indexOfProfile != arrProfiles.count - 1
             {
                 UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: {
@@ -1036,7 +1055,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 }
                 else
                 {
-                    self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
+                   // self.globalMethodObj.ShowAlertDisplay(titleObj:"", messageObj: (error!.localizedDescription), viewcontrolelr: self)
                 }
             }
             else
@@ -1067,6 +1086,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                         }
                         
                         DBOperation.executeSQL("delete from LikeDislikeProfile where user_id = '\(self.globalMethodObj.getUserId())' AND other_user_id = '\(responseotherUserId)'")
+                        
                     }
                     else
                     {
@@ -1090,6 +1110,19 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                     }
                     
                     self.globalMethodObj.setUserDefault(ObjectToSave: arrMut, KeyToSave: Other_User_Profile)
+                    
+                    if self.checkCallGetProfileService == true
+                    {
+                        self.checkCallGetProfileService = false
+                        if self.indexOfProfile != self.arrProfiles.count - 1
+                        {
+                        }
+                        else
+                        {
+                            self.GetMatchProfileServiceCall()
+                        }
+                        
+                    }
                     
                 }
                 else
@@ -1157,7 +1190,11 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                         }
                         else
                         {
-                            
+                            for (index,elements) in arrObj.enumerated()
+                            {
+                                let dict = elements as! NSDictionary
+                                arrTempObj.add(dict)
+                            }
                         }
                     }
                     else
@@ -1210,6 +1247,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                             if checkProfile == true
                             {
                                 profilePicStr =  dict.object(forKey: "url")  as! String
+                                break
                             }
                         }
                         

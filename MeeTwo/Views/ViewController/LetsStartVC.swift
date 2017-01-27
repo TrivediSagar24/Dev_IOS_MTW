@@ -45,12 +45,11 @@ class LetsStartVC: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    
     @IBAction func btnLetsStartClicked(_ sender: AnyObject)
     {
         let dict = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: kUSERDATA)
-        let is_question_attempted = dict?.object(forKey: kfirst_name) as! String
-
+        
+        let is_question_attempted = dict?.object(forKey: kIS_QUESTION_ATTEMPTED) as! String
         
         if is_question_attempted == kONE
         {

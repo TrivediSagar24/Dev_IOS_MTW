@@ -64,7 +64,6 @@ let kurl = "url"
 let kuser_id = "user_id"
 let kstatus = "status"
 
-
 let kchemistry_desc = "People interested in you will first need to pass your test to get a chance to chat with you."
 let kchemistry_bold_desc = "That's how we create chemistry!"
 
