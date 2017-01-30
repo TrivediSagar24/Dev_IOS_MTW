@@ -820,12 +820,13 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 //                }, completion:  { finished in
                 
                 //            })
-                
             }
             else
             {
-                indexPageCount = indexPageCount + 1
-                self.GetMatchProfileServiceCall()
+                 indexPageCount = indexPageCount + 1
+                self.StoreProfileLikeDisplineInDb(likeDislike:1)
+                checkCallGetProfileService = true
+                self.callLikeDisLikeService()
                 
 //                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromLeft, animations: {
                 
@@ -838,9 +839,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                         self.userintractionTrueFalse(sender: true)
 //                })
             }
-
         }
-        
     }
     
     func DislikeData()
@@ -871,11 +870,10 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
             }
             else
             {
-                
                 indexPageCount = indexPageCount + 1
                self.StoreProfileLikeDisplineInDb(likeDislike:0)
                 checkCallGetProfileService = true
-              self.callLikeDisLikeService()
+               self.callLikeDisLikeService()
                // self.GetMatchProfileServiceCall()
                 
 //                UIView.transition(with: viewDisplayProfileObj, duration: 0.6, options: UIViewAnimationOptions.transitionFlipFromRight, animations: {
@@ -884,6 +882,9 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                     self.viewYesNoObj.isHidden = true
                     self.lblDistance.text = ""
                     self.lblUserName.text = ""
+                
+                lblSearchingPeopleObj.isHidden = false
+                imgGifDisplayObj.isHidden = false
                     
 //                    }, completion:  { finished in
                         self.userintractionTrueFalse(sender: true)
@@ -949,18 +950,12 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
         self.lblDistance.adjustsFontSizeToFitWidth = true
         
         self.setUserNameAlphaOn()
-
-        
     }
     
     //MARK: Yes / No Clicked
     
     @IBAction func btnYesNoclick(_ sender: UIButton)
     {
-        
-        let profileArray = DBOperation.selectData("select * from LikeDislikeProfile where user_id = '\(globalMethodObj.getUserId())'") as NSMutableArray
-       print("NikunjNikunj1 : ",profileArray.count)
-        
         if sender.tag == 1 // No Click
         {
             if indexOfProfile != arrProfiles.count - 1
@@ -1113,9 +1108,12 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                     
                     if self.checkCallGetProfileService == true
                     {
+                        
                         self.checkCallGetProfileService = false
                         if self.indexOfProfile != self.arrProfiles.count - 1
                         {
+                            self.lblSearchingPeopleObj.isHidden = true
+                            self.imgGifDisplayObj.isHidden = true
                         }
                         else
                         {
@@ -1123,6 +1121,7 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                         }
                         
                     }
+                    
                     
                 }
                 else
@@ -1170,6 +1169,9 @@ class DashHomeVC: UIViewController,UIGestureRecognizerDelegate,delegateDisplayCh
                 
                 if status == 1
                 {
+                    self.lblSearchingPeopleObj.isHidden = true
+                    self.imgGifDisplayObj.isHidden = true
+                    
                     let dictData = result.object(forKey: kDATA) as! NSDictionary
                     let arrObj =  dictData.object(forKey: "profiles") as! NSArray
                     var arrTempObj = NSMutableArray()

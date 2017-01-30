@@ -194,7 +194,6 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                     {
                         self.getOriginalArray()
                     }
-                    
                 }
                 
                 if self.AttemptedQuestion().count == 10  && (self.btnSkip.titleLabel?.text == "SKIP >" ||  self.indexOfQuestionArray == 10)
@@ -212,9 +211,7 @@ class QuestionVC: UIViewController,UIGestureRecognizerDelegate {
                 UIView.animate(withDuration: 0.3, animations: { 
                     self.userintractionTrueFalse(sender: true)
                 })
-                
             }
-
         }
     }
     

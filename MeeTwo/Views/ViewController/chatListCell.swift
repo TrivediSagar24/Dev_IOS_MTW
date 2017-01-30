@@ -8,13 +8,13 @@
 
 import UIKit
 
-class chatListCell: UITableViewCell {
+class chatListCell: UITableViewCell
+{
 
     
     @IBOutlet var userProfilePicObj: MIBadgeButton!
     
     @IBOutlet var imgViewUser: UIImageView!
-    
     
     @IBOutlet var lblTime: UILabel!
     

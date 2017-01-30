@@ -78,6 +78,8 @@
 		2EB3F6851E1A6E0D00F26C1C /* facebookAlbumCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EB3F6841E1A6E0D00F26C1C /* facebookAlbumCell.swift */; };
 		2EBF99361DE809D200107813 /* ToBadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EBF99351DE809D200107813 /* ToBadViewController.swift */; };
 		2ECA979B1DD337A300B75ED0 /* introCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECA979A1DD337A300B75ED0 /* introCell.swift */; };
+		2ECD5AD31E3F38A2006D4686 /* privacyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECD5AD21E3F38A2006D4686 /* privacyViewController.swift */; };
+		2ECD5AD51E3F5C7F006D4686 /* ChatPassedTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECD5AD41E3F5C7F006D4686 /* ChatPassedTestViewController.swift */; };
 		2ECDA84A1DE6BE2C00E70C22 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECDA8491DE6BE2C00E70C22 /* UserProfileViewController.swift */; };
 		2ECDA84C1DE6BE3C00E70C22 /* PersonalityTestViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECDA84B1DE6BE3C00E70C22 /* PersonalityTestViewController.swift */; };
 		2ECDA84E1DE71FB700E70C22 /* ChemistrySuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ECDA84D1DE71FB700E70C22 /* ChemistrySuccessViewController.swift */; };
@@ -246,6 +248,8 @@
 		2EB3F6841E1A6E0D00F26C1C /* facebookAlbumCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = facebookAlbumCell.swift; sourceTree = "<group>"; };
 		2EBF99351DE809D200107813 /* ToBadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ToBadViewController.swift; sourceTree = "<group>"; };
 		2ECA979A1DD337A300B75ED0 /* introCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = introCell.swift; sourceTree = "<group>"; };
+		2ECD5AD21E3F38A2006D4686 /* privacyViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = privacyViewController.swift; sourceTree = "<group>"; };
+		2ECD5AD41E3F5C7F006D4686 /* ChatPassedTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatPassedTestViewController.swift; sourceTree = "<group>"; };
 		2ECDA8491DE6BE2C00E70C22 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
 		2ECDA84B1DE6BE3C00E70C22 /* PersonalityTestViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonalityTestViewController.swift; sourceTree = "<group>"; };
 		2ECDA84D1DE71FB700E70C22 /* ChemistrySuccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChemistrySuccessViewController.swift; sourceTree = "<group>"; };
@@ -676,6 +680,7 @@
 				52BDE0B71DEEDAF700A89D04 /* ChatVC.swift */,
 				2E9936261E3634EE0056B68C /* chatListCell.swift */,
 				2E0C9D8B1E38794500E32494 /* chatMessageViewController.swift */,
+				2ECD5AD41E3F5C7F006D4686 /* ChatPassedTestViewController.swift */,
 				52850A361DF18E1100646BCD /* EditProfileVC.swift */,
 				2EB3F6821E1A6D8500F26C1C /* facebookAlbumViewController.swift */,
 				2E0D45691E1A970F00D889C4 /* facebookAlbumPhotosViewController.swift */,
@@ -683,6 +688,7 @@
 				2E0D45671E1A939C00D889C4 /* collectionViewPhotosCell.swift */,
 				41494E371DFC7C2300ABA81D /* Global.swift */,
 				52DF85D41E027C06003538EF /* SettingVC.swift */,
+				2ECD5AD21E3F38A2006D4686 /* privacyViewController.swift */,
 				2EEA01181E0C0BDB00F01FE5 /* AttemptedViewController.swift */,
 				2E07C3821E2C8EFE00FA3DE4 /* profileBottomCell.swift */,
 			);
@@ -988,6 +994,7 @@
 				2E3E02831DDB41E000099A50 /* UIImageView+WebCache.m in Sources */,
 				2E3A2E271DF56F1A000C617B /* IQUITextFieldView+Additions.swift in Sources */,
 				2E3E023E1DDB18E300099A50 /* LCAnimatedPageControl.m in Sources */,
+				2ECD5AD31E3F38A2006D4686 /* privacyViewController.swift in Sources */,
 				2E3A2E331DF56F1A000C617B /* IQToolbar.swift in Sources */,
 				52BDE0B81DEEDAF700A89D04 /* ChatVC.swift in Sources */,
 				2E3E02421DDB357F00099A50 /* MBProgressHUD.m in Sources */,
@@ -1005,6 +1012,7 @@
 				2E3E02781DDB41E000099A50 /* SDWebImageCompat.m in Sources */,
 				2E3A2E251DF56F1A000C617B /* IQNSArray+Sort.swift in Sources */,
 				52BDE0B61DEEDAB000A89D04 /* MyProfileVC.swift in Sources */,
+				2ECD5AD51E3F5C7F006D4686 /* ChatPassedTestViewController.swift in Sources */,
 				2E89A44C1E10F485008F9062 /* NoButtonClass.swift in Sources */,
 				2E9936251E3634030056B68C /* MIBadgeButton.swift in Sources */,
 				2E2436621DD5F73700190B70 /* QuestionVC.swift in Sources */,

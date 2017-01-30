@@ -28,6 +28,7 @@ class NotificationVC: UIViewController,UITableViewDataSource,UITableViewDelegate
         
         tblNotification.rowHeight = UITableViewAutomaticDimension
         tblNotification.estimatedRowHeight = 87
+        tblNotification.tableFooterView = UIView()
         
         self.callGetUserNotification()
         

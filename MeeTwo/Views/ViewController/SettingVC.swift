@@ -49,6 +49,7 @@ class SettingVC: UIViewController {
     
     var dictSetting: NSMutableDictionary!
     var dictSettingTemp: NSDictionary!
+
     
     @IBOutlet var scrollViewObj: UIScrollView!
     
@@ -906,6 +907,37 @@ class SettingVC: UIViewController {
         let verticalIndicator: UIImageView = (scrollView.subviews[(scrollView.subviews.count - 1)] as! UIImageView)
         
         verticalIndicator.backgroundColor = UIColor.init(hexString: shaddow_color)
+    }
+    
+    //MARK: - Help, Privacy Policy, Close Button Actions
+    
+    
+    @IBAction func btnHelpAction(_ sender: AnyObject)
+    {
+        UIApplication.shared.openURL(NSURL(string: "http://stackoverflow.com/questions/30428341/present-viewcontroller-segue-transition-without-storyboard-swift") as! URL)
+    }
+    
+    @IBAction func btbTermsAndCondtionAction(_ sender: AnyObject)
+    {
+        let privacyViewControllerObj = self.storyboard?.instantiateViewController(withIdentifier: "privacyViewController") as! privacyViewController
+        privacyViewControllerObj.modalPresentationStyle = .overCurrentContext
+        privacyViewControllerObj.modalTransitionStyle = .crossDissolve
+        present(privacyViewControllerObj, animated: true, completion: nil)
+    }
+    
+    @IBAction func btnprivacyPolicyAction(_ sender: AnyObject)
+    {
+        let privacyViewControllerObj = self.storyboard?.instantiateViewController(withIdentifier: "privacyViewController") as! privacyViewController
+        privacyViewControllerObj.modalPresentationStyle = .overCurrentContext
+        privacyViewControllerObj.modalTransitionStyle = .crossDissolve
+        present(privacyViewControllerObj, animated: true, completion: nil)
+    }
+    
+    //MARK: - View Privacy Display
+    
+    func displayPrivacyPolicyWithText(title:String,text:String)
+    {
+        
     }
     
 }

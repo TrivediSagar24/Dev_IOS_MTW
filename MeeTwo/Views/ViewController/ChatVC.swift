@@ -62,6 +62,7 @@ class ChatVC: UIViewController,XMPPStreamDelegate,XMPPPubSubDelegate,UITableView
         XmppPubSub.activate(stream)
  */
    
+        tblViewObj.tableFooterView = UIView()
         self.getChatListServiceCall()
 
         // Do any additional setup after loading the view.
@@ -234,6 +235,8 @@ class ChatVC: UIViewController,XMPPStreamDelegate,XMPPPubSubDelegate,UITableView
         
         let first_name = dict["first_name"] as! String
         let jabberId = dict["jabber_id"] as! String
+        let callerOtherIDObj = dict["id"] as! String
+        
         
         let arrProfile =  dict[kprofile_picture] as! NSArray
         var profile_pic = ""
@@ -250,13 +253,12 @@ class ChatVC: UIViewController,XMPPStreamDelegate,XMPPPubSubDelegate,UITableView
             }
         }
         
-
-        
-        
         let ChatMsgvc = self.storyboard?.instantiateViewController(withIdentifier: "chatMessageViewController") as! chatMessageViewController
         ChatMsgvc.CallerJabbarId = "\(jabberId)@ip-172-31-53-77.ec2.internal"
         ChatMsgvc.CallerName = first_name
         ChatMsgvc.CallerProfilePic = profile_pic
+        ChatMsgvc.CallerID = callerOtherIDObj
+        ChatMsgvc.QuestionArray = dict["compatibility_question"] as! NSArray
         self.navigationController?.pushViewController(ChatMsgvc, animated: true)
     }
 
@@ -521,8 +523,6 @@ class ChatVC: UIViewController,XMPPStreamDelegate,XMPPPubSubDelegate,UITableView
     }
     
     func xmppStream(_ sender: XMPPStream!, didReceive message: XMPPMessage!){
-        
-        print("message status",message.chatState())
         
         if message.isChatMessageWithBody(){
             print("and the message is ",message.body())

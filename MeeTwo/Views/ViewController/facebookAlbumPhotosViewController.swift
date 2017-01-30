@@ -42,8 +42,6 @@ class facebookAlbumPhotosViewController: UIViewController,UICollectionViewDelega
                  }];
  */
                 
-                
-                
               //  print(result)
                 
                 let dictionary = result as! [String : AnyObject]

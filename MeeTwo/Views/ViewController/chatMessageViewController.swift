@@ -17,6 +17,9 @@ class chatMessageViewController: JSQMessagesViewController,XMPPStreamDelegate
     var CallerJabbarId:String!
     var CallerName:String!
     var CallerProfilePic:String!
+    var CallerID:String!
+    var CallerJabberWithoutIP:String!
+    var QuestionArray = NSArray()
     
     let incomingBubble = JSQMessagesBubbleImageFactory().incomingMessagesBubbleImage(with: UIColor.darkGray)
     
@@ -32,6 +35,8 @@ class chatMessageViewController: JSQMessagesViewController,XMPPStreamDelegate
     {
         super.viewDidLoad()
         
+        
+        
         stream?.addDelegate(self, delegateQueue: DispatchQueue.main)
         
         let dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
@@ -41,29 +46,28 @@ class chatMessageViewController: JSQMessagesViewController,XMPPStreamDelegate
         
         self.senderId = XMPPJabberID
         self.senderDisplayName = firstName
-
-        /*
-        for i in 1...20 {
-            
-            let sender = (i%2 == 0) ? "Server" : self.senderId
-            
-            let messageContent = "Message nr. \(i)"
-            
-            let message = JSQMessage(senderId: sender, displayName: sender, text: messageContent)!
-            
-            self.messages += [message]
-        }
-        
-        self.reloadMessagesView()
-*/
         
         self.messageHistory()
+        
+        var JabberClient = CallerJabbarId.components(separatedBy: "@")
+        CallerJabberWithoutIP = JabberClient[0]
 
+        /////////////////  Add View For Test Passed ///////////
+        
+        let btnSeeTheTestPassed = UIButton(frame: CGRect(x: 0, y: 64, width: self.view.bounds.size.width, height: 35))
+        btnSeeTheTestPassed.backgroundColor = UIColor(red: 170.0/255.0, green: 170.0/255.0, blue: 170.0/255.0, alpha: 0.50)
+        self.view.addSubview(btnSeeTheTestPassed)
+        self.view.bringSubview(toFront: btnSeeTheTestPassed)
+        btnSeeTheTestPassed.setTitle("See the test you passed", for: .normal)
+        btnSeeTheTestPassed.setTitleColor(UIColor.white, for: .normal)
+        btnSeeTheTestPassed.titleLabel?.font = UIFont(name: kinglobal_Bold, size: 16.0)
+        btnSeeTheTestPassed.addTarget(self, action: #selector(chatMessageViewController.showPassedTest), for: .touchUpInside)
+        
         // Do any additional setup after loading the view.
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        
+    override func viewWillAppear(_ animated: Bool)
+    {
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.topItem?.title = CallerName
         self.navigationController?.navigationBar.titleTextAttributes =
@@ -82,31 +86,105 @@ class chatMessageViewController: JSQMessagesViewController,XMPPStreamDelegate
         
     }
     
+    override func viewWillDisappear(_ animated: Bool)
+    {
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
+    //MARK:- Back Action
+
+    
     func back()
     {
         self.view.endEditing(true)
         let _ = navigationController?.popViewController(animated: true)
     }
     
+    
+    //MARK:- Clicked on Test Passed
+    
+    func showPassedTest()
+    {
+        let storyboard : UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "ChatPassedTestViewController") as! ChatPassedTestViewController
+        let navigationController = UINavigationController(rootViewController: vc)
+        navigationController.modalPresentationStyle = .overCurrentContext
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.arrQuestions = QuestionArray
+        self.present(navigationController, animated: true, completion: nil)
+        
+    }
+    
+    //MARK: - XMPP Method
+    
     override  func didPressSend(_ button: UIButton!, withMessageText text: String!, senderId: String!, senderDisplayName: String!, date: Date!) {
         
-        let messageObj = text
+        let message = JSQMessage(senderId: senderId, senderDisplayName: senderDisplayName, date: date, text: text)!
+        
+        self.messages += [message]
+        
+        //        let messageObj = text
+        
+        var messageDictionary = [String: String]()
+        messageDictionary["userJId"] = CallerJabberWithoutIP
+        messageDictionary["userId"] = CallerID
+        
+        
+        let date = NSDate()
+        let calendar = NSCalendar.current
+        let hour = calendar.component(.hour, from: date as Date)
+        let minutes = calendar.component(.minute, from: date as Date)
+        
+        
+        let time = "\(hour):\(minutes)"
+        
+        
+        messageDictionary["Time"] = time
+        
+        var currentTime = Int64(Date().timeIntervalSince1970 * 1000)
+        
+        let timeStamp = "\(currentTime)"
+        
+        messageDictionary["msgId"] = timeStamp
+        
+        messageDictionary["msgText"] = text
+        
+        let userId = globalMethodObj.getUserId()
+        
+        messageDictionary["myId"] = userId
+        
+        var MyJabberID = XMPPJabberID.components(separatedBy: "@")
+        let MyJabberIDWithoutIP: String = MyJabberID[0]
+        
+        messageDictionary["myJId"] = MyJabberIDWithoutIP
+        
+        messageDictionary["senderName"] = CallerName
+        
+        messageDictionary["timeStamp"] = timeStamp
         
         var clientJid: XMPPJID!
         
         clientJid = XMPPJID.init(string: CallerJabbarId)
-
+        
         //clientJid = XMPPJID.init(string: "pandey@ip-172-31-53-77.ec2.internal")
         
         let senderJID = clientJid
         
         msg = XMPPMessage(type: "chat", to: senderJID)
         
-        msg?.addBody(messageObj)
+        //        var error : NSError?
+        
+        let jsonData = try! JSONSerialization.data(withJSONObject: messageDictionary, options: JSONSerialization.WritingOptions.prettyPrinted)
+        
+        let jsonString = NSString(data: jsonData, encoding: String.Encoding.utf8.rawValue)! as String
+        
+        msg?.addBody(jsonString)
+        
+        // msg?.addBody(messageObject)
+        
         stream?.send(msg)
         
-        let message = JSQMessage(senderId: senderId, senderDisplayName: senderDisplayName, date: date, text: text)!
-        self.messages += [message]
+        
         self.finishSendingMessage()
     }
     
@@ -128,14 +206,52 @@ class chatMessageViewController: JSQMessagesViewController,XMPPStreamDelegate
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, avatarImageDataForItemAt indexPath: IndexPath!) -> JSQMessageAvatarImageDataSource!
     {
-        /*
-        let url = NSURL(string: CallerProfilePic)
-        let data = NSData(contentsOf: url as! URL)
-        let image = UIImage(data: data as! Data)
+        
+        //////////////// For Current User ///////////////////
+        
+        var profilePicStrObj = ""
+        
+        let dictUserData = self.globalMethodObj.getUserDefaultDictionaryValue(KeyToReturnValye: get_user_all_info)
+        
+        let dict = dictUserData?[profile] as! NSDictionary
+
+        let arrProfilePic = dict.object(forKey: kprofile_picture)  as! NSArray
+        
+        for (_,element) in arrProfilePic.enumerated()
+        {
+            let dict =  element as! NSDictionary
+            let checkProfile = dict.object(forKey: "is_profile_pic")  as! Bool
+            
+            if checkProfile == true
+            {
+                profilePicStrObj =  dict.object(forKey: "url")  as! String
+            }
+        }
+
+        let url = NSURL(string: profilePicStrObj)
+        let imageViewObj = UIImageView()
+        imageViewObj.sd_setImage(with: url as URL?, placeholderImage: UIImage(named: kimgUserLogo))
+       
+        let diameter = UInt(collectionView.collectionViewLayout.outgoingAvatarViewSize.width)
+        
+        //////////////// For Other User ///////////////////
+
+        let urlObj = NSURL(string: CallerProfilePic)
+        let imageViewObjOther = UIImageView()
+        imageViewObjOther.sd_setImage(with: urlObj as URL?, placeholderImage: UIImage(named: kimgUserLogo))
         // let image = UIImage(data: Data(contentsOf: URL(string: CallerProfilePic)!))
-        return image as! JSQMessageAvatarImageDataSource!
- */
-        return nil
+        
+        let data = messages[indexPath.row]
+        
+        switch(data.senderId) {
+        case self.senderId:
+            return JSQMessagesAvatarImageFactory.avatarImage(with: imageViewObj.image, diameter: diameter)
+        default:
+            return JSQMessagesAvatarImageFactory.avatarImage(with: imageViewObjOther.image, diameter: diameter)
+        }
+
+        
+        
     }
     
     override func collectionView(_ collectionView: JSQMessagesCollectionView!, messageBubbleImageDataForItemAt indexPath: IndexPath!) -> JSQMessageBubbleImageDataSource! {
@@ -171,8 +287,13 @@ class chatMessageViewController: JSQMessagesViewController,XMPPStreamDelegate
         if message.isChatMessageWithBody(){
             print("and the message is ",message.body())
            
+            var receivedMessage = [String: String]()
             let date = Date()
-            let message = JSQMessage(senderId: "234", senderDisplayName: "ABC", date: date, text: message.body())!
+            
+            receivedMessage = convertToDictionary(text: message.body()) as! [String : String]
+            
+            let message = JSQMessage(senderId: CallerJabberWithoutIP, senderDisplayName: CallerName, date: date, text:receivedMessage["msgText"])!
+            
             self.messages += [message]
             
             self.finishReceivingMessage()
@@ -180,6 +301,7 @@ class chatMessageViewController: JSQMessagesViewController,XMPPStreamDelegate
            // self.reloadMessagesView()
         }
     }
+    
     func xmppStream(_ sender: XMPPStream!, willSend message: XMPPMessage!) -> XMPPMessage!{
         
         print("willSend message")
@@ -277,6 +399,17 @@ class chatMessageViewController: JSQMessagesViewController,XMPPStreamDelegate
         print("willSend iq")
         print("and the Will Send iq is ",iq)
         return iq
+    }
+    
+    func convertToDictionary(text: String) -> [String: Any]? {
+        if let data = text.data(using: .utf8) {
+            do {
+                return try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        return nil
     }
     
     override func didReceiveMemoryWarning() {

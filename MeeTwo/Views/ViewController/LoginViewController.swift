@@ -250,12 +250,13 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate,XMPPStream
                 {
                     print("result \(result)")
                     
+                    //https://graph.facebook.com/%@/picture?width=350&height=350
+                    
                     //                    MBProgressHUD.hide(for: (self.view)!, animated: true)
                     
                     self.btnFacebook.setTitle("Logout", for: UIControlState.normal)
                     //                    self.LoginServiceCall(dictionary:result as! NSDictionary)
                     self.uploadWithAlamofire(dictionary:result as! NSDictionary)
-                    
                 }
                 else
                 {
@@ -488,15 +489,15 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate,XMPPStream
     {
         JTProgressHUD.show()
         //        MBProgressHUD.showAdded(to: self.view, animated: true)
+       // let profilePicDic = dictionary["picture"] as! NSDictionary
+       // let profilePicDataDict = profilePicDic[kDATA] as! NSDictionary
+        //let ProfileURL = profilePicDataDict [kurl] as! String
         
-        let profilePicDic = dictionary["picture"] as! NSDictionary
-        let profilePicDataDict = profilePicDic[kDATA] as! NSDictionary
-        let ProfileURL = profilePicDataDict [kurl] as! String
-        let url = URL(string:ProfileURL)
+        let id = dictionary[kid] as! String
         
+        let urlLarge = "https://graph.facebook.com/\(id)/picture?width=500&height=500"
+        let url = URL(string:urlLarge)
         let dataProPic = try? Data(contentsOf: url!)
-        
-        
         
         // Convert Date Format
         var convertedDate: String = ""
@@ -578,8 +579,6 @@ class LoginViewController: UIViewController,CLLocationManagerDelegate,XMPPStream
         }
         
         //Other Parameter
-        let id = dictionary[kid] as! String
-        
         
         var firstname = ""
         if globalMethodObj.checkDictionaryKeyExits(key: kfirst_name, response: dictionary)
